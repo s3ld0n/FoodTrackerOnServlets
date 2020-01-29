@@ -1,6 +1,6 @@
 package org.training.food_tracker.controller.command;
 
-import org.itstep.model.entity.User;
+import org.training.food_tracker.controller.model.Role;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,13 +24,13 @@ public class LoginCommand implements Command{
         }
 
         if (name.equals("Admin")){
-            CommandUtility.setUserRole(request, User.ROLE.ADMIN, name);
+            CommandUtility.setUserRole(request, Role.ADMIN, name);
             return "/WEB-INF/admin/adminbasis.jsp";
         } else if(name.equals("User")) {
-            CommandUtility.setUserRole(request, User.ROLE.USER, name);
+            CommandUtility.setUserRole(request, Role.USER, name);
             return "/WEB-INF/user/userbasis.jsp";
         } else {
-            CommandUtility.setUserRole(request, User.ROLE.UNKNOWN, name);
+            CommandUtility.setUserRole(request, Role.GUEST, name);
             return "/login.jsp";
         }
 

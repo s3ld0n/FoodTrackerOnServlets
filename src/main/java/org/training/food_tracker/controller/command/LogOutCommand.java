@@ -1,6 +1,6 @@
 package org.training.food_tracker.controller.command;
 
-import org.itstep.model.entity.User;
+import org.training.food_tracker.controller.model.Role;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,7 +8,7 @@ public class LogOutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         // ToDo delete current user (context & session)
-        CommandUtility.setUserRole(request, User.ROLE.UNKNOWN, "Guest");
+        CommandUtility.setUserRole(request, Role.GUEST, "Guest");
         return "/index.jsp";
     }
 }
