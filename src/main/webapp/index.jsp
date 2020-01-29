@@ -1,20 +1,37 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page isELIgnored="false" %>
-<%@page pageEncoding="UTF-8" %>
 
-<fmt:setBundle basename="locale_uk"/>
+<fmt:setBundle basename="locale" />
 
-<html lang="uk">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>PhraseApp - i18n</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel='stylesheet' href='webjars/bootstrap/4.4.1/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='/static/css/style.css'>
+
+    <title>Index</title>
 </head>
 <body>
-<h2>
-    <fmt:message key="label.welcome" />
-</h2>
 
+<t:guest_navbar/>
+
+    <div class="container container mt-5" id="first">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Welcome to Food Tracker</h1>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <a href="/login.jsp">Login</a>
+            <a href="/registration">Registration</a>
+        </div>
+    </div>
+
+<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
