@@ -1,7 +1,5 @@
 package org.training.food_tracker.model;
 
-import java.math.BigDecimal;
-
 public class User  {
     private Long id;
     private String username;
