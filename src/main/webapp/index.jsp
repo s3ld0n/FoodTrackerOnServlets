@@ -33,8 +33,8 @@
         </div>
 
         <div class="container mt-4">
-            <a href="/login.jsp">Login</a>
-            <a href="/registration">Registration</a>
+            <a href="${pageContext.request.contextPath}/app/login">Login</a>
+            <a href="/registration.jsp">Registration</a>
         </div>
     </div>
 
