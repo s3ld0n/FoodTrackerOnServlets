@@ -2,10 +2,7 @@ package org.training.food_tracker.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.training.food_tracker.controller.command.Command;
-import org.training.food_tracker.controller.command.ExceptionCommand;
-import org.training.food_tracker.controller.command.LogOutCommand;
-import org.training.food_tracker.controller.command.LoginCommand;
+import org.training.food_tracker.controller.command.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -28,14 +25,13 @@ public class Servlet extends HttpServlet {
         servletConfig.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
         commands.put("logout", new LogOutCommand());
-        commands.put("login", new LoginCommand());
+        commands.put("login", new LoginPageCommand());
         commands.put("exception", new ExceptionCommand());
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         log.debug("inside doGet()");
         processRequest(request, response);
-        //response.getWriter().print("Hello from servlet");
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -52,7 +48,7 @@ public class Servlet extends HttpServlet {
         log.debug("path: ", path);
 
         log.debug("cutting out the command name from path");
-        path = path.replaceAll(".*/app/", "");
+        path = path.replaceAll(".*/", "");
 
         log.debug("command name: ", path);
         log.debug("getting corresponding command or redirecting to index");
