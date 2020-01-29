@@ -21,7 +21,7 @@
 </head>
 <body>
 
-    <t:navbar />
+    <t:guest_navbar />
 
     <a href="index.jsp">Home</a>
     <jsp:invoke fragment="content" />
