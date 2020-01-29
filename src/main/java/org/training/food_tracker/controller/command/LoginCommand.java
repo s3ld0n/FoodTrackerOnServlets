@@ -8,29 +8,29 @@ public class LoginCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest request) {
-        String name = request.getParameter("name");
-        String pass = request.getParameter("pass");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        if( name == null || name.equals("") || pass == null || pass.equals("")  ){
+        if( username == null || username.equals("") || password == null || password.equals("")  ){
             //System.out.println("Not");
             return "/login.jsp";
         }
-        System.out.println(name + " " + pass);
+        System.out.println(username + " " + password);
         //System.out.println("Yes!");
         //todo: check login with DB
 
-        if(CommandUtility.checkUserIsLogged(request, name)){
+        if(CommandUtility.checkUserIsLogged(request, username)){
             return "/WEB-INF/error.jsp";
         }
 
-        if (name.equals("Admin")){
-            CommandUtility.setUserRole(request, Role.ADMIN, name);
+        if (username.equals("Admin")){
+            CommandUtility.setUserRole(request, Role.ADMIN, username);
             return "/WEB-INF/admin/adminbasis.jsp";
-        } else if(name.equals("User")) {
-            CommandUtility.setUserRole(request, Role.USER, name);
+        } else if(username.equals("User")) {
+            CommandUtility.setUserRole(request, Role.USER, username);
             return "/WEB-INF/user/userbasis.jsp";
         } else {
-            CommandUtility.setUserRole(request, Role.GUEST, name);
+            CommandUtility.setUserRole(request, Role.GUEST, username);
             return "/login.jsp";
         }
 
