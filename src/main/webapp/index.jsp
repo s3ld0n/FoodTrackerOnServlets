@@ -20,7 +20,6 @@
 
 <%--<t:guest_navbar/>--%>
 
-<div class="empty">.</div>
     <div class="container mt-5" id="first">
         <div>
             <a href="?lang=en">En</a>
