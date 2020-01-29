@@ -1,6 +1,6 @@
 package org.training.food_tracker.controller.command;
 
-import org.training.food_tracker.controller.model.Role;
+import org.training.food_tracker.model.Role;
 
 import javax.servlet.http.HttpServletRequest;
 

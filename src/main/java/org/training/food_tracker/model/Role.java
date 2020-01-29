@@ -1,4 +1,4 @@
-package org.training.food_tracker.controller.model;
+package org.training.food_tracker.model;
 
 public enum Role {
     USER, ADMIN, GUEST
