@@ -43,7 +43,7 @@
                 <input type="submit" value="Log In">
             </form>
             <a href="${pageContext.request.contextPath}/registration">Registration</a>
-            <a href="${pageContext.request.contextPath}/home">Home</a>
+            <a href="${pageContext.request.contextPath}/">To Index</a>
         </div>
     </div>
 
