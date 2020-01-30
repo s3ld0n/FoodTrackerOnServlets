@@ -16,49 +16,49 @@ public class Biometrics {
         return new Builder();
     }
 
-    private static class Builder {
+    public static class Builder {
         private Biometrics biometrics;
 
-        Builder() {
+        public Builder() {
             this.biometrics = new Biometrics();
         }
 
-        Builder id(Long id) {
+        public Builder id(Long id) {
             biometrics.setId(id);
             return this;
         }
 
-        Builder owner(User owner) {
+        public Builder owner(User owner) {
             biometrics.setOwner(owner);
             return this;
         }
 
-        Builder age(BigDecimal age) {
+        public Builder age(BigDecimal age) {
             biometrics.setAge(age);
             return this;
         }
 
-        Builder sex(Sex sex) {
+        public Builder sex(Sex sex) {
             biometrics.setSex(sex);
             return this;
         }
 
-        Builder weight(BigDecimal weight) {
+        public Builder weight(BigDecimal weight) {
             biometrics.setWeight(weight);
             return this;
         }
 
-        Builder height(BigDecimal height) {
+        public Builder height(BigDecimal height) {
             biometrics.setWeight(height);
             return this;
         }
 
-        Builder lifestyle(Lifestyle lifestyle) {
+        public Builder lifestyle(Lifestyle lifestyle) {
             biometrics.setLifestyle(lifestyle);
             return this;
         }
 
-        Biometrics build() {
+        public Biometrics build() {
             return biometrics;
         }
     }

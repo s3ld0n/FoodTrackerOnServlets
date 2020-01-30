@@ -15,54 +15,54 @@ public class User  {
         return new Builder();
     }
 
-    private static class Builder {
+    public static class Builder {
         private User user;
 
         Builder() {
             this.user = new User();
         }
 
-        Builder id(Long id) {
+        public Builder id(Long id) {
             user.setId(id);
             return this;
         }
 
-        Builder username(String username) {
+        public Builder username(String username) {
             user.setUsername(username);
             return this;
         }
 
-        Builder password(String password) {
+        public Builder password(String password) {
             user.setUsername(password);
             return this;
         }
 
-        Builder fullName(String fullName) {
+        public Builder fullName(String fullName) {
             user.setFullName(fullName);
             return this;
         }
 
-        Builder nationalName(String nationalName) {
+        public Builder nationalName(String nationalName) {
             user.setNationalName(nationalName);
             return this;
         }
 
-        Builder biometrics(Biometrics biometrics) {
+        public Builder biometrics(Biometrics biometrics) {
             user.setBiometrics(biometrics);
             return this;
         }
 
-        Builder active(boolean active) {
+        public Builder active(boolean active) {
             user.setActive(active);
             return this;
         }
 
-        Builder role(Role role) {
+        public Builder role(Role role) {
             user.setRole(role);
             return this;
         }
 
-        User build() {
+        public User build() {
             return user;
         }
     }
