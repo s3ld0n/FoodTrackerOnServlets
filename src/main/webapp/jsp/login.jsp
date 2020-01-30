@@ -37,12 +37,13 @@
         </div>
 
         <div class="container mt-4">
-            <form action="/login" method="post">
+            <form action="${pageContext.request.contextPath}/login" method="post">
                 <div><label>Username<input type="text" name="username"/> </label></div>
                 <div><label>Password<input type="password" name="password"/></label></div>
                 <input type="submit" value="Log In">
             </form>
-            <a href="/registration">Registration</a>
+            <a href="${pageContext.request.contextPath}/registration">Registration</a>
+            <a href="${pageContext.request.contextPath}/home">Home</a>
         </div>
     </div>
 
