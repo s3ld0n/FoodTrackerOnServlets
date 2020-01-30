@@ -2,7 +2,7 @@
 <%@ tag pageEncoding="UTF-8" language="java"%>
 
 <div class="fixed-top">
-    <div class="jumbotron clearfix text-center" style="margin-bottom:0">
+    <div class="jumbotron clearfix text-center" style="margin-bottom:0; padding: 0.5em;">
         <h1>Food Tracker</h1>
     </div>
     <nav class="navbar navbar-expand-sm navbar-light bg-light" id="upper-navbar">
