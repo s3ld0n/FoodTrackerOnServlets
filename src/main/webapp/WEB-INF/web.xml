@@ -11,25 +11,37 @@
     </jsp-property-group>
   </jsp-config>
 
-<!--  <servlet>-->
-<!--    <servlet-name>Servlet</servlet-name>-->
-<!--    <servlet-class>org.training.food_tracker.controller.Servlet</servlet-class>-->
-<!--    &lt;!&ndash;<load-on-startup>1</load-on-startup>&ndash;&gt;-->
-<!--  </servlet>-->
+  <servlet>
+    <servlet-name>Servlet</servlet-name>
+    <servlet-class>org.training.food_tracker.controller.Servlet</servlet-class>
+    <!--<load-on-startup>1</load-on-startup>-->
+  </servlet>
 
-<!--  <servlet-mapping>-->
-<!--    <servlet-name>Servlet</servlet-name>-->
-<!--    <url-pattern>/</url-pattern>-->
-<!--  </servlet-mapping>-->
+  <servlet-mapping>
+    <servlet-name>Servlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
 
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>org.training.food_tracker.controller.filters.EncodingFilter</filter-class>
   </filter>
+
   <filter-mapping>
     <filter-name>EncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
+  <filter>
+    <filter-name>LocaleFilter</filter-name>
+    <filter-class>org.training.food_tracker.controller.filters.LocaleFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>LocaleFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
 
   <filter>
     <filter-name>AuthFilter</filter-name>
@@ -47,7 +59,7 @@
   </listener>
 
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>jsp/index.jsp</welcome-file>
   </welcome-file-list>
 
   <error-page>
