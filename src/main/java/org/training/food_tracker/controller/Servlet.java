@@ -25,8 +25,9 @@ public class Servlet extends HttpServlet {
         servletConfig.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
         commands.put("logout", new LogOutCommand());
-        commands.put("login", new LoginPageCommand());
+        commands.put("login_page", new LoginPageCommand());
         commands.put("exception", new ExceptionCommand());
+
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -60,6 +61,11 @@ public class Servlet extends HttpServlet {
 
         log.debug("url: ", url);
         log.debug("getting requestDispatcher and forwarding url");
+
+
+        if (url.contains("redirect:")) {
+            url = url.replace("redirect:", "");
+        }
         request.getRequestDispatcher(url).forward(request, response);
         log.debug("done");
     }
