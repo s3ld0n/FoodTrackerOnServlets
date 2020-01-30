@@ -52,7 +52,7 @@ public class Servlet extends HttpServlet {
 
         log.debug("command name: ", path);
         log.debug("getting corresponding command or redirecting to index");
-        Command command = commands.getOrDefault(path, (r) -> "/index.jsp");
+        Command command = commands.getOrDefault(path, (r) -> "jsp/index.jsp");
 
 
         log.debug("command was found: " + command.getClass().getName() + "/Getting url");
