@@ -6,11 +6,11 @@ public interface CrudDao<T> {
     
     T create(T t);
     
-    T findById(int id);
+    T findById(Long id);
     
     T update(T t);
     
     List<T> findAll();
     
-    void deleteById(int id);
+    void deleteById(Long id);
 }
