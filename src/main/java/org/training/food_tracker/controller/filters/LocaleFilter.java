@@ -1,9 +1,7 @@
 package org.training.food_tracker.controller.filters;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.training.food_tracker.controller.Servlet;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
