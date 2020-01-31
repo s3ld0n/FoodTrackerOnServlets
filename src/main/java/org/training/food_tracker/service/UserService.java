@@ -13,4 +13,8 @@ public class UserService {
     public User findById(Long id) {
         return userDao.findById(id);
     }
+
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
 }
