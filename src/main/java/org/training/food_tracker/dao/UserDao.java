@@ -26,7 +26,7 @@ public class UserDao implements CrudDao<User> {
 
     private static final Logger log = LogManager.getLogger(UserDao.class.getName());
 
-    @Override public User create(User user) {
+    @Override public User create(User user) throws DaoException {
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME_QUERY,
                         Statement.RETURN_GENERATED_KEYS)) {
@@ -73,7 +73,7 @@ public class UserDao implements CrudDao<User> {
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(Long id) throws DaoException {
         log.debug("Finding user by id:{}", id);
         User user = null;
         Biometrics biometrics = null;
@@ -121,7 +121,7 @@ public class UserDao implements CrudDao<User> {
         return user;
     }
 
-    public User findByUsername(String username) {
+    public User findByUsername(String username) throws DaoException {
         log.debug("Finding user by username:{}", username);
         User user = null;
         Biometrics biometrics = null;

@@ -1,5 +1,6 @@
 package org.training.food_tracker.controller.command;
 
+import org.training.food_tracker.dao.DaoException;
 import org.training.food_tracker.model.Lifestyle;
 import org.training.food_tracker.model.Role;
 import org.training.food_tracker.model.Sex;
@@ -28,16 +29,19 @@ public class RegistrationCommand implements Command {
 
         //TODO password check
 
-
-        userService.create(User.builder()
-                       .username(username)
-                       .email(email)
-                       .fullName(fullName)
-                       .nationalName(nationalName)
-                       .active(false)
-                       .role(Role.USER)
-                       .password(password)
-                       .build());
+        try {
+            userService.create(User.builder()
+                           .username(username)
+                           .email(email)
+                           .fullName(fullName)
+                           .nationalName(nationalName)
+                           .active(false)
+                           .role(Role.USER)
+                           .password(password)
+                           .build());
+        } catch (DaoException e) {
+            e.printStackTrace(); //TODO handle user output
+        }
 
         return "redirect:/login";
     }

@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface CrudDao<T> {
     
-    T create(T t);
+    T create(T t) throws DaoException;
     
-    T findById(Long id);
+    T findById(Long id) throws DaoException;
     
     T update(T t);
     
