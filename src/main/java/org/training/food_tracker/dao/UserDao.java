@@ -18,7 +18,7 @@ public class UserDao implements CrudDao<User> {
 
     public static final String READ_QUERY = "SELECT users.id, username, password, full_name, national_name, email, active, "
                                                     + "role, biometrics.id, user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
-                                                    + "biometrics ON user_id = users.id WHERE id = ?";
+                                                    + "biometrics ON user_id = users.id WHERE users.id = ?";
 
     public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id, username, password, full_name, national_name, email, active, "
                                                             + "role, biometrics.id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
@@ -28,7 +28,7 @@ public class UserDao implements CrudDao<User> {
 
     @Override public User create(User user) throws DaoException {
         try (Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME_QUERY,
+                PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
                         Statement.RETURN_GENERATED_KEYS)) {
 
             log.debug("Prepared statement was created.");
@@ -127,7 +127,7 @@ public class UserDao implements CrudDao<User> {
         Biometrics biometrics = null;
 
         try (Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(READ_QUERY)) {
+                PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME_QUERY)) {
 
             log.debug("Prepared statement was created. Setting username");
             statement.setString(1, username);
