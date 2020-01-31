@@ -42,7 +42,7 @@
                 <div><label>Password<input type="password" name="password"/></label></div>
                 <input type="submit" value="Log In">
             </form>
-            <a href="${pageContext.request.contextPath}/registration">Registration</a>
+            <a href="${pageContext.request.contextPath}/registration_page">Registration</a>
             <a href="${pageContext.request.contextPath}/">To Index</a>
         </div>
     </div>

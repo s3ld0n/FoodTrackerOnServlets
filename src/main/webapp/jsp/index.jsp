@@ -34,7 +34,7 @@
 
                 <div class="container mt-4">
                     <a href="${pageContext.request.contextPath}/login_page">Login</a>
-                    <a href="${pageContext.request.contextPath}/registration">Registration</a>
+                    <a href="${pageContext.request.contextPath}/registration_page">Registration</a>
                 </div>
             </div>
     </div>
