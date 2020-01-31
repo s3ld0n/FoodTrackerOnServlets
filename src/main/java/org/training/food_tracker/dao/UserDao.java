@@ -21,8 +21,8 @@ public class UserDao implements CrudDao<User> {
                                                     + "biometrics ON user_id = users.id WHERE id = ?";
 
     public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id, username, password, full_name, national_name, email, active, "
-                                                            + "role, biometrics.id, user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
-                                                            + "biometrics ON user_id = users.id WHERE username = ?";
+                                                            + "role, biometrics.id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
+                                                            + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
 
     private static final Logger log = LogManager.getLogger(UserDao.class.getName());
 
