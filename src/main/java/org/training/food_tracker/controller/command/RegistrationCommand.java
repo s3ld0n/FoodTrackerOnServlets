@@ -8,7 +8,6 @@ import org.training.food_tracker.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 public class RegistrationCommand implements Command {
 
@@ -28,6 +27,7 @@ public class RegistrationCommand implements Command {
         String passwordConfirm = request.getParameter("passwordConfirm");
 
         //TODO password check
+
 
         userService.create(User.builder()
                        .username(username)
