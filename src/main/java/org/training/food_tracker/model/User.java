@@ -32,6 +32,11 @@ public class User  {
             return this;
         }
 
+        public Builder email(String email) {
+            user.setEmail(email);
+            return this;
+        }
+
         public Builder password(String password) {
             user.setUsername(password);
             return this;
