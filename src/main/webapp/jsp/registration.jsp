@@ -47,7 +47,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Full name</label>
             <div class="col-sm-6 field" >
-                <input type="text" name="fullName" value="" class="form-control" placeholder="full name}" />
+                <input type="text" name="fullName" value="" class="form-control" placeholder="full name" />
             </div>
         </div>
 
