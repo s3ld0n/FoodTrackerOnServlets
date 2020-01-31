@@ -25,6 +25,7 @@ public class Servlet extends HttpServlet {
         servletConfig.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
         commands.put("logout", new LogOutCommand());
+        commands.put("login", new LoginCommand());
         commands.put("login_page", new LoginPageCommand());
         commands.put("exception", new ExceptionCommand());
         commands.put("registration_page", new RegistrationPageCommand());
