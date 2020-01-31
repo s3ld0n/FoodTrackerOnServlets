@@ -10,7 +10,6 @@ import org.training.food_tracker.model.User;
 
 import java.sql.*;
 import java.util.List;
-import java.util.Optional;
 
 public class UserDao implements CrudDao<User> {
 
@@ -44,9 +43,11 @@ public class UserDao implements CrudDao<User> {
             log.trace("Setting user's email: {}", user.getEmail());
             statement.setString(5, user.getEmail());
 
-            log.trace("Setting user's : {}", user.getEmail());
-            statement.setString(5, user.getEmail());
+            log.trace("Setting user to be active : {}", user.isActive());
+            statement.setBoolean(6, user.isActive());
 
+            log.trace("Setting user's role: {}", user.getRole());
+            statement.setString(7, user.getRole().toString());
 
             log.debug("Executing prepared statement");
             statement.executeUpdate();
