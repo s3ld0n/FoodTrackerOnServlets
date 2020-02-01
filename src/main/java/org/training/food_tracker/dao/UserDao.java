@@ -3,10 +3,7 @@ package org.training.food_tracker.dao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food_tracker.dao.impl.ConnectionFactory;
-import org.training.food_tracker.model.Biometrics;
-import org.training.food_tracker.model.Lifestyle;
-import org.training.food_tracker.model.Sex;
-import org.training.food_tracker.model.User;
+import org.training.food_tracker.model.*;
 
 import java.sql.*;
 import java.util.List;
@@ -155,6 +152,7 @@ public class UserDao implements CrudDao<User> {
                                .password(resultSet.getString("password"))
                                .fullName(resultSet.getString("full_name"))
                                .nationalName(resultSet.getString("national_name"))
+                               .role(Role.valueOf(resultSet.getString("role")))
                                .biometrics(biometrics)
                                .build();
 
