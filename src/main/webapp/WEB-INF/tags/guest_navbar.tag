@@ -1,5 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ tag pageEncoding="UTF-8" language="java"%>
+<%@ tag isELIgnored="false" %>
 
 <div class="fixed-top">
     <div class="jumbotron clearfix text-center" style="margin-bottom:0; padding: 0.5em;">
