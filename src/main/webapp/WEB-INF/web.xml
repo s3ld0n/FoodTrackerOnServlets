@@ -11,16 +11,16 @@
     </jsp-property-group>
   </jsp-config>
 
-  <servlet>
-    <servlet-name>Servlet</servlet-name>
-    <servlet-class>org.training.food_tracker.controller.Servlet</servlet-class>
-    <!--<load-on-startup>1</load-on-startup>-->
-  </servlet>
+<!--  <servlet>-->
+<!--    <servlet-name>Servlet</servlet-name>-->
+<!--    <servlet-class>org.training.food_tracker.controller.Servlet</servlet-class>-->
+<!--    &lt;!&ndash;<load-on-startup>1</load-on-startup>&ndash;&gt;-->
+<!--  </servlet>-->
 
-  <servlet-mapping>
-    <servlet-name>Servlet</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>Servlet</servlet-name>-->
+<!--    <url-pattern>/</url-pattern>-->
+<!--  </servlet-mapping>-->
 
   <filter>
     <filter-name>EncodingFilter</filter-name>
