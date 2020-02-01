@@ -44,7 +44,7 @@ public class LoginCommand implements Command{
         if (user.getRole() == Role.USER) {
             return "jsp/user/main.jsp";
         } else {
-            return "jsp/admin/main.jsp";
+            return "redirect:/admin/main";
         }
 
     }
