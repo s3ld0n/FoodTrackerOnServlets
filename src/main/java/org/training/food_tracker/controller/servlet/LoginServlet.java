@@ -1,5 +1,8 @@
 package org.training.food_tracker.controller.servlet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.training.food_tracker.controller.Servlet;
 import org.training.food_tracker.dao.DaoException;
 import org.training.food_tracker.model.Role;
 import org.training.food_tracker.model.User;
@@ -10,10 +13,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private static final Logger log = LogManager.getLogger(LoginServlet.class.getName());
 
     private UserService userService;
 
@@ -29,13 +34,17 @@ public class LoginServlet extends HttpServlet {
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        log.debug("doPost");
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        log.debug("validating username and password");
         validateCredentialsAndSendBackIfNot(request, response, username, password);
 
         User user;
 
+        log.debug("getting user from DB");
         try {
             user = userService.findByUsername(username);
         } catch (DaoException e) {
@@ -44,9 +53,13 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        log.debug("user's role: {}", user.getRole());
+
         if (user.getRole() == Role.USER) {
-            response.sendRedirect("main.jsp");
+            setUserAndRoleToSession(request, Role.USER, username);
+            response.sendRedirect("user/main");
         } else {
+            setUserAndRoleToSession(request, Role.ADMIN, username);
             response.sendRedirect("admin/main");
         }
 
@@ -57,5 +70,12 @@ public class LoginServlet extends HttpServlet {
         if( username == null || username.equals("") || password == null || password.equals("")  ){
             response.sendRedirect(request.getContextPath() + "/login");
         }
+    }
+
+    private void setUserAndRoleToSession(HttpServletRequest request,
+            Role role, String username) {
+        HttpSession session = request.getSession();
+        session.setAttribute("username", username);
+        session.setAttribute("role", role);
     }
 }
