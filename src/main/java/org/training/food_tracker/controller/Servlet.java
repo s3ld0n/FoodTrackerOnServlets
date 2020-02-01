@@ -45,31 +45,32 @@ public class Servlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        log.debug("---> processRequest()");
 
-        log.debug("getting path from request url");
+        log.trace("getting path from request url");
 
         String path = request.getRequestURI();
-        log.debug("path: ", path);
+        log.trace("path: ", path);
 
-        log.debug("cutting out the command name from path");
+        log.trace("cutting out the command name from path");
         path = path.replaceAll(".*/", "");
 
-        log.debug("command name: ", path);
-        log.debug("getting corresponding command or redirecting to index");
+        log.trace("command name: ", path);
+        log.trace("getting corresponding command or redirecting to index");
         Command command = commands.getOrDefault(path, (r) -> "jsp/index.jsp");
 
 
-        log.debug("command was found: " + command.getClass().getName() + "/Getting url");
+        log.trace("command was found: " + command.getClass().getName() + "/Getting url");
         String url = command.execute(request);
 
-        log.debug("url: ", url);
-        log.debug("getting requestDispatcher and forwarding url");
+        log.trace("url: ", url);
+        log.trace("getting requestDispatcher and forwarding url");
 
 
         if (url.contains("redirect:")) {
             url = url.replace("redirect:", "");
         }
         request.getRequestDispatcher(url).forward(request, response);
-        log.debug("done");
+        log.debug("processRequest() --->");
     }
 }
