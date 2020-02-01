@@ -20,8 +20,8 @@ public class UserDao implements CrudDao<User> {
                                                     + "role, biometrics.id, user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                     + "biometrics ON user_id = users.id WHERE users.id = ?";
 
-    public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id, username, password, full_name, national_name, email, active, "
-                                                            + "role, biometrics.id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
+    public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
+                                                            + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                             + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
 
     private static final Logger log = LogManager.getLogger(UserDao.class.getName());
@@ -92,7 +92,7 @@ public class UserDao implements CrudDao<User> {
 
                 log.debug("Creating biometrics object");
                 biometrics = Biometrics.builder()
-                                     .id(resultSet.getLong("biometrics.id"))
+                                     .id(resultSet.getLong("bio_id"))
                                      .age(resultSet.getBigDecimal("age"))
                                      .sex(Sex.valueOf(resultSet.getString("sex")))
                                      .weight(resultSet.getBigDecimal("weight"))
@@ -140,7 +140,7 @@ public class UserDao implements CrudDao<User> {
 
                 log.debug("Creating biometrics object");
                 biometrics = Biometrics.builder()
-                                     .id(resultSet.getLong("biometrics.id"))
+                                     .id(resultSet.getLong("bio_id"))
                                      .age(resultSet.getBigDecimal("age"))
                                      .sex(Sex.valueOf(resultSet.getString("sex")))
                                      .weight(resultSet.getBigDecimal("weight"))
@@ -150,7 +150,7 @@ public class UserDao implements CrudDao<User> {
 
                 log.debug("Creating user object");
                 user = User.builder()
-                               .id(resultSet.getLong("users.id"))
+                               .id(resultSet.getLong("u_id"))
                                .username(resultSet.getString("username"))
                                .password(resultSet.getString("password"))
                                .fullName(resultSet.getString("full_name"))
