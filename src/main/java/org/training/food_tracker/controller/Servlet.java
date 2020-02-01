@@ -30,7 +30,6 @@ public class Servlet extends HttpServlet {
         commands.put("exception", new ExceptionCommand());
         commands.put("registration_page", new RegistrationPageCommand());
         commands.put("registration", new RegistrationCommand());
-
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -50,20 +49,17 @@ public class Servlet extends HttpServlet {
         log.trace("getting path from request url");
 
         String path = request.getRequestURI();
-        log.trace("path: ", path);
+        log.debug("path: {}", path);
 
         log.trace("cutting out the command name from path");
-        path = path.replaceAll(".*/", "");
+        path = path.replace("^https?//.+/$", "").replace("/", "");
 
-        log.trace("command name: ", path);
-        log.trace("getting corresponding command or redirecting to index");
+        log.debug("command name: {}", path);
         Command command = commands.getOrDefault(path, (r) -> "jsp/index.jsp");
 
-
-        log.trace("command was found: " + command.getClass().getName() + "/Getting url");
         String url = command.execute(request);
 
-        log.trace("url: ", url);
+        log.debug("url: {}", url);
         log.trace("getting requestDispatcher and forwarding url");
 
 
