@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page isELIgnored="false" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <fmt:requestEncoding value="UTF-8"/>
-<%--<fmt:setLocale value="${lang}"/>--%>
+<fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="locale" />
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -29,6 +29,8 @@
                 <div id="first">
                     <div class="col-md-12">
                         <h1>Welcome</h1>
+                        <h2>lang: <c:out value="${lang}"/> </h2>
+                        <h2>context: <c:out value="${pageContext.request.contextPath}"/></h2>
                     </div>
                 </div>
 
@@ -36,6 +38,7 @@
                     <a href="${pageContext.request.contextPath}/login_page">Login</a>
                     <a href="${pageContext.request.contextPath}/registration_page">Registration</a>
                 </div>
+
             </div>
     </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
