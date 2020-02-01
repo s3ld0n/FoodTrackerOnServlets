@@ -24,9 +24,9 @@
 
 <t:admin_navbar />
 
-    <div class="container container mt-5" id="first">
+    <div class="container container mt-5" >
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" id="first">
                 <h1>Greetings</h1>
             </div>
         </div>
