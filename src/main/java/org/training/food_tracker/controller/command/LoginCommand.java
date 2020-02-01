@@ -17,6 +17,7 @@ public class LoginCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest request) {
+        log.debug("---> LoginCommand.execute()");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -45,6 +46,7 @@ public class LoginCommand implements Command{
         } else {
             return "jsp/admin/main.jsp";
         }
+
     }
 
 }
