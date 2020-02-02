@@ -11,15 +11,15 @@
             <div class="collapse navbar-collapse text-center">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/main/">Main</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/main">Main</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/food_list/">Add Food</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/food_list">Add Food</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/users/">Users</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/users">Users</a>
                     </li>
 
                     <li class="nav-item dropdown">
