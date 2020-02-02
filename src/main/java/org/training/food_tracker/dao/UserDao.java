@@ -107,6 +107,7 @@ public class UserDao implements CrudDao<User> {
                                .id(id)
                                .username(resultSet.getString("username"))
                                .password(resultSet.getString("password"))
+                               .email(resultSet.getString("email"))
                                .fullName(resultSet.getString("full_name"))
                                .nationalName(resultSet.getString("national_name"))
                                .biometrics(biometrics)
@@ -155,6 +156,7 @@ public class UserDao implements CrudDao<User> {
                                .id(resultSet.getLong("u_id"))
                                .username(resultSet.getString("username"))
                                .password(resultSet.getString("password"))
+                               .email(resultSet.getString("email"))
                                .fullName(resultSet.getString("full_name"))
                                .nationalName(resultSet.getString("national_name"))
                                .role(Role.valueOf(resultSet.getString("role")))
@@ -207,6 +209,7 @@ public class UserDao implements CrudDao<User> {
                                    .biometrics(biometrics)
                                    .build();
 
+                    log.trace("user created : {}", user);
                     biometrics.setOwner(user);
                     users.add(user);
                 }
