@@ -19,7 +19,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/users/">Users</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/users/">Users</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -33,9 +33,7 @@
                     </li>
 
                     <li class="nav-item" >
-                        <form th:action="/logout" method="post">
-                            <button class="nav-link btn btn-link"  type="submit">Log out</button>
-                        </form>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/logout">Log out</a>
                     </li>
                 </ul>
             </div>

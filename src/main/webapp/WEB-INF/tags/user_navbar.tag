@@ -33,9 +33,7 @@
                     </li>
 
                     <li class="nav-item" >
-                        <form action="/logout" method="post">
-                            <button class="nav-link btn btn-link"  type="submit">Logout</button>
-                        </form>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/logout">Log out</a>
                     </li>
                 </ul>
             </div>
