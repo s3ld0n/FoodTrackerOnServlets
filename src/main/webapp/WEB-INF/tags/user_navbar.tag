@@ -10,11 +10,11 @@
             <div class="collapse navbar-collapse text-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/main/">Main</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/user/main">Main</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/profile/">Profile</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/user/profile">Profile</a>
                     </li>
 
                     <li class="nav-item" >
