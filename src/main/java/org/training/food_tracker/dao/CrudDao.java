@@ -10,7 +10,7 @@ public interface CrudDao<T> {
     
     T update(T t);
     
-    List<T> findAll();
+    List<T> findAll() throws DaoException;
     
     void deleteById(Long id);
 }
