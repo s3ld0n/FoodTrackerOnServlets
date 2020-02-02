@@ -6,6 +6,7 @@ import org.training.food_tracker.dao.impl.ConnectionFactory;
 import org.training.food_tracker.model.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao implements CrudDao<User> {
@@ -20,6 +21,10 @@ public class UserDao implements CrudDao<User> {
     public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
                                                             + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                             + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
+
+    public static final String FIND_ALL = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
+                                                  + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
+                                                  + "biometrics ON users.id = biometrics.user_id";
 
     private static final Logger log = LogManager.getLogger(UserDao.class.getName());
 
@@ -167,11 +172,55 @@ public class UserDao implements CrudDao<User> {
         return user;
     }
 
-    @Override public User update(User user) {
-        return null;
+    @Override
+    public List<User> findAll() throws DaoException {
+        log.debug("Finding all users");
+        User user = null;
+        Biometrics biometrics = null;
+        List<User> users = new ArrayList<>();
+
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+
+            log.debug("Creating result set");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    log.trace("Creating biometrics object");
+                    biometrics = Biometrics.builder()
+                                     .id(resultSet.getLong("bio_id"))
+                                     .age(resultSet.getBigDecimal("age"))
+                                     .sex(Sex.valueOf(resultSet.getString("sex")))
+                                     .weight(resultSet.getBigDecimal("weight"))
+                                     .height(resultSet.getBigDecimal("height"))
+                                     .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
+                                     .build();
+
+                    log.trace("Creating user object");
+                    user = User.builder()
+                                   .id(resultSet.getLong("u_id"))
+                                   .username(resultSet.getString("username"))
+                                   .password(resultSet.getString("password"))
+                                   .fullName(resultSet.getString("full_name"))
+                                   .nationalName(resultSet.getString("national_name"))
+                                   .role(Role.valueOf(resultSet.getString("role")))
+                                   .biometrics(biometrics)
+                                   .build();
+
+                    biometrics.setOwner(user);
+                    users.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Get all users has failed", e);
+            throw new DaoException("Get all users has failed", e);
+        }
+
+        log.debug("{} users were found.", users.size());
+        return users;
     }
 
-    @Override public List<User> findAll() {
+    @Override public User update(User user) {
         return null;
     }
 
