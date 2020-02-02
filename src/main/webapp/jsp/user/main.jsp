@@ -27,7 +27,7 @@
 <div class="container container mt-5" >
     <div class="row">
         <div class="col-md-12" id="first">
-            <h1>Greetings, </h1>
+            <h1>Greetings, ${sessionScope.get("username")}</h1>
         </div>
     </div>
 
