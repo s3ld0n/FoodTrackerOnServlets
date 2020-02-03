@@ -114,6 +114,7 @@ public class UserDao implements CrudDao<User> {
                              .weight(resultSet.getBigDecimal("weight"))
                              .height(resultSet.getBigDecimal("height"))
                              .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
+                             .setDailyNorm()
                              .build();
 
         log.debug("Creating user object");
