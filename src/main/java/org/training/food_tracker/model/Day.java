@@ -28,7 +28,7 @@ public class Day {
             return this;
         }
 
-        public Builder consumedFood(List<ConsumedFood> consumedFoods) {
+        public Builder consumedFoods(List<ConsumedFood> consumedFoods) {
             day.setConsumedFoods(consumedFoods);
             return this;
         }
@@ -43,7 +43,7 @@ public class Day {
             return this;
         }
 
-        public Builder localDate(LocalDate date) {
+        public Builder date(LocalDate date) {
             day.setDate(date);
             return this;
         }
