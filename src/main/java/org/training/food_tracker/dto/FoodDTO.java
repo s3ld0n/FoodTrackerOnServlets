@@ -7,7 +7,7 @@ public class FoodDTO {
     private BigDecimal totalCalories;
     private BigDecimal amount;
 
-    public static Builder build() {
+    public static Builder builder() {
         return new Builder();
     }
 
