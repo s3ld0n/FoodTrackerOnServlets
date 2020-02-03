@@ -57,6 +57,7 @@ public class UserMainServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        log.debug("setting usersFoodDTOs");
         request.setAttribute("usersFoodDTOs", foodService.findAllByOwnerInDTOs(currentUser));
 
         UserDTO userDTO = userService.userToUserDTO(currentUser);
