@@ -14,7 +14,7 @@ public class UserDao implements CrudDao<User> {
     public static final String CREATE_QUERY = "INSERT INTO users (username, password, full_name, "
                                                       + "national_name, email, active, role) VALUES(?,?,?,?,?,?,?)";
 
-    public static final String READ_QUERY = "SELECT users.id, username, password, full_name, national_name, email, active, "
+    public static final String READ_QUERY = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
                                                     + "role, biometrics.id, user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                     + "biometrics ON user_id = users.id WHERE users.id = ?";
 
@@ -22,7 +22,7 @@ public class UserDao implements CrudDao<User> {
                                                             + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                             + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
 
-    public static final String FIND_ALL = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
+    public static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
                                                   + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                   + "biometrics ON users.id = biometrics.user_id";
 
@@ -92,28 +92,7 @@ public class UserDao implements CrudDao<User> {
                     throw new SQLException("No such user with id: " + id);
                 }
 
-                log.debug("Creating biometrics object");
-                biometrics = Biometrics.builder()
-                                     .id(resultSet.getLong("bio_id"))
-                                     .age(resultSet.getBigDecimal("age"))
-                                     .sex(Sex.valueOf(resultSet.getString("sex")))
-                                     .weight(resultSet.getBigDecimal("weight"))
-                                     .height(resultSet.getBigDecimal("height"))
-                                     .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
-                                     .build();
-
-                log.debug("Creating user object");
-                user = User.builder()
-                               .id(id)
-                               .username(resultSet.getString("username"))
-                               .password(resultSet.getString("password"))
-                               .email(resultSet.getString("email"))
-                               .fullName(resultSet.getString("full_name"))
-                               .nationalName(resultSet.getString("national_name"))
-                               .biometrics(biometrics)
-                               .build();
-
-                biometrics.setOwner(user);
+                user = extractUser(resultSet);
             }
         } catch (SQLException e) {
             log.error("Finding user has failed", e);
@@ -124,10 +103,35 @@ public class UserDao implements CrudDao<User> {
         return user;
     }
 
+    private User extractUser(ResultSet resultSet) throws SQLException {
+        Biometrics biometrics;
+        User user;
+        log.debug("Creating biometrics object");
+        biometrics = Biometrics.builder()
+                             .id(resultSet.getLong("bio_id"))
+                             .age(resultSet.getBigDecimal("age"))
+                             .sex(Sex.valueOf(resultSet.getString("sex")))
+                             .weight(resultSet.getBigDecimal("weight"))
+                             .height(resultSet.getBigDecimal("height"))
+                             .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
+                             .build();
+
+        log.debug("Creating user object");
+        user = User.builder()
+                       .id(resultSet.getLong("u_id"))
+                       .username(resultSet.getString("username"))
+                       .password(resultSet.getString("password"))
+                       .email(resultSet.getString("email"))
+                       .fullName(resultSet.getString("full_name"))
+                       .nationalName(resultSet.getString("national_name"))
+                       .biometrics(biometrics)
+                       .build();
+        return user;
+    }
+
     public User findByUsername(String username) throws DaoException {
         log.debug("Finding user by username:{}", username);
-        User user = null;
-        Biometrics biometrics = null;
+        User user;
 
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME_QUERY)) {
@@ -141,29 +145,7 @@ public class UserDao implements CrudDao<User> {
                     throw new SQLException("No such user with username: " + username);
                 }
 
-                log.debug("Creating biometrics object");
-                biometrics = Biometrics.builder()
-                                     .id(resultSet.getLong("bio_id"))
-                                     .age(resultSet.getBigDecimal("age"))
-                                     .sex(Sex.valueOf(resultSet.getString("sex")))
-                                     .weight(resultSet.getBigDecimal("weight"))
-                                     .height(resultSet.getBigDecimal("height"))
-                                     .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
-                                     .build();
-
-                log.debug("Creating user object");
-                user = User.builder()
-                               .id(resultSet.getLong("u_id"))
-                               .username(resultSet.getString("username"))
-                               .password(resultSet.getString("password"))
-                               .email(resultSet.getString("email"))
-                               .fullName(resultSet.getString("full_name"))
-                               .nationalName(resultSet.getString("national_name"))
-                               .role(Role.valueOf(resultSet.getString("role")))
-                               .biometrics(biometrics)
-                               .build();
-
-                biometrics.setOwner(user);
+                user = extractUser(resultSet);
             }
         } catch (SQLException e) {
             log.error("Finding user has failed", e);
@@ -177,41 +159,15 @@ public class UserDao implements CrudDao<User> {
     @Override
     public List<User> findAll() throws DaoException {
         log.debug("Finding all users");
-        User user = null;
-        Biometrics biometrics = null;
         List<User> users = new ArrayList<>();
 
         try (Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+                PreparedStatement statement = connection.prepareStatement(FIND_ALL_QUERY)) {
 
             log.debug("Creating result set");
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-
-                    log.trace("Creating biometrics object");
-                    biometrics = Biometrics.builder()
-                                     .id(resultSet.getLong("bio_id"))
-                                     .age(resultSet.getBigDecimal("age"))
-                                     .sex(Sex.valueOf(resultSet.getString("sex")))
-                                     .weight(resultSet.getBigDecimal("weight"))
-                                     .height(resultSet.getBigDecimal("height"))
-                                     .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
-                                     .build();
-
-                    log.trace("Creating user object");
-                    user = User.builder()
-                                   .id(resultSet.getLong("u_id"))
-                                   .username(resultSet.getString("username"))
-                                   .password(resultSet.getString("password"))
-                                   .fullName(resultSet.getString("full_name"))
-                                   .nationalName(resultSet.getString("national_name"))
-                                   .role(Role.valueOf(resultSet.getString("role")))
-                                   .biometrics(biometrics)
-                                   .build();
-
-                    log.trace("user created : {}", user);
-                    biometrics.setOwner(user);
-                    users.add(user);
+                    users.add(extractUser(resultSet));
                 }
             }
         } catch (SQLException e) {
