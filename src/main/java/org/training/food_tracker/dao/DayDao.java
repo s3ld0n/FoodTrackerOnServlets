@@ -1,5 +1,7 @@
 package org.training.food_tracker.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.training.food_tracker.dao.impl.ConnectionFactory;
 import org.training.food_tracker.model.ConsumedFood;
 import org.training.food_tracker.model.Day;
@@ -19,6 +21,8 @@ public class DayDao {
 
 
     public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
+
+    private static final Logger log = LogManager.getLogger(DayDao.class.getName());
 
     public Day create(Day day) throws DaoException {
         try (Connection connection = ConnectionFactory.getConnection();
