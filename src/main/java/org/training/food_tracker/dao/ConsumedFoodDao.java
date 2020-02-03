@@ -49,7 +49,7 @@ public class ConsumedFoodDao {
                             .amount(resultSet.getBigDecimal("amount"))
                             .name(resultSet.getString("name"))
                             .time(resultSet.getTime("time").toLocalTime())
-                            .totalCalories(resultSet.getBigDecimal("totalCalories"))
+                            .totalCalories(resultSet.getBigDecimal("total_calories"))
                             .build();
     }
 }
