@@ -72,7 +72,7 @@ public class FoodDao implements CrudDao<Food> {
 
     }
 
-    public List<Food> findByOwnerOrderByIdDesc(User user) {
+    public List<Food> findAllByOwnerOrderByIdDesc(User user) {
         return null;
     }
 

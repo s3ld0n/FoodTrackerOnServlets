@@ -50,7 +50,7 @@ public class FoodService {
 
     public List<FoodDTO> findAllByOwnerInDTOs(User user) {
         List<FoodDTO> foodDTOS = new ArrayList<>();
-        foodDao.findByOwnerOrderByIdDesc(user)
+        foodDao.findAllByOwnerOrderByIdDesc(user)
                 .forEach(food -> foodDTOS.add(FoodDTO.builder()
                                                 .name(food.getName())
                                                 .totalCalories(food.getCalories())
