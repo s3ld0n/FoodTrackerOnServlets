@@ -13,6 +13,31 @@ public class DayDao {
     public static final String FIND_BY_USER_AND_DATE_QUERY = "SELECT id, date, total_calories, user_id "
                                                                      + "FROM days WHERE user_id = ? AND date = ?";
 
+    public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
+
+    public Day create(Day day) throws DaoException {
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
+                        Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setDate(1, Date.valueOf(day.getDate()));
+            statement.setBigDecimal(2, day.getTotalCalories());
+            statement.setLong(3, day.getUser().getId());
+
+            statement.executeUpdate();
+
+            try (ResultSet resultSet = statement.getGeneratedKeys()){
+                resultSet.next();
+                day.setId(resultSet.getLong(1));
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Creation of day has failed", e);
+        }
+        return day;
+    }
+
+
+
     public Day findByUserAndDate(User user, LocalDate date) throws DaoException {
         Day day;
         try (Connection connection = ConnectionFactory.getConnection();
@@ -40,4 +65,5 @@ public class DayDao {
         }
         return day;
     }
+
 }
