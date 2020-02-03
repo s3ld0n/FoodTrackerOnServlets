@@ -25,17 +25,23 @@ public class DayDao {
     private static final Logger log = LogManager.getLogger(DayDao.class.getName());
 
     public Day create(Day day) throws DaoException {
+
+        log.debug("making connection and prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
                         Statement.RETURN_GENERATED_KEYS)) {
 
+            log.debug("setting date, totalCalories, user_id");
             statement.setDate(1, Date.valueOf(day.getDate()));
             statement.setBigDecimal(2, day.getTotalCalories());
             statement.setLong(3, day.getUser().getId());
 
+            log.debug("executing update");
             statement.executeUpdate();
 
+
             try (ResultSet resultSet = statement.getGeneratedKeys()){
+                log.debug("setting day id from generated keys of result set");
                 resultSet.next();
                 day.setId(resultSet.getLong(1));
             }
