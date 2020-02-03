@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food_tracker.dao.DaoException;
 import org.training.food_tracker.dao.DayDao;
-import org.training.food_tracker.dao.UserDao;
 import org.training.food_tracker.dto.ConsumeStatsDTO;
 import org.training.food_tracker.model.ConsumedFood;
 import org.training.food_tracker.model.Day;
@@ -12,7 +11,10 @@ import org.training.food_tracker.model.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DayService {
 
