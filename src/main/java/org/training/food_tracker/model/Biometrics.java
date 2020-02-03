@@ -19,7 +19,7 @@ public class Biometrics {
     public static class Builder {
         private Biometrics biometrics;
 
-        public Builder() {
+        Builder() {
             this.biometrics = new Biometrics();
         }
 
@@ -49,12 +49,17 @@ public class Biometrics {
         }
 
         public Builder height(BigDecimal height) {
-            biometrics.setWeight(height);
+            biometrics.setHeight(height);
             return this;
         }
 
         public Builder lifestyle(Lifestyle lifestyle) {
             biometrics.setLifestyle(lifestyle);
+            return this;
+        }
+
+        public Builder setDailyNorm() {
+            biometrics.setDailyNorm();
             return this;
         }
 
@@ -67,7 +72,7 @@ public class Biometrics {
      * Total energy expenditure calculation using Harris–Benedict equation
      * @return daily norm of calories
      */
-    public BigDecimal calculateDailyNorm() {
+    private BigDecimal calculateDailyNorm() {
         if (this.sex == Sex.MALE) {
             return (new BigDecimal(66.5)
                             .add(new BigDecimal(13.75).multiply(weight))
@@ -82,7 +87,7 @@ public class Biometrics {
                        .multiply(lifestyle.getCoefficient());
     }
 
-    public void setDailyNorm() {
+    private void setDailyNorm() {
         this.dailyNorm = calculateDailyNorm().setScale(2, BigDecimal.ROUND_HALF_DOWN);
     }
     
