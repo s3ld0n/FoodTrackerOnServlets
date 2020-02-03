@@ -134,8 +134,8 @@
 
                     <c:forEach var="nextFood" items="${allCommonFood}">
                         <tr>
-                            <td><span>Name</span></td>
-                            <td>Total Calories</td>
+                            <td><span>${nextFood.name}</span></td>
+                            <td>${nextFood.totalCalories}</td>
                             <td>
                                 <form action="${pageContext.request.contextPath}/user/add" method="post" object="${nextFood}" novalidate>
                                     <input type="hidden" name="name" value="${nextFood.name}">
