@@ -47,9 +47,9 @@ public class DayService {
         foods.sort((food1, food2) -> (food2.getTime().toSecondOfDay() - food1.getTime().toSecondOfDay()));
     }
 
-    public Map<Day, ConsumeStatsDTO> getDaysToConsumeStatsForUser(User user) {
-        return mapDaysToConsumeStats(getAllDaysByUser(user));
-    }
+//    public Map<Day, ConsumeStatsDTO> getDaysToConsumeStatsForUser(User user) {
+//        return mapDaysToConsumeStats(getAllDaysByUser(user));
+//    }
 
     private Map<Day, ConsumeStatsDTO> mapDaysToConsumeStats(List<Day> days) {
         Map<Day, ConsumeStatsDTO> dayToConsumeStats = new LinkedHashMap<>();
@@ -57,7 +57,7 @@ public class DayService {
         return dayToConsumeStats;
     }
 
-    public List<Day> getAllDaysByUser(User user) {
+    public List<Day> getAllDaysByUser(User user) throws DaoException {
         return dayDao.findAllByUserOrderByDateDesc(user);
     }
 
