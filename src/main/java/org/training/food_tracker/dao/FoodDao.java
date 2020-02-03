@@ -30,11 +30,15 @@ public class FoodDao implements CrudDao<Food> {
     }
 
     public List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException {
+        return findFoodsByUserIdUsingQuery(userId, FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC);
+    }
+
+    private List<Food> findFoodsByUserIdUsingQuery(Long userId, String query) throws DaoException {
         List<Food> foods = new ArrayList<>();
         log.debug("creating connection, making prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement =
-                        connection.prepareStatement(FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID_QUERY)) {
+                        connection.prepareStatement(query)) {
             statement.setLong(1, userId);
 
             log.debug("executing statement, getting result set and extracting results");
@@ -56,6 +60,10 @@ public class FoodDao implements CrudDao<Food> {
         return foods;
     }
 
+    public List<Food> findAllByUserIdOrderByIdDesc(Long userId) throws DaoException {
+        return findFoodsByUserIdUsingQuery(userId, FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID_QUERY);
+    }
+
     @Override public Food findById(Long id) throws DaoException {
         return null;
     }
@@ -70,10 +78,6 @@ public class FoodDao implements CrudDao<Food> {
 
     @Override public void deleteById(Long id) {
 
-    }
-
-    public List<Food> findAllByOwnerOrderByIdDesc(User user) {
-        return null;
     }
 
     public void removeByNameAndOwner(String foodName, User user) {
