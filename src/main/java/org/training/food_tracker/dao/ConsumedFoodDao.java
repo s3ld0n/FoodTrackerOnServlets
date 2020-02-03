@@ -4,13 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food_tracker.dao.impl.ConnectionFactory;
 import org.training.food_tracker.model.ConsumedFood;
-import org.training.food_tracker.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +43,11 @@ public class ConsumedFoodDao {
 
     private ConsumedFood extractConsumedFood(ResultSet resultSet) throws SQLException {
         return ConsumedFood.builder()
-                                                            .id(resultSet.getLong("id"))
-                                                            .amount(resultSet.getBigDecimal("amount"))
-                                                            .name(resultSet.getString("name"))
-                                                            .time(resultSet.getTime("time").toLocalTime())
-                                                            .totalCalories(resultSet.getBigDecimal("totalCalories"))
-                                                            .build();
+                            .id(resultSet.getLong("id"))
+                            .amount(resultSet.getBigDecimal("amount"))
+                            .name(resultSet.getString("name"))
+                            .time(resultSet.getTime("time").toLocalTime())
+                            .totalCalories(resultSet.getBigDecimal("totalCalories"))
+                            .build();
     }
 }
