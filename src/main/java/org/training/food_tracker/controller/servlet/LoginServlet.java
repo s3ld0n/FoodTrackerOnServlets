@@ -56,10 +56,10 @@ public class LoginServlet extends HttpServlet {
         log.debug("user's role: {}", user.getRole());
 
         if (user.getRole() == Role.USER) {
-            setUserAndRoleToSession(request, Role.USER, username);
+            setUserAndRoleToSession(request, Role.USER, user);
             response.sendRedirect("user/main");
         } else {
-            setUserAndRoleToSession(request, Role.ADMIN, username);
+            setUserAndRoleToSession(request, Role.ADMIN, user);
             response.sendRedirect("admin/main");
         }
 
@@ -73,9 +73,9 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void setUserAndRoleToSession(HttpServletRequest request,
-            Role role, String username) {
+            Role role, User user) {
         HttpSession session = request.getSession();
-        session.setAttribute("username", username);
+        session.setAttribute("user", user);
         session.setAttribute("role", role);
     }
 }
