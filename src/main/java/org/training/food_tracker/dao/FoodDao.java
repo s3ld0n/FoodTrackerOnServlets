@@ -16,12 +16,11 @@ import java.util.List;
 public class FoodDao implements CrudDao<Food> {
 
     public static final String FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID_QUERY =
-            "SELECT id, name, calories, user_id from food WHERE user_id IS NULL AND name NOT IN "
+            "SELECT id, name, calories, user_id FROM food WHERE user_id IS NULL AND name NOT IN "
                                                          + "(SELECT name FROM food WHERE user_id = ?) ORDER BY id DESC";
 
-    public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC = "SELECT id, name, calories, user_id from food "
-                                                                              + "WHERE user_id WHERE user_id = ? "
-                                                                              + "ORDER BY id DESC";
+    public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
+            "SELECT id, name, calories, user_id FROM food WHERE user_id = ? ORDER BY id DESC";
 
     private static final Logger log = LogManager.getLogger(FoodDao.class.getName());
 
