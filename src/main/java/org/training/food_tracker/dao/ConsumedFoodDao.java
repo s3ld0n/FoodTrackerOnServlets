@@ -26,6 +26,8 @@ public class ConsumedFoodDao {
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_DAY_ID_QUERY)) {
 
+            statement.setLong(1, dayId);
+
             log.debug("Creating result set");
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
