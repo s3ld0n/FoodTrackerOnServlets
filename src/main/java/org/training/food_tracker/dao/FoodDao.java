@@ -19,6 +19,10 @@ public class FoodDao implements CrudDao<Food> {
             "SELECT id, name, calories, user_id from food WHERE user_id IS NULL AND name NOT IN "
                                                          + "(SELECT name FROM food WHERE user_id = ?) ORDER BY id DESC";
 
+    public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC = "SELECT id, name, calories, user_id from food "
+                                                                              + "WHERE user_id WHERE user_id = ? "
+                                                                              + "ORDER BY id DESC";
+
     private static final Logger log = LogManager.getLogger(FoodDao.class.getName());
 
     @Override public Food create(Food food) throws DaoException {
