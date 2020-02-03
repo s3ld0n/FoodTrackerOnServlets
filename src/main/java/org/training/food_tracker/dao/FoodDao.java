@@ -48,6 +48,7 @@ public class FoodDao implements CrudDao<Food> {
         } catch (SQLException e) {
             throw new DaoException("selection of common food that does not belong to user has failed", e);
         }
+        log.debug("{} foods were found", foods.size());
         return foods;
     }
 
