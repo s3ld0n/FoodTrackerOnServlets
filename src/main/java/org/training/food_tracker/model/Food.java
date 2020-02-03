@@ -9,7 +9,7 @@ public class Food {
     private BigDecimal calories;
     private User owner;
 
-    public static Builder build() {
+    public static Builder builder() {
         return new Builder();
     }
 
