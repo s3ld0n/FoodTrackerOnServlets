@@ -53,12 +53,13 @@ public class UserMainServlet extends HttpServlet {
             log.debug("getting consumedStatsDTO");
             request.setAttribute("consumedStatsDTO", dayService.getConsumeStatsForDay(currentDay));
 
+            log.debug("setting usersFoodDTOs");
+            request.setAttribute("usersFoodDTOs", foodService.findAllByOwnerInDTOs(currentUser));
+
         } catch (DaoException e) {
             e.printStackTrace();
         }
 
-        log.debug("setting usersFoodDTOs");
-        request.setAttribute("usersFoodDTOs", foodService.findAllByOwnerInDTOs(currentUser));
 
         UserDTO userDTO = userService.userToUserDTO(currentUser);
         log.debug("setting userDTO {}", userDTO);
