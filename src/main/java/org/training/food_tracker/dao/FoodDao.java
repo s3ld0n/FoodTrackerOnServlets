@@ -2,12 +2,14 @@ package org.training.food_tracker.dao;
 
 import org.training.food_tracker.dao.impl.ConnectionFactory;
 import org.training.food_tracker.model.Food;
+import org.training.food_tracker.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FoodDao implements CrudDao<Food> {
@@ -57,5 +59,17 @@ public class FoodDao implements CrudDao<Food> {
 
     @Override public void deleteById(Long id) {
 
+    }
+
+    public List<Food> findByOwnerOrderByIdDesc(User user) {
+        return null;
+    }
+
+    public void removeByNameAndOwner(String foodName, User user) {
+
+    }
+
+    public List<Food> findAllCommon() {
+        return null;
     }
 }
