@@ -7,11 +7,16 @@ import org.training.food_tracker.model.User;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DayDao {
     public static final String FIND_BY_USER_AND_DATE_QUERY = "SELECT id, date, total_calories, user_id "
                                                                      + "FROM days WHERE user_id = ? AND date = ?";
+
+    public static final String FIND_ALL_BY_USER_ORDERED_BY_DATE_DESC = "SELECT id, date, total_calories, user_id "
+                                                                     + "FROM days WHERE user_id = ? ORDER BY date DESC";
+
 
     public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
 
@@ -36,8 +41,6 @@ public class DayDao {
         return day;
     }
 
-
-
     public Day findByUserAndDate(User user, LocalDate date) throws DaoException {
         Day day;
         try (Connection connection = ConnectionFactory.getConnection();
@@ -50,15 +53,7 @@ public class DayDao {
                 if (!resultSet.next()) {
                     throw new DaoException("No such day of " + date);
                 }
-                day = Day.builder()
-                              .id(resultSet.getLong("id"))
-                              .date(resultSet.getDate("date").toLocalDate())
-                              .totalCalories(resultSet.getBigDecimal("total_calories"))
-                              .user(user)
-                              .build();
-
-                List<ConsumedFood> consumedFoods = new ConsumedFoodDao().findAllByDayId(day.getId());
-                day.setConsumedFoods(consumedFoods);
+                day = extractDay(user, resultSet);
             }
         } catch (SQLException e) {
             throw new DaoException("Finding day failed of date " + date, e);
@@ -66,4 +61,46 @@ public class DayDao {
         return day;
     }
 
+    private Day extractDay(User user, ResultSet resultSet) throws SQLException, DaoException {
+        Day day;
+        day = Day.builder()
+                      .id(resultSet.getLong("id"))
+                      .date(resultSet.getDate("date").toLocalDate())
+                      .totalCalories(resultSet.getBigDecimal("total_calories"))
+                      .user(user)
+                      .build();
+
+        List<ConsumedFood> consumedFoods = new ConsumedFoodDao().findAllByDayId(day.getId());
+        day.setConsumedFoods(consumedFoods);
+        return day;
+    }
+
+    public List<Day> findAllByUserOrderByDateDesc(User user) throws DaoException {
+        List<Day> days= new ArrayList<>();
+
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_USER_ORDERED_BY_DATE_DESC)) {
+
+            statement.setLong(1, user.getId());
+            ConsumedFoodDao consumedFoodDao = new ConsumedFoodDao();
+            try (ResultSet resultSet = statement.executeQuery()){
+                while (resultSet.next()) {
+                    Day day = Day.builder()
+                                  .id(resultSet.getLong("id"))
+                                  .totalCalories(resultSet.getBigDecimal(""))
+                                  .date(resultSet.getDate("date").toLocalDate())
+                                  .user(user)
+                                  .build();
+
+                    /*TODO REWRITE QUERY WITHOUT ACCESSING DB IN LOOP*/
+                    day.setConsumedFoods(consumedFoodDao.findAllByDayId(day.getId()));
+                    days.add(day);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DaoException("Days selection failed");
+        }
+        return days;
+    }
 }
