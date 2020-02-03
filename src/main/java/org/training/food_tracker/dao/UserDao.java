@@ -124,6 +124,7 @@ public class UserDao implements CrudDao<User> {
                        .email(resultSet.getString("email"))
                        .fullName(resultSet.getString("full_name"))
                        .nationalName(resultSet.getString("national_name"))
+                       .role(Role.valueOf(resultSet.getString("role")))
                        .biometrics(biometrics)
                        .build();
         return user;
