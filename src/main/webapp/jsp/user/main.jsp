@@ -108,9 +108,9 @@
                     <tbody>
                         <c:forEach var="consumedFood" items="${currentDay.consumedFoods}">
                             <tr>
-                                <td text="${consumedFood.name}"></td>
-                                <td text="${consumedFood.amount}"></td>
-                                <td text="${consumedFood.totalCalories}"></td>
+                                <td>${consumedFood.name}</td>
+                                <td>${consumedFood.amount}</td>
+                                <td>${consumedFood.totalCalories}</td>
                             </tr>
                         </c:forEach>
                     </tbody>
