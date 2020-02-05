@@ -58,10 +58,10 @@ public class LoginServlet extends HttpServlet {
         log.debug("user's role: {}", user.getRole());
 
         if (user.getRole() == Role.USER) {
-            setUserAndRoleToSession(request, Role.USER, user);
+            setUserAndRoleToSession(request, user);
             response.sendRedirect("user/main");
         } else {
-            setUserAndRoleToSession(request, Role.ADMIN, user);
+            setUserAndRoleToSession(request, user);
             response.sendRedirect("admin/main");
         }
 
@@ -72,15 +72,13 @@ public class LoginServlet extends HttpServlet {
 
     private void validateCredentialsAndSendBackIfNot(HttpServletRequest request, HttpServletResponse response,
             String username, String password) throws IOException {
-        if( username == null || username.equals("") || password == null || password.equals("")  ){
+        if(username == null || username.equals("") || password == null || password.equals("")){
             response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 
-    private void setUserAndRoleToSession(HttpServletRequest request,
-            Role role, User user) {
+    private void setUserAndRoleToSession(HttpServletRequest request, User user) {
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        session.setAttribute("role", role);
     }
 }
