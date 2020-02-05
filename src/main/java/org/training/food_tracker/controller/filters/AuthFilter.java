@@ -23,13 +23,14 @@ public class AuthFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
-        final HttpServletRequest req = (HttpServletRequest) servletRequest;
-        final HttpServletResponse res = (HttpServletResponse) servletResponse;
+        final HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        final HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
-        HttpSession session = req.getSession();
+        HttpSession session = httpRequest.getSession();
         ServletContext context = servletRequest.getServletContext();
 
         log.debug("logged users: {}", servletRequest.getServletContext().getAttribute("loggedUsers"));
+
 
 
         filterChain.doFilter(servletRequest,servletResponse);
