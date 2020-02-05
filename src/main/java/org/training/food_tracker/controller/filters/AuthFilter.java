@@ -40,16 +40,10 @@ public class AuthFilter implements Filter {
         boolean isLoggedIn = user != null;
         boolean isLoginRequest = path.contains("login");
 
-        if (!isLoggedIn && isLoginRequest) {
-            filterChain.doFilter(servletRequest,servletResponse);
-            return;
-        }
-
         if (isLoggedIn && isLoginRequest) {
             response.sendRedirect("/logout");
             return;
         }
-
 
         filterChain.doFilter(servletRequest,servletResponse);
     }
