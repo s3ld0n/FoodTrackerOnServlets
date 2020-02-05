@@ -67,6 +67,12 @@
     </listener-class>
   </listener>
 
+  <listener>
+    <listener-class>
+      org.training.food_tracker.controller.listener.ContextListener
+    </listener-class>
+  </listener>
+
   <welcome-file-list>
     <welcome-file>jsp/index.jsp</welcome-file>
   </welcome-file-list>
