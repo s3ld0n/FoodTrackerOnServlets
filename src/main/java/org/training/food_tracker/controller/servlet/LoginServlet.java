@@ -2,7 +2,6 @@ package org.training.food_tracker.controller.servlet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.training.food_tracker.controller.Servlet;
 import org.training.food_tracker.dao.DaoException;
 import org.training.food_tracker.model.Role;
 import org.training.food_tracker.model.User;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 
 @WebServlet("/login")
@@ -58,7 +56,7 @@ public class LoginServlet extends HttpServlet {
         Role role = user.getRole();
 
         log.debug("user's role: {}", role);
-        setUserAndRoleToSession(request, user);
+        setUserToSession(request, user);
 
         response.sendRedirect(getRedirectForRole(role));
 
@@ -78,7 +76,7 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private void setUserAndRoleToSession(HttpServletRequest request, User user) {
+    private void setUserToSession(HttpServletRequest request, User user) {
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
     }
