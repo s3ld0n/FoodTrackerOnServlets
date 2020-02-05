@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -62,6 +64,9 @@ public class LoginServlet extends HttpServlet {
             setUserAndRoleToSession(request, Role.ADMIN, user);
             response.sendRedirect("admin/main");
         }
+
+        HashSet<String> loggedUsers = (HashSet<String>) getServletContext().getAttribute("loggedUsers");
+        loggedUsers.add(username);
 
     }
 
