@@ -29,15 +29,13 @@
             <div class="custom-centered">
                 <div id="first">
                     <div class="col-md-12">
-                        <h1>Welcome</h1>
-                        <h2>lang: <c:out value="${lang}"/> </h2>
-                        <h2>context: <c:out value="${pageContext.request.contextPath}"/></h2>
+                        <h1><fmt:message key="label.welcome"/></h1>
                     </div>
                 </div>
 
                 <div class="container mt-4">
-                    <a href="${pageContext.request.contextPath}/login">Login</a>
-                    <a href="${pageContext.request.contextPath}/registration">Registration</a>
+                    <a href="${pageContext.request.contextPath}/login"><fmt:message key="user.login"/></a>
+                    <a href="${pageContext.request.contextPath}/registration"><fmt:message key="user.registration"/></a>
                 </div>
 
             </div>
