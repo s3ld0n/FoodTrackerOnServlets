@@ -1,5 +1,7 @@
 package org.training.food_tracker.model;
 
+import java.math.BigDecimal;
+
 public class User  {
     private Long id;
     private String username;
@@ -8,6 +10,7 @@ public class User  {
     private String fullName;
     private String nationalName;
     private Biometrics biometrics;
+    private BigDecimal dailyNormCalories;
     private boolean active;
     private Role role;
 
@@ -57,6 +60,11 @@ public class User  {
             return this;
         }
 
+        public Builder dailyNormCalories(BigDecimal dailyNormCalories) {
+            user.setDailyNormCalories(dailyNormCalories);
+            return this;
+        }
+
         public Builder active(boolean active) {
             user.setActive(active);
             return this;
@@ -71,7 +79,6 @@ public class User  {
             return user;
         }
     }
-
 
     public Long getId() {
         return id;
@@ -127,6 +134,14 @@ public class User  {
 
     public void setBiometrics(Biometrics biometrics) {
         this.biometrics = biometrics;
+    }
+
+    public BigDecimal getDailyNormCalories() {
+        return dailyNormCalories;
+    }
+
+    public void setDailyNormCalories(BigDecimal dailyNormCalories) {
+        this.dailyNormCalories = dailyNormCalories;
     }
 
     public boolean isActive() {

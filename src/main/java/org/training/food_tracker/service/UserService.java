@@ -40,7 +40,7 @@ public class UserService {
                        .weight(biometrics.getWeight())
                        .height(biometrics.getHeight())
                        .lifestyle(biometrics.getLifestyle())
-                       .dailyNorm(biometrics.getDailyNorm())
+                       .dailyNorm(user.getDailyNormCalories())
                        .role(user.getRole())
                        .password(user.getPassword())
                        .build();
