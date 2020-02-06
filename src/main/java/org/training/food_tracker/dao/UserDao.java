@@ -11,18 +11,18 @@ import java.util.List;
 
 public class UserDao implements CrudDao<User> {
 
-    public static final String CREATE_QUERY = "INSERT INTO users (username, password, full_name, "
-                                                      + "national_name, email, active, role) VALUES(?,?,?,?,?,?,?)";
+    public static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
+                                                      + "last_name, email, active, role) VALUES(?,?,?,?,?,?,?)";
 
-    public static final String READ_QUERY = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
+    public static final String READ_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                     + "role, biometrics.id, user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                     + "biometrics ON user_id = users.id WHERE users.id = ?";
 
-    public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
+    public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                             + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                             + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
 
-    public static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, full_name, national_name, email, active, "
+    public static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                   + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                   + "biometrics ON users.id = biometrics.user_id";
 
@@ -40,11 +40,11 @@ public class UserDao implements CrudDao<User> {
 
             statement.setString(2, user.getPassword());
 
-            log.trace("Setting user's full name: {}", user.getFullName());
-            statement.setString(3, user.getFullName());
+            log.trace("Setting user's first name: {}", user.getFirstName());
+            statement.setString(3, user.getFirstName());
 
-            log.trace("Setting user's national name: {}", user.getNationalName());
-            statement.setString(4, user.getNationalName());
+            log.trace("Setting user's last name: {}", user.getLastName());
+            statement.setString(4, user.getLastName());
 
             log.trace("Setting user's email: {}", user.getEmail());
             statement.setString(5, user.getEmail());
@@ -114,7 +114,6 @@ public class UserDao implements CrudDao<User> {
                              .weight(resultSet.getBigDecimal("weight"))
                              .height(resultSet.getBigDecimal("height"))
                              .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
-                             .setDailyNorm()
                              .build();
 
         log.debug("Creating user object");
@@ -123,8 +122,8 @@ public class UserDao implements CrudDao<User> {
                        .username(resultSet.getString("username"))
                        .password(resultSet.getString("password"))
                        .email(resultSet.getString("email"))
-                       .fullName(resultSet.getString("full_name"))
-                       .nationalName(resultSet.getString("national_name"))
+                       .firstName(resultSet.getString("first_name"))
+                       .lastName(resultSet.getString("last_name"))
                        .role(Role.valueOf(resultSet.getString("role")))
                        .biometrics(biometrics)
                        .build();
