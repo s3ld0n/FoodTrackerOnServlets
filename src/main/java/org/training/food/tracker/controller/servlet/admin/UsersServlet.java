@@ -2,6 +2,7 @@ package org.training.food.tracker.controller.servlet.admin;
 
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.service.UserService;
 import org.training.food.tracker.service.defaults.UserServiceDefault;
 
 import javax.servlet.ServletException;
@@ -15,10 +16,10 @@ import java.util.List;
 @WebServlet("/admin/users")
 public class UsersServlet extends HttpServlet {
 
-    private UserServiceDefault userServiceDefault;
+    private UserService userService;
 
     @Override public void init() throws ServletException {
-        userServiceDefault = new UserServiceDefault();
+        userService = new UserServiceDefault();
     }
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -27,7 +28,7 @@ public class UsersServlet extends HttpServlet {
         List<User> users;
 
         try {
-            users = userServiceDefault.findAll();
+            users = userService.findAll();
         } catch (DaoException e) {
             e.printStackTrace(); //TODO add logs
             request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);

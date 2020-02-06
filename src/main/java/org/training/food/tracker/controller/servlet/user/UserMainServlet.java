@@ -10,6 +10,8 @@ import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.service.FoodService;
+import org.training.food.tracker.service.UserService;
 import org.training.food.tracker.service.defaults.ConsumedFoodServiceDefault;
 import org.training.food.tracker.service.defaults.DayServiceDefault;
 import org.training.food.tracker.service.defaults.FoodServiceDefault;
@@ -25,16 +27,16 @@ import java.io.IOException;
 @WebServlet("/user/main")
 public class UserMainServlet extends HttpServlet {
 
-    private UserServiceDefault userServiceDefault;
-    private FoodServiceDefault foodServiceDefault;
+    private UserService userService;
+    private FoodService foodService;
 
     private static final Logger log = LogManager.getLogger(UserMainServlet.class.getName());
-    private DayServiceDefault dayServiceDefault;
+    private DayServiceDefault dayService;
 
     @Override public void init() throws ServletException {
-        userServiceDefault = new UserServiceDefault();
-        foodServiceDefault = new FoodServiceDefault(new FoodDaoJDBC(), new ConsumedFoodServiceDefault());
-        dayServiceDefault = new DayServiceDefault(new DayDaoJDBC());
+        userService = new UserServiceDefault();
+        foodService = new FoodServiceDefault(new FoodDaoJDBC(), new ConsumedFoodServiceDefault());
+        dayService = new DayServiceDefault(new DayDaoJDBC());
     }
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,17 +47,17 @@ public class UserMainServlet extends HttpServlet {
         try {
             log.debug("setting allCommonFood");
             request.setAttribute("allCommonFood",
-                    foodServiceDefault.findAllCommonExcludingPersonalByUserIdInDTO(currentUser.getId()));
+                    foodService.findAllCommonExcludingPersonalByUserIdInDTO(currentUser.getId()));
 
             log.debug("getting current day");
-            Day currentDay = dayServiceDefault.getCurrentDayOfUser(currentUser);
+            Day currentDay = dayService.getCurrentDayOfUser(currentUser);
             request.setAttribute("currentDay", currentDay);
 
             log.debug("getting consumedStatsDTO");
-            request.setAttribute("consumedStatsDTO", dayServiceDefault.getConsumeStatsForDay(currentDay));
+            request.setAttribute("consumedStatsDTO", dayService.getConsumeStatsForDay(currentDay));
 
             log.debug("setting usersFoodDTOs");
-            request.setAttribute("usersFoodDTOs", foodServiceDefault.findAllByOwnerInDTOs(currentUser));
+            request.setAttribute("usersFoodDTOs", foodService.findAllByOwnerInDTOs(currentUser));
 
         } catch (DaoException e) {
             e.printStackTrace();

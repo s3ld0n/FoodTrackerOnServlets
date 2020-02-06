@@ -12,6 +12,8 @@ public interface UserService {
 
     User findById(Long id) throws DaoException;
 
+    User findByUsername(String username) throws DaoException;
+
     List<User> findAll() throws DaoException;
 
     BigDecimal getDailyNormCalories(Biometrics biometrics);

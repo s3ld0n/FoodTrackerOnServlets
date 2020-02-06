@@ -2,6 +2,7 @@ package org.training.food.tracker.service.defaults;
 
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.UserDao;
+import org.training.food.tracker.dao.jdbc.UserDaoJDBC;
 import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.Sex;
 import org.training.food.tracker.model.User;
@@ -11,11 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class UserServiceDefault implements UserService {
-    private UserDao userDao;
-
-    public UserServiceDefault(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private UserDao userDao = new UserDaoJDBC();
 
     public User create(User user) throws DaoException {
         return userDao.create(user);
