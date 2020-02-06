@@ -1,6 +1,4 @@
-package org.training.food_tracker.dao;
-
-import org.training.food_tracker.dao.util.ConnectionFactory;
+package org.training.food_tracker.dao.util;
 
 public abstract class DaoFactory {
     private static DaoFactory daoFactory;

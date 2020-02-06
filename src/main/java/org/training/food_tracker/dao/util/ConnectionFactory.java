@@ -1,7 +1,5 @@
 package org.training.food_tracker.dao.util;
 
-import org.training.food_tracker.dao.DaoFactory;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
