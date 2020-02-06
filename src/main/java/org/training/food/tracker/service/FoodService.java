@@ -3,7 +3,7 @@ package org.training.food.tracker.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.dao.impl.FoodDao;
+import org.training.food.tracker.dao.impl.FoodDaoJDBC;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.model.Food;
@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 
 public class FoodService {
 
-    private FoodDao foodDao;
+    private FoodDaoJDBC foodDaoJDBC;
     private ConsumedFoodService consumedFoodService;
 
     private static final Logger log = LogManager.getLogger(FoodService.class.getName());
 
-    public FoodService(FoodDao foodDao, ConsumedFoodService consumedFoodService) {
-        this.foodDao = foodDao;
+    public FoodService(FoodDaoJDBC foodDaoJDBC, ConsumedFoodService consumedFoodService) {
+        this.foodDaoJDBC = foodDaoJDBC;
         this.consumedFoodService = consumedFoodService;
     }
 
@@ -31,7 +31,7 @@ public class FoodService {
                         .calories(foodDTO.getTotalCalories())
                         .owner(owner)
                         .build();
-        foodDao.create(food);
+        foodDaoJDBC.create(food);
     }
 
     public void registerConsumption(FoodDTO foodDTO) {
@@ -45,12 +45,12 @@ public class FoodService {
     }
 
     private List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException {
-        return foodDao.findAllCommonExcludingPersonalByUserId(userId);
+        return foodDaoJDBC.findAllCommonExcludingPersonalByUserId(userId);
     }
 
     public List<FoodDTO> findAllByOwnerInDTOs(User user) throws DaoException {
         List<FoodDTO> foodDTOS = new ArrayList<>();
-        foodDao.findAllByUserIdOrderByIdDesc(user.getId())
+        foodDaoJDBC.findAllByUserIdOrderByIdDesc(user.getId())
                 .forEach(food -> foodDTOS.add(FoodDTO.builder()
                                                 .name(food.getName())
                                                 .totalCalories(food.getCalories())
@@ -60,11 +60,11 @@ public class FoodService {
     }
 
     public void removeByNameAndUserId(String foodName, User user) {
-        foodDao.removeByNameAndOwner(foodName, user);
+        foodDaoJDBC.removeByNameAndOwner(foodName, user);
     }
 
     public List<FoodDTO> findAllCommonInDtos() {
-        return foodDao.findAllCommon().stream().map(this::foodToFoodDTO).collect(Collectors.toList());
+        return foodDaoJDBC.findAllCommon().stream().map(this::foodToFoodDTO).collect(Collectors.toList());
     }
 
     private FoodDTO foodToFoodDTO(Food food) {

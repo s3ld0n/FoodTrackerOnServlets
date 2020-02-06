@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.CrudDao;
+import org.training.food.tracker.dao.FoodDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodDao implements CrudDao<Food> {
+public class FoodDaoJDBC implements FoodDao {
 
     public static final String FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID =
             "SELECT id, name, calories, user_id FROM food WHERE user_id IS NULL AND name NOT IN "
@@ -24,7 +25,7 @@ public class FoodDao implements CrudDao<Food> {
     public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
             "SELECT id, name, calories, user_id FROM food WHERE user_id = ? ORDER BY id DESC";
 
-    private static final Logger log = LogManager.getLogger(FoodDao.class.getName());
+    private static final Logger log = LogManager.getLogger(FoodDaoJDBC.class.getName());
 
     @Override public Food create(Food food) throws DaoException {
         return null;

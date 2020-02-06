@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.impl.DayDao;
-import org.training.food.tracker.dao.impl.FoodDao;
+import org.training.food.tracker.dao.impl.FoodDaoJDBC;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Day;
@@ -32,7 +32,7 @@ public class UserMainServlet extends HttpServlet {
 
     @Override public void init() throws ServletException {
         userService = new UserService();
-        foodService = new FoodService(new FoodDao(), new ConsumedFoodService());
+        foodService = new FoodService(new FoodDaoJDBC(), new ConsumedFoodService());
         dayService = new DayService(new DayDao());
     }
 
