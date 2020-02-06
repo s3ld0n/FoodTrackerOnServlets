@@ -8,6 +8,7 @@ import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.dao.jdbc.DayDaoJDBC;
+import org.training.food.tracker.service.DayService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,13 +17,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DayService {
+public class DayServiceDefault implements DayService {
 
     private DayDaoJDBC dayDaoJDBC;
 
-    private static final Logger log = LogManager.getLogger(DayService.class.getName());
+    private static final Logger log = LogManager.getLogger(DayServiceDefault.class.getName());
 
-    public DayService(DayDaoJDBC dayDaoJDBC) {
+    public DayServiceDefault(DayDaoJDBC dayDaoJDBC) {
         this.dayDaoJDBC = dayDaoJDBC;
     }
 

@@ -8,24 +8,25 @@ import org.training.food.tracker.dto.DTOconverter;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.model.Food;
+import org.training.food.tracker.service.FoodService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FoodService {
+public class FoodServiceDefault implements FoodService {
 
     private FoodDaoJDBC foodDaoJDBC;
-    private ConsumedFoodService consumedFoodService;
+    private ConsumedFoodServiceDefault consumedFoodServiceDefault;
 
-    private static final Logger log = LogManager.getLogger(FoodService.class.getName());
+    private static final Logger log = LogManager.getLogger(FoodServiceDefault.class.getName());
 
-    public FoodService(FoodDaoJDBC foodDaoJDBC, ConsumedFoodService consumedFoodService) {
+    public FoodServiceDefault(FoodDaoJDBC foodDaoJDBC, ConsumedFoodServiceDefault consumedFoodServiceDefault) {
         this.foodDaoJDBC = foodDaoJDBC;
-        this.consumedFoodService = consumedFoodService;
+        this.consumedFoodServiceDefault = consumedFoodServiceDefault;
     }
 
-    public void add(FoodDTO foodDTO, User owner) throws DaoException {
+    public void addForOwner(FoodDTO foodDTO, User owner) throws DaoException {
         log.debug("adding foodDTO: {}", foodDTO);
         Food food = Food.builder()
                         .name(foodDTO.getName())
@@ -36,7 +37,7 @@ public class FoodService {
     }
 
     public void registerConsumption(FoodDTO foodDTO) {
-        consumedFoodService.registerConsumption(foodDTO);
+        consumedFoodServiceDefault.registerConsumption(foodDTO);
     }
 
     public List<FoodDTO> findAllCommonExcludingPersonalByUserIdInDTO(Long userId) throws DaoException {

@@ -6,11 +6,12 @@ import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.Sex;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.service.UserService;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class UserService {
+public class UserServiceDefault implements UserService {
     private UserDaoJDBC userDaoJDBC = new UserDaoJDBC();
 
     public User create(User user) throws DaoException {
@@ -49,6 +50,4 @@ public class UserService {
                        .multiply(biometrics.getLifestyle().getCoefficient())
                        .setScale(2, BigDecimal.ROUND_HALF_DOWN);
     }
-
-
 }

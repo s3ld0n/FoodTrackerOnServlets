@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.Role;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.service.defaults.UserService;
+import org.training.food.tracker.service.defaults.UserServiceDefault;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,10 +20,10 @@ import java.util.HashSet;
 public class LoginServlet extends HttpServlet {
     private static final Logger log = LogManager.getLogger(LoginServlet.class.getName());
 
-    private UserService userService;
+    private UserServiceDefault userServiceDefault;
 
     @Override public void init() throws ServletException {
-        userService = new UserService();
+        userServiceDefault = new UserServiceDefault();
     }
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
 
         log.debug("getting user from DB");
         try {
-            user = userService.findByUsername(username);
+            user = userServiceDefault.findByUsername(username);
         } catch (DaoException e) {
             e.printStackTrace();
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
