@@ -1,6 +1,5 @@
-package org.training.food_tracker.dao.impl;
+package org.training.food_tracker.dao.util;
 
-import org.training.food_tracker.dao.ConnectionPoolHolder;
 import org.training.food_tracker.dao.DaoFactory;
 
 import javax.sql.DataSource;

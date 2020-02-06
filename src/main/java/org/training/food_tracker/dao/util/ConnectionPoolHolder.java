@@ -1,4 +1,4 @@
-package org.training.food_tracker.dao;
+package org.training.food_tracker.dao.util;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
