@@ -2,6 +2,7 @@ package org.training.food.tracker.dao.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.training.food.tracker.dao.ConsumedFoodDao;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.ConsumedFood;
@@ -13,12 +14,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConsumedFoodDao {
+public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
 
     public static final String FIND_ALL_BY_DAY_ID_QUERY = "SELECT id, amount, name, time, total_calories, day_id FROM "
                                                                + "consumed_foods WHERE day_id = ?";
 
-    private static final Logger log = LogManager.getLogger(ConsumedFoodDao.class.getName());
+    private static final Logger log = LogManager.getLogger(ConsumedFoodDaoJDBC.class.getName());
 
     public List<ConsumedFood> findAllByDayId(Long dayId) throws DaoException {
         log.debug("Finding all consumed foods");
@@ -52,5 +53,25 @@ public class ConsumedFoodDao {
                             .time(resultSet.getTime("time").toLocalTime())
                             .totalCalories(resultSet.getBigDecimal("total_calories"))
                             .build();
+    }
+
+    @Override public ConsumedFood create(ConsumedFood consumedFood) throws DaoException {
+        return null;
+    }
+
+    @Override public ConsumedFood findById(Long id) throws DaoException {
+        return null;
+    }
+
+    @Override public ConsumedFood update(ConsumedFood consumedFood) {
+        return null;
+    }
+
+    @Override public List<ConsumedFood> findAll() throws DaoException {
+        return null;
+    }
+
+    @Override public void deleteById(Long id) {
+
     }
 }

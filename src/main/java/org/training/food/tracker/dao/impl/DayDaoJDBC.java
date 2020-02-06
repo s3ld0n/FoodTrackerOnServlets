@@ -98,7 +98,7 @@ public class DayDaoJDBC implements DayDao {
                       .user(user)
                       .build();
 
-        List<ConsumedFood> consumedFoods = new ConsumedFoodDao().findAllByDayId(day.getId());
+        List<ConsumedFood> consumedFoods = new ConsumedFoodDaoJDBC().findAllByDayId(day.getId());
         day.setConsumedFoods(consumedFoods);
         return day;
     }
@@ -110,7 +110,7 @@ public class DayDaoJDBC implements DayDao {
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_USER_ORDERED_BY_DATE_DESC)) {
 
             statement.setLong(1, user.getId());
-            ConsumedFoodDao consumedFoodDao = new ConsumedFoodDao();
+            ConsumedFoodDaoJDBC consumedFoodDaoJDBC = new ConsumedFoodDaoJDBC();
             try (ResultSet resultSet = statement.executeQuery()){
                 while (resultSet.next()) {
                     Day day = Day.builder()
@@ -121,7 +121,7 @@ public class DayDaoJDBC implements DayDao {
                                   .build();
 
                     /*TODO REWRITE QUERY WITHOUT ACCESSING DB IN LOOP*/
-                    day.setConsumedFoods(consumedFoodDao.findAllByDayId(day.getId()));
+                    day.setConsumedFoods(consumedFoodDaoJDBC.findAllByDayId(day.getId()));
                     days.add(day);
                 }
             }
