@@ -3,6 +3,7 @@ package org.training.food.tracker.service.defaults;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
+import org.training.food.tracker.dao.DayDao;
 import org.training.food.tracker.dto.ConsumeStatsDTO;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
@@ -19,19 +20,19 @@ import java.util.Map;
 
 public class DayServiceDefault implements DayService {
 
-    private DayDaoJDBC dayDaoJDBC;
+    private DayDao dayDao;
 
     private static final Logger log = LogManager.getLogger(DayServiceDefault.class.getName());
 
-    public DayServiceDefault(DayDaoJDBC dayDaoJDBC) {
-        this.dayDaoJDBC = dayDaoJDBC;
+    public DayServiceDefault(DayDao dayDao) {
+        this.dayDao = dayDao;
     }
 
     public Day getCurrentDayOfUser(User user) throws DaoException {
 
         Day day = null;
         try {
-            day = dayDaoJDBC.findByUserAndDate(user, LocalDate.now());
+            day = dayDao.findByUserAndDate(user, LocalDate.now());
             sortConsumedFoodByTimeDesc(day.getConsumedFoods());
         } catch (DaoException e) {
             day = Day.builder()
@@ -40,7 +41,7 @@ public class DayServiceDefault implements DayService {
                          .totalCalories(new BigDecimal(0))
                          .user(user)
                          .build();
-            dayDaoJDBC.create(day);
+            dayDao.create(day);
         }
 
         return day;
@@ -61,7 +62,7 @@ public class DayServiceDefault implements DayService {
     }
 
     public List<Day> getAllDaysByUser(User user) throws DaoException {
-        return dayDaoJDBC.findAllByUserOrderByDateDesc(user);
+        return dayDao.findAllByUserOrderByDateDesc(user);
     }
 
     public BigDecimal getTotalCaloriesOfDay(Day day) {
