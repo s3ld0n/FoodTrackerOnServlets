@@ -3,7 +3,7 @@ package org.training.food_tracker.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food_tracker.dao.DaoException;
-import org.training.food_tracker.dao.FoodDao;
+import org.training.food_tracker.dao.impl.FoodDao;
 import org.training.food_tracker.dto.FoodDTO;
 import org.training.food_tracker.model.Food;
 import org.training.food_tracker.model.User;

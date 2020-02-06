@@ -1,7 +1,7 @@
 package org.training.food_tracker.service;
 
 import org.training.food_tracker.dao.DaoException;
-import org.training.food_tracker.dao.UserDao;
+import org.training.food_tracker.dao.impl.UserDao;
 import org.training.food_tracker.dto.UserDTO;
 import org.training.food_tracker.model.Biometrics;
 import org.training.food_tracker.model.Sex;

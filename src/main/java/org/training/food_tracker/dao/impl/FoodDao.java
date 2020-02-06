@@ -1,8 +1,9 @@
-package org.training.food_tracker.dao;
+package org.training.food_tracker.dao.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.training.food_tracker.dao.impl.ConnectionFactory;
+import org.training.food_tracker.dao.CrudDao;
+import org.training.food_tracker.dao.DaoException;
 import org.training.food_tracker.model.Food;
 import org.training.food_tracker.model.User;
 
