@@ -74,7 +74,7 @@ public class DayService {
     public ConsumeStatsDTO getConsumeStatsForDay(Day day) {
         log.debug("Getting day statistics for user");
 
-        BigDecimal userDailyNorm = day.getUser().getBiometrics().getDailyNorm();
+        BigDecimal userDailyNorm = day.getUser().getDailyNormCalories();
         log.debug("User's daily norm {}", userDailyNorm);
 
         BigDecimal currentDayTotalCalories = day.getTotalCalories();
