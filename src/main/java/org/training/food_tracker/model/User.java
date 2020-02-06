@@ -7,8 +7,8 @@ public class User  {
     private String username;
     private String password;
     private String email;
-    private String fullName;
-    private String nationalName;
+    private String firstName;
+    private String lastName;
     private Biometrics biometrics;
     private BigDecimal dailyNormCalories;
     private boolean active;
@@ -45,13 +45,13 @@ public class User  {
             return this;
         }
 
-        public Builder fullName(String fullName) {
-            user.setFullName(fullName);
+        public Builder firstName(String firstName) {
+            user.setFirstName(firstName);
             return this;
         }
 
-        public Builder nationalName(String nationalName) {
-            user.setNationalName(nationalName);
+        public Builder lastName(String lastName) {
+            user.setLastName(lastName);
             return this;
         }
 
@@ -112,20 +112,20 @@ public class User  {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getNationalName() {
-        return nationalName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setNationalName(String nationalName) {
-        this.nationalName = nationalName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Biometrics getBiometrics() {
@@ -161,8 +161,8 @@ public class User  {
     }
 
     @Override public String toString() {
-        return "User{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\'' + ", email='"
-                       + email + '\'' + ", fullName='" + fullName + '\'' + ", nationalName='" + nationalName + '\''
-                       + ", active=" + active + ", role=" + role + '}';
+        return "User{" + "id=" + id + ", username='" + username + '\'' + ", email='" + email + '\'' + ", firstName='"
+                       + firstName + '\'' + ", lastName='" + lastName + '\'' + ", dailyNormCalories="
+                       + dailyNormCalories + ", active=" + active + ", role=" + role + '}';
     }
 }
