@@ -2,8 +2,8 @@ package org.training.food.tracker.dao.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.training.food.tracker.dao.CrudDao;
 import org.training.food.tracker.dao.DaoException;
+import org.training.food.tracker.dao.UserDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.*;
 
@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoJDBC implements CrudDao<User> {
+public class UserDaoJDBC implements UserDao {
 
     public static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
                                                       + "last_name, email, active, role) VALUES(?,?,?,?,?,?,?)";
