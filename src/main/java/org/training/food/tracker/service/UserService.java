@@ -50,23 +50,5 @@ public class UserService {
                        .setScale(2, BigDecimal.ROUND_HALF_DOWN);
     }
 
-    public UserDTO userToUserDTO(User user) {
-        Biometrics biometrics = user.getBiometrics();
-        return UserDTO.builder()
-                       .id(user.getId())
-                       .username(user.getUsername())
-                       .email(user.getEmail())
-                       .firstName(user.getFirstName())
-                       .lastName(user.getLastName())
-                       .age(biometrics.getAge())
-                       .sex(biometrics.getSex())
-                       .weight(biometrics.getWeight())
-                       .height(biometrics.getHeight())
-                       .lifestyle(biometrics.getLifestyle())
-                       .dailyNorm(user.getDailyNormCalories())
-                       .role(user.getRole())
-                       .password(user.getPassword())
-                       .build();
-    }
 
 }

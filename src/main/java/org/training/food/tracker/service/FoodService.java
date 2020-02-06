@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.jdbc.FoodDaoJDBC;
+import org.training.food.tracker.dto.DTOconverter;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.model.Food;
@@ -40,7 +41,7 @@ public class FoodService {
 
     public List<FoodDTO> findAllCommonExcludingPersonalByUserIdInDTO(Long userId) throws DaoException {
         return findAllCommonExcludingPersonalByUserId(userId).stream()
-                       .map(this::foodToFoodDTO)
+                       .map(DTOconverter::foodToFoodDTO)
                        .collect(Collectors.toList());
     }
 
@@ -64,14 +65,6 @@ public class FoodService {
     }
 
     public List<FoodDTO> findAllCommonInDtos() {
-        return foodDaoJDBC.findAllCommon().stream().map(this::foodToFoodDTO).collect(Collectors.toList());
+        return foodDaoJDBC.findAllCommon().stream().map(DTOconverter::foodToFoodDTO).collect(Collectors.toList());
     }
-
-    private FoodDTO foodToFoodDTO(Food food) {
-        return FoodDTO.builder()
-                       .name(food.getName())
-                       .totalCalories(food.getCalories())
-                       .build();
-    }
-
 }
