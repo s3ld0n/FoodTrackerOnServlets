@@ -2,17 +2,16 @@ package org.training.food.tracker.dao.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.model.*;
 import org.training.food.tracker.dao.CrudDao;
+import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.util.ConnectionFactory;
-import org.training.food_tracker.model.*;
+import org.training.food.tracker.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao implements CrudDao<User> {
+public class UserDaoJDBC implements CrudDao<User> {
 
     public static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
                                                       + "last_name, email, active, role) VALUES(?,?,?,?,?,?,?)";
@@ -29,7 +28,7 @@ public class UserDao implements CrudDao<User> {
                                                   + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                   + "biometrics ON users.id = biometrics.user_id";
 
-    private static final Logger log = LogManager.getLogger(UserDao.class.getName());
+    private static final Logger log = LogManager.getLogger(UserDaoJDBC.class.getName());
 
     @Override public User create(User user) throws DaoException {
         try (Connection connection = ConnectionFactory.getConnection();

@@ -1,7 +1,7 @@
 package org.training.food.tracker.service;
 
 import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.dao.impl.UserDao;
+import org.training.food.tracker.dao.impl.UserDaoJDBC;
 import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.Sex;
@@ -11,22 +11,22 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class UserService {
-    private UserDao userDao = new UserDao();
+    private UserDaoJDBC userDaoJDBC = new UserDaoJDBC();
 
     public User create(User user) throws DaoException {
-        return userDao.create(user);
+        return userDaoJDBC.create(user);
     }
 
     public User findById(Long id) throws DaoException {
-        return userDao.findById(id);
+        return userDaoJDBC.findById(id);
     }
 
     public User findByUsername(String username) throws DaoException {
-        return userDao.findByUsername(username);
+        return userDaoJDBC.findByUsername(username);
     }
 
     public List<User> findAll() throws DaoException {
-        return userDao.findAll();
+        return userDaoJDBC.findAll();
     }
 
     /**
