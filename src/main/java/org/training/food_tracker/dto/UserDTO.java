@@ -11,9 +11,9 @@ public class UserDTO {
     private Long id;
     private String username;
     private String password;
-    private String fullName;
-    private String nationalName;
     private String email;
+    private String firstName;
+    private String lastName;
     private Role role;
     private BigDecimal age;
     private Sex sex;
@@ -48,13 +48,13 @@ public class UserDTO {
             return this;
         }
 
-        public Builder fullName(String fullName) {
-            userDTO.setFullName(fullName);
+        public Builder firstName(String firstName) {
+            userDTO.setFirstName(firstName);
             return this;
         }
 
-        public Builder nationalName(String nationalName) {
-            userDTO.setNationalName(nationalName);
+        public Builder lastName(String lastName) {
+            userDTO.setLastName(lastName);
             return this;
         }
 
@@ -127,20 +127,20 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getNationalName() {
-        return nationalName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setNationalName(String nationalName) {
-        this.nationalName = nationalName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
