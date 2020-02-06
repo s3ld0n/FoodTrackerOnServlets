@@ -2,7 +2,7 @@ package org.training.food.tracker.controller.servlet.admin;
 
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.service.UserService;
+import org.training.food.tracker.service.defaults.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,4 +1,4 @@
-package org.training.food.tracker.service;
+package org.training.food.tracker.service.defaults;
 
 import org.training.food.tracker.dto.FoodDTO;
 

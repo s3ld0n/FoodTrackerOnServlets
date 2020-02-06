@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.Role;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.service.UserService;
+import org.training.food.tracker.service.defaults.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

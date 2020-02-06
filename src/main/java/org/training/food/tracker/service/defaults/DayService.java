@@ -1,4 +1,4 @@
-package org.training.food.tracker.service;
+package org.training.food.tracker.service.defaults;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

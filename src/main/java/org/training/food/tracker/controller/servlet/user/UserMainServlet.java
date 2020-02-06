@@ -9,10 +9,10 @@ import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.service.ConsumedFoodService;
-import org.training.food.tracker.service.DayService;
-import org.training.food.tracker.service.FoodService;
-import org.training.food.tracker.service.UserService;
+import org.training.food.tracker.service.defaults.ConsumedFoodService;
+import org.training.food.tracker.service.defaults.DayService;
+import org.training.food.tracker.service.defaults.FoodService;
+import org.training.food.tracker.service.defaults.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
