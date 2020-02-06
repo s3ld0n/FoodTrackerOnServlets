@@ -108,7 +108,7 @@
   </dependencies>
 
   <build>
-    <finalName>RegistrationFormServlets</finalName>
+    <finalName>FoodTracker</finalName>
     <pluginManagement>
       <plugins>
 
