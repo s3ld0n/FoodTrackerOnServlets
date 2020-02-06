@@ -68,10 +68,6 @@ public class Biometrics {
         }
     }
 
-    /**
-     * Total energy expenditure calculation using Harris–Benedict equation
-     * @return daily norm of calories
-     */
     private BigDecimal calculateDailyNorm() {
         if (this.sex == Sex.MALE) {
             return (new BigDecimal(66.5)
