@@ -1,4 +1,4 @@
-package org.training.food.tracker.controller.filters;
+package org.training.food.tracker.controller.filter;
 
 import javax.servlet.*;
 import java.io.IOException;
