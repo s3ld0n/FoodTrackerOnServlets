@@ -7,7 +7,7 @@ import org.training.food.tracker.dto.ConsumeStatsDTO;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.dao.impl.DayDaoJDBC;
+import org.training.food.tracker.dao.jdbc.DayDaoJDBC;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

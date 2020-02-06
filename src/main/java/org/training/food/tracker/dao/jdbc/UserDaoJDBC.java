@@ -1,4 +1,4 @@
-package org.training.food.tracker.dao.impl;
+package org.training.food.tracker.dao.jdbc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
