@@ -3,7 +3,7 @@ package org.training.food.tracker.controller.servlet.user;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.dao.impl.DayDao;
+import org.training.food.tracker.dao.impl.DayDaoJDBC;
 import org.training.food.tracker.dao.impl.FoodDaoJDBC;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
@@ -33,7 +33,7 @@ public class UserMainServlet extends HttpServlet {
     @Override public void init() throws ServletException {
         userService = new UserService();
         foodService = new FoodService(new FoodDaoJDBC(), new ConsumedFoodService());
-        dayService = new DayService(new DayDao());
+        dayService = new DayService(new DayDaoJDBC());
     }
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)

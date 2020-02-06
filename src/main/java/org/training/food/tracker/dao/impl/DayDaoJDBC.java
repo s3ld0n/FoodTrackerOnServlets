@@ -3,6 +3,7 @@ package org.training.food.tracker.dao.impl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
+import org.training.food.tracker.dao.DayDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DayDao {
+public class DayDaoJDBC implements DayDao {
     public static final String FIND_BY_USER_AND_DATE_QUERY = "SELECT id, date, total_calories, user_id "
                                                                      + "FROM days WHERE user_id = ? AND date = ?";
 
@@ -23,7 +24,7 @@ public class DayDao {
 
     public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
 
-    private static final Logger log = LogManager.getLogger(DayDao.class.getName());
+    private static final Logger log = LogManager.getLogger(DayDaoJDBC.class.getName());
 
     public Day create(Day day) throws DaoException {
 
@@ -50,6 +51,22 @@ public class DayDao {
             throw new DaoException("Creation of day has failed", e);
         }
         return day;
+    }
+
+    @Override public Day findById(Long id) throws DaoException {
+        return null;
+    }
+
+    @Override public Day update(Day day) {
+        return null;
+    }
+
+    @Override public List<Day> findAll() throws DaoException {
+        return null;
+    }
+
+    @Override public void deleteById(Long id) {
+
     }
 
     public Day findByUserAndDate(User user, LocalDate date) throws DaoException {
