@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class AuthFilter implements Filter {
 
-    private static final Logger log = LogManager.getLogger(AuthFilter.class.getName());
+    private static final Logger LOG = LogManager.getLogger(AuthFilter.class.getName());
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -29,10 +29,10 @@ public class AuthFilter implements Filter {
         HttpSession session = request.getSession();
         ServletContext context = servletRequest.getServletContext();
 
-        log.debug("logged users: {}", servletRequest.getServletContext().getAttribute("loggedUsers"));
+        LOG.debug("logged users: {}", servletRequest.getServletContext().getAttribute("loggedUsers"));
 
         String path = request.getRequestURI();
-        log.debug("path: {}", path);
+        LOG.debug("path: {}", path);
 
         User user = getUserIfLoggedIn(session);
 

@@ -30,7 +30,7 @@ public class UserMainServlet extends HttpServlet {
     private UserService userService;
     private FoodService foodService;
 
-    private static final Logger log = LogManager.getLogger(UserMainServlet.class.getName());
+    private static final Logger LOG = LogManager.getLogger(UserMainServlet.class.getName());
     private DayServiceDefault dayService;
 
     @Override public void init() throws ServletException {
@@ -45,18 +45,18 @@ public class UserMainServlet extends HttpServlet {
 
         request.setAttribute("food", new FoodDTO());
         try {
-            log.debug("setting allCommonFood");
+            LOG.debug("setting allCommonFood");
             request.setAttribute("allCommonFood",
                     foodService.findAllCommonExcludingPersonalByUserIdInDTO(currentUser.getId()));
 
-            log.debug("getting current day");
+            LOG.debug("getting current day");
             Day currentDay = dayService.getCurrentDayOfUser(currentUser);
             request.setAttribute("currentDay", currentDay);
 
-            log.debug("getting consumedStatsDTO");
+            LOG.debug("getting consumedStatsDTO");
             request.setAttribute("consumedStatsDTO", dayService.getConsumeStatsForDay(currentDay));
 
-            log.debug("setting usersFoodDTOs");
+            LOG.debug("setting usersFoodDTOs");
             request.setAttribute("usersFoodDTOs", foodService.findAllByOwnerInDTOs(currentUser));
 
         } catch (DaoException e) {
@@ -65,7 +65,7 @@ public class UserMainServlet extends HttpServlet {
 
 
         UserDTO userDTO = DTOconverter.userToUserDTO(currentUser);
-        log.debug("setting userDTO {}", userDTO);
+        LOG.debug("setting userDTO {}", userDTO);
         request.setAttribute("userDTO", userDTO);
 
         request.getRequestDispatcher("/jsp/user/main.jsp").forward(request, response);

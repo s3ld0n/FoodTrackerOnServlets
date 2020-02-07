@@ -24,7 +24,7 @@ public class FoodDaoJDBC implements FoodDao {
     public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
             "SELECT id, name, calories, user_id FROM food WHERE user_id = ? ORDER BY id DESC";
 
-    private static final Logger log = LogManager.getLogger(FoodDaoJDBC.class.getName());
+    private static final Logger LOG = LogManager.getLogger(FoodDaoJDBC.class.getName());
 
     @Override public Food create(Food food) throws DaoException {
         return null;
@@ -36,16 +36,16 @@ public class FoodDaoJDBC implements FoodDao {
 
     private List<Food> findFoodsByUserIdUsingQuery(Long userId, String query) throws DaoException {
         List<Food> foods = new ArrayList<>();
-        log.debug("creating connection, making prepared statement");
+        LOG.debug("creating connection, making prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement =
                         connection.prepareStatement(query)) {
             statement.setLong(1, userId);
 
-            log.debug("executing statement, getting result set and extracting results");
+            LOG.debug("executing statement, getting result set and extracting results");
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    log.debug("creating food");
+                    LOG.debug("creating food");
                     Food food = Food.builder()
                                         .id(resultSet.getLong("id"))
                                         .name(resultSet.getString("name"))
@@ -57,7 +57,7 @@ public class FoodDaoJDBC implements FoodDao {
         } catch (SQLException e) {
             throw new DaoException("selection of common food that does not belong to user has failed", e);
         }
-        log.debug("{} foods were found", foods.size());
+        LOG.debug("{} foods were found", foods.size());
         return foods;
     }
 

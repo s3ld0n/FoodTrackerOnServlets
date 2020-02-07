@@ -21,7 +21,7 @@ public class FoodServiceDefault implements FoodService {
     private FoodDao foodDao;
     private ConsumedFoodService consumedFoodService;
 
-    private static final Logger log = LogManager.getLogger(FoodServiceDefault.class.getName());
+    private static final Logger LOG = LogManager.getLogger(FoodServiceDefault.class.getName());
 
     public FoodServiceDefault(FoodDao foodDao, ConsumedFoodServiceDefault consumedFoodService) {
         this.foodDao = foodDao;
@@ -29,7 +29,7 @@ public class FoodServiceDefault implements FoodService {
     }
 
     public void addForOwner(FoodDTO foodDTO, User owner) throws DaoException {
-        log.debug("adding foodDTO: {}", foodDTO);
+        LOG.debug("adding foodDTO: {}", foodDTO);
         Food food = Food.builder()
                         .name(foodDTO.getName())
                         .calories(foodDTO.getTotalCalories())

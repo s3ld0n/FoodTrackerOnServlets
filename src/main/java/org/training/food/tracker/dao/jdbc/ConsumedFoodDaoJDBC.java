@@ -19,10 +19,10 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
     public static final String FIND_ALL_BY_DAY_ID_QUERY = "SELECT id, amount, name, time, total_calories, day_id FROM "
                                                                + "consumed_foods WHERE day_id = ?";
 
-    private static final Logger log = LogManager.getLogger(ConsumedFoodDaoJDBC.class.getName());
+    private static final Logger LOG = LogManager.getLogger(ConsumedFoodDaoJDBC.class.getName());
 
     public List<ConsumedFood> findAllByDayId(Long dayId) throws DaoException {
-        log.debug("Finding all consumed foods");
+        LOG.debug("Finding all consumed foods");
         List<ConsumedFood> foods = new ArrayList<>();
 
         try (Connection connection = ConnectionFactory.getConnection();
@@ -30,18 +30,18 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
 
             statement.setLong(1, dayId);
 
-            log.debug("Creating result set");
+            LOG.debug("Creating result set");
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     foods.add(extractConsumedFood(resultSet));
                 }
             }
         } catch (SQLException e) {
-            log.error("Get consumed food has failed", e);
+            LOG.error("Get consumed food has failed", e);
             throw new DaoException("Get consumed food has failed", e);
         }
 
-        log.debug("{} consumed foods were found.", foods.size());
+        LOG.debug("{} consumed foods were found.", foods.size());
         return foods;
     }
 

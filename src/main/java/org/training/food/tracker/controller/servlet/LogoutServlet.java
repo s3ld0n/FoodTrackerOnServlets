@@ -16,7 +16,7 @@ import java.util.HashSet;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 
-    private static final Logger log = LogManager.getLogger(LogoutServlet.class.getName());
+    private static final Logger LOG = LogManager.getLogger(LogoutServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -25,7 +25,7 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
 
-        log.debug("current user in session: {}",  currentUser.getUsername());
+        LOG.debug("current user in session: {}",  currentUser.getUsername());
 
         ((HashSet<String>) getServletContext().getAttribute("loggedUsers")).remove(currentUser.getUsername());
 

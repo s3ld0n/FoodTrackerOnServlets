@@ -19,7 +19,7 @@ import java.util.HashSet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private static final Logger log = LogManager.getLogger(LoginServlet.class.getName());
+    private static final Logger LOG = LogManager.getLogger(LoginServlet.class.getName());
 
     private UserService userService;
 
@@ -35,17 +35,17 @@ public class LoginServlet extends HttpServlet {
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        log.debug("doPost");
+        LOG.debug("doPost");
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        log.debug("validating username and password");
+        LOG.debug("validating username and password");
         validateCredentialsAndSendBackIfNot(request, response, username, password);
 
         User user;
 
-        log.debug("getting user from DB");
+        LOG.debug("getting user from DB");
         try {
             user = userService.findByUsername(username);
         } catch (DaoException e) {
@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
 
         Role role = user.getRole();
 
-        log.debug("user's role: {}", role);
+        LOG.debug("user's role: {}", role);
         setUserToSession(request, user);
 
         response.sendRedirect(getRedirectForRole(role));

@@ -22,7 +22,7 @@ public class DayServiceDefault implements DayService {
 
     private DayDao dayDao;
 
-    private static final Logger log = LogManager.getLogger(DayServiceDefault.class.getName());
+    private static final Logger LOG = LogManager.getLogger(DayServiceDefault.class.getName());
 
     public DayServiceDefault(DayDao dayDao) {
         this.dayDao = dayDao;
@@ -74,13 +74,13 @@ public class DayServiceDefault implements DayService {
     }
 
     public ConsumeStatsDTO getConsumeStatsForDay(Day day) {
-        log.debug("Getting day statistics for user");
+        LOG.debug("Getting day statistics for user");
 
         BigDecimal userDailyNorm = day.getUser().getDailyNormCalories();
-        log.debug("User's daily norm {}", userDailyNorm);
+        LOG.debug("User's daily norm {}", userDailyNorm);
 
         BigDecimal currentDayTotalCalories = day.getTotalCalories();
-        log.debug("Current day total calories: {}", currentDayTotalCalories);
+        LOG.debug("Current day total calories: {}", currentDayTotalCalories);
         boolean isNormExceeded = false;
         BigDecimal exceededCalories;
 
@@ -90,7 +90,7 @@ public class DayServiceDefault implements DayService {
             exceededCalories = currentDayTotalCalories.subtract(userDailyNorm);
             isNormExceeded = true;
         }
-        log.debug("exceeded calories: {}", exceededCalories);
+        LOG.debug("exceeded calories: {}", exceededCalories);
 
         return ConsumeStatsDTO.builder()
                        .caloriesConsumed(currentDayTotalCalories)

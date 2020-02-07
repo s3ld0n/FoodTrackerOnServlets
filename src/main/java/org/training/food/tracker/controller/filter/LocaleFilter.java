@@ -14,7 +14,7 @@ public class LocaleFilter implements Filter {
 
     }
 
-    private static final Logger log = LogManager.getLogger(LocaleFilter.class.getName());
+    private static final Logger LOG = LogManager.getLogger(LocaleFilter.class.getName());
 
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -23,13 +23,13 @@ public class LocaleFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResp = (HttpServletResponse) servletResponse;
 
-        log.debug("inside LocaleFilter");
+        LOG.debug("inside LocaleFilter");
 
         String localeName = servletRequest.getParameter("lang");
-        log.debug("set locale name: {}", localeName);
+        LOG.debug("set locale name: {}", localeName);
 
         if (localeName != null) {
-            log.debug("setting session attribute 'lang' to locale name");
+            LOG.debug("setting session attribute 'lang' to locale name");
             httpReq.getSession().setAttribute("lang", localeName);
         }
         filterChain.doFilter(httpReq, httpResp);
