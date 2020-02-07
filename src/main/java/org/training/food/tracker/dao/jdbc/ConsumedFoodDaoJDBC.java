@@ -45,7 +45,7 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
         return foods;
     }
 
-    private ConsumedFood extractConsumedFood(ResultSet resultSet) throws SQLException {
+    public ConsumedFood extractConsumedFood(ResultSet resultSet) throws SQLException {
         return ConsumedFood.builder()
                             .id(resultSet.getLong("id"))
                             .amount(resultSet.getBigDecimal("amount"))
