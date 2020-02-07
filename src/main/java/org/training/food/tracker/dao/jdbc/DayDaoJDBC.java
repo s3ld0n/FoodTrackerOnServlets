@@ -9,7 +9,6 @@ import org.training.food.tracker.dao.util.AutoRollbacker;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
-import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
 
 import java.sql.*;
@@ -28,6 +27,24 @@ public class DayDaoJDBC implements DayDao {
                                                                   + "consumed_foods WHERE day_id = ?";
 
     public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
+
+    public static final String FIND_ALL_FOOD_BY_DAY_ID = "SELECT id, amount, name, time, total_calories, day_id FROM "
+                                                                  + "consumed_foods WHERE day_id = ?";
+
+    public static final String FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC =
+                                                  "SELECT days.id AS days_id, "
+                                                        + "days.date AS days_date, "
+                                                        + "days.total_calories AS days_total_calories, "
+                                                        + "days.user_id AS days_user_id, "
+                                                        + "consumed_foods.id AS consumed_foods_id, "
+                                                        + "consumed_foods.amount AS consumed_foods_amount, "
+                                                        + "consumed_foods.name AS consumed_foods_name, "
+                                                        + "consumed_foods.time AS consumed_foods_time, "
+                                                        + "consumed_foods.total_calories AS consumed_foods_total_calories, "
+                                                        + "consumed_foods.day_id AS consumed_foods_day_id "
+                                                + "FROM days "
+                                                + "LEFT JOIN consumed_foods ON consumed_foods.day_id = days.id "
+                                                + "WHERE user_id = ? ORDER BY days_date DESC";
 
     private static final Logger LOG = LogManager.getLogger(DayDaoJDBC.class.getName());
 
@@ -136,25 +153,48 @@ public class DayDaoJDBC implements DayDao {
     }
 
     public List<Day> findAllByUserOrderByDateDesc(User user) throws DaoException {
-        List<Day> days= new ArrayList<>();
+        List<Day> days = new ArrayList<>();
 
         try (Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_USER_ORDERED_BY_DATE_DESC)) {
+                PreparedStatement statement =
+                        connection.prepareStatement(FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC)) {
 
             statement.setLong(1, user.getId());
-            ConsumedFoodDaoJDBC consumedFoodDaoJDBC = new ConsumedFoodDaoJDBC();
             try (ResultSet resultSet = statement.executeQuery()){
-                while (resultSet.next()) {
-                    Day day = Day.builder()
-                                  .id(resultSet.getLong("id"))
-                                  .totalCalories(resultSet.getBigDecimal(""))
-                                  .date(resultSet.getDate("date").toLocalDate())
-                                  .user(user)
-                                  .build();
+                resultSet.next();
+                Day day = Day.builder()
+                              .id(resultSet.getLong("days_id"))
+                              .totalCalories(resultSet.getBigDecimal("days_total_calories"))
+                              .date(resultSet.getDate("days_date").toLocalDate())
+                              .user(user)
+                              .build();
+                days.add(day);
+                long previousDayId = day.getId();
 
-                    /*TODO REWRITE QUERY WITHOUT ACCESSING DB IN LOOP*/
-                    day.setConsumedFoods(consumedFoodDaoJDBC.findAllByDayId(day.getId()));
-                    days.add(day);
+                while (resultSet.next()) {
+                    long currentDayId = resultSet.getLong("days_id");
+                    if (previousDayId != currentDayId) {
+                        day = Day.builder()
+                                      .id(resultSet.getLong("days_id"))
+                                      .totalCalories(resultSet.getBigDecimal("days_total_calories"))
+                                      .date(resultSet.getDate("days_date").toLocalDate())
+                                      .user(user)
+                                      .build();
+                        days.add(day);
+                    }
+
+                    ConsumedFood consumedFood =
+                            ConsumedFood.builder()
+                                            .id(resultSet.getLong("consumed_foods_id"))
+                                            .amount(resultSet.getBigDecimal("consumed_foods_amount"))
+                                            .name(resultSet.getString("consumed_foods_name"))
+                                            .time(resultSet.getTime("consumed_foods_time").toLocalTime())
+                                            .totalCalories(resultSet.getBigDecimal("consumed_foods_total_calories"))
+                                            .day(day)
+                                            .build();
+
+                    day.getConsumedFoods().add(consumedFood);
+                    previousDayId = currentDayId;
                 }
             }
 
