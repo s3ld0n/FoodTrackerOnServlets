@@ -9,4 +9,8 @@ public class ContextListener implements ServletContextListener {
     @Override public void contextInitialized(ServletContextEvent servletContextEvent) {
         servletContextEvent.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
     }
+
+    @Override public void contextDestroyed(ServletContextEvent sce) {
+
+    }
 }
