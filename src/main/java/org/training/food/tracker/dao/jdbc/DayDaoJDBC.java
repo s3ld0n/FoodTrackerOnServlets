@@ -17,8 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DayDaoJDBC implements DayDao {
-    public static final String FIND_BY_USER_AND_DATE_QUERY = "SELECT id, date, total_calories, user_id "
-                                                                     + "FROM days WHERE user_id = ? AND date = ?";
+    public static final String FIND_BY_USER_AND_DATE_QUERY = "SELECT id AS days_id, "
+                                                                     + "date AS days_date, "
+                                                                     + "total_calories AS days_total_calories, "
+                                                                     + "user_id AS days_user_id "
+                                                                     + "FROM days WHERE days_user_id = ? AND days_date = ?";
 
     public static final String FIND_ALL_BY_USER_ORDERED_BY_DATE_DESC = "SELECT id, date, total_calories, user_id "
                                                                      + "FROM days WHERE user_id = ? ORDER BY date DESC";
@@ -27,9 +30,6 @@ public class DayDaoJDBC implements DayDao {
                                                                   + "consumed_foods WHERE day_id = ?";
 
     public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
-
-    public static final String FIND_ALL_FOOD_BY_DAY_ID = "SELECT id, amount, name, time, total_calories, day_id FROM "
-                                                                  + "consumed_foods WHERE day_id = ?";
 
     public static final String FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC =
                                                   "SELECT days.id AS days_id, "
@@ -128,6 +128,17 @@ public class DayDaoJDBC implements DayDao {
         return day;
     }
 
+    private Day extractDay(User user, ResultSet resultSet) throws SQLException {
+        Day day;
+        day = Day.builder()
+                      .id(resultSet.getLong("days_id"))
+                      .date(resultSet.getDate("days_date").toLocalDate())
+                      .totalCalories(resultSet.getBigDecimal("days_total_calories"))
+                      .user(user)
+                      .build();
+        return day;
+    }
+
     private List<ConsumedFood> getConsumedFoods(Day day, PreparedStatement consumedFoodStatement) throws SQLException {
         consumedFoodStatement.setLong(1, day.getId());
 
@@ -141,17 +152,6 @@ public class DayDaoJDBC implements DayDao {
         return consumedFoods;
     }
 
-    private Day extractDay(User user, ResultSet resultSet) throws SQLException, DaoException {
-        Day day;
-        day = Day.builder()
-                      .id(resultSet.getLong("id"))
-                      .date(resultSet.getDate("date").toLocalDate())
-                      .totalCalories(resultSet.getBigDecimal("total_calories"))
-                      .user(user)
-                      .build();
-        return day;
-    }
-
     public List<Day> findAllByUserOrderByDateDesc(User user) throws DaoException {
         List<Day> days = new ArrayList<>();
 
@@ -162,36 +162,21 @@ public class DayDaoJDBC implements DayDao {
             statement.setLong(1, user.getId());
             try (ResultSet resultSet = statement.executeQuery()){
                 resultSet.next();
-                Day day = Day.builder()
-                              .id(resultSet.getLong("days_id"))
-                              .totalCalories(resultSet.getBigDecimal("days_total_calories"))
-                              .date(resultSet.getDate("days_date").toLocalDate())
-                              .user(user)
-                              .build();
+
+                Day day = extractDay(user, resultSet);
+
                 days.add(day);
                 long previousDayId = day.getId();
 
                 while (resultSet.next()) {
                     long currentDayId = resultSet.getLong("days_id");
                     if (previousDayId != currentDayId) {
-                        day = Day.builder()
-                                      .id(resultSet.getLong("days_id"))
-                                      .totalCalories(resultSet.getBigDecimal("days_total_calories"))
-                                      .date(resultSet.getDate("days_date").toLocalDate())
-                                      .user(user)
-                                      .build();
+                        day = extractDay(user, resultSet);
                         days.add(day);
                     }
 
-                    ConsumedFood consumedFood =
-                            ConsumedFood.builder()
-                                            .id(resultSet.getLong("consumed_foods_id"))
-                                            .amount(resultSet.getBigDecimal("consumed_foods_amount"))
-                                            .name(resultSet.getString("consumed_foods_name"))
-                                            .time(resultSet.getTime("consumed_foods_time").toLocalTime())
-                                            .totalCalories(resultSet.getBigDecimal("consumed_foods_total_calories"))
-                                            .day(day)
-                                            .build();
+                    ConsumedFood consumedFood = consumedFoodDao.extractConsumedFood(resultSet);
+                    consumedFood.setDay(day);
 
                     day.getConsumedFoods().add(consumedFood);
                     previousDayId = currentDayId;

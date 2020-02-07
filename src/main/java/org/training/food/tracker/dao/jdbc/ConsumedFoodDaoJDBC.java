@@ -16,8 +16,14 @@ import java.util.List;
 
 public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
 
-    public static final String FIND_ALL_BY_DAY_ID_QUERY = "SELECT id, amount, name, time, total_calories, day_id FROM "
-                                                               + "consumed_foods WHERE day_id = ?";
+    public static final String FIND_ALL_BY_DAY_ID_QUERY = "SELECT id AS consumed_foods_id, "
+                                                              + "amount AS consumed_foods_amount, "
+                                                              + "name AS consumed_foods_name, "
+                                                              + "time AS consumed_foods_time, "
+                                                              + "total_calories AS consumed_foods_total_calories, "
+                                                              + "day_id AS consumed_foods_day_id "
+                                                          + "FROM consumed_foods "
+                                                          + "WHERE day_id = ?";
 
     private static final Logger LOG = LogManager.getLogger(ConsumedFoodDaoJDBC.class.getName());
 
@@ -47,11 +53,11 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
 
     public ConsumedFood extractConsumedFood(ResultSet resultSet) throws SQLException {
         return ConsumedFood.builder()
-                            .id(resultSet.getLong("id"))
-                            .amount(resultSet.getBigDecimal("amount"))
-                            .name(resultSet.getString("name"))
-                            .time(resultSet.getTime("time").toLocalTime())
-                            .totalCalories(resultSet.getBigDecimal("total_calories"))
+                            .id(resultSet.getLong("consumed_foods_id"))
+                            .amount(resultSet.getBigDecimal("consumed_foods_amount"))
+                            .name(resultSet.getString("consumed_foods_name"))
+                            .time(resultSet.getTime("consumed_foods_time").toLocalTime())
+                            .totalCalories(resultSet.getBigDecimal("consumed_foods_total_calories"))
                             .build();
     }
 
