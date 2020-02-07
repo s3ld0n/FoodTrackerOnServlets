@@ -108,7 +108,6 @@ public class DayDaoJDBC implements DayDao {
 
             autoRollbacker.commit();
         } catch (SQLException e) {
-
             throw new DaoException("Finding day failed of date " + date, e);
         }
         return day;
@@ -161,31 +160,36 @@ public class DayDaoJDBC implements DayDao {
 
             statement.setLong(1, user.getId());
             try (ResultSet resultSet = statement.executeQuery()){
-                resultSet.next();
-
-                Day day = extractDay(user, resultSet);
-
-                days.add(day);
-                long previousDayId = day.getId();
-
-                while (resultSet.next()) {
-                    long currentDayId = resultSet.getLong("days_id");
-                    if (previousDayId != currentDayId) {
-                        day = extractDay(user, resultSet);
-                        days.add(day);
-                    }
-
-                    ConsumedFood consumedFood = consumedFoodDao.extractConsumedFood(resultSet);
-                    consumedFood.setDay(day);
-
-                    day.getConsumedFoods().add(consumedFood);
-                    previousDayId = currentDayId;
-                }
+                extractDaysWithConsumedFoods(user, days, resultSet);
             }
 
         } catch (SQLException e) {
             throw new DaoException("Days selection failed");
         }
         return days;
+    }
+
+    private void extractDaysWithConsumedFoods(User user, List<Day> days, ResultSet resultSet) throws SQLException {
+        resultSet.next();
+
+        Day day = extractDay(user, resultSet);
+
+        days.add(day);
+        long previousDayId = day.getId();
+
+        while (resultSet.next()) {
+            long currentDayId = resultSet.getLong("days_id");
+
+            if (previousDayId != currentDayId) {
+                day = extractDay(user, resultSet);
+                days.add(day);
+            }
+
+            ConsumedFood consumedFood = consumedFoodDao.extractConsumedFood(resultSet);
+            consumedFood.setDay(day);
+
+            day.getConsumedFoods().add(consumedFood);
+            previousDayId = currentDayId;
+        }
     }
 }
