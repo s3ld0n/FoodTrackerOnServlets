@@ -4,11 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.FoodDao;
-import org.training.food.tracker.dao.jdbc.FoodDaoJDBC;
 import org.training.food.tracker.dto.DTOconverter;
-import org.training.food.tracker.model.User;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.model.Food;
+import org.training.food.tracker.model.User;
 import org.training.food.tracker.service.ConsumedFoodService;
 import org.training.food.tracker.service.FoodService;
 

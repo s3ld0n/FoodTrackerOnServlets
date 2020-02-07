@@ -1,8 +1,8 @@
 package org.training.food.tracker.dto;
 
 import org.training.food.tracker.model.Lifestyle;
-import org.training.food.tracker.model.Sex;
 import org.training.food.tracker.model.Role;
+import org.training.food.tracker.model.Sex;
 
 import java.math.BigDecimal;
 

@@ -8,7 +8,6 @@ import org.training.food.tracker.dto.ConsumeStatsDTO;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.dao.jdbc.DayDaoJDBC;
 import org.training.food.tracker.service.DayService;
 
 import java.math.BigDecimal;
@@ -35,12 +34,8 @@ public class DayServiceDefault implements DayService {
             day = dayDao.findByUserAndDate(user, LocalDate.now());
             sortConsumedFoodByTimeDesc(day.getConsumedFoods());
         } catch (DaoException e) {
-            day = Day.builder()
-                         .date(LocalDate.now())
-                         .consumedFoods(new ArrayList<>())
-                         .totalCalories(new BigDecimal(0))
-                         .user(user)
-                         .build();
+            day = Day.builder().date(LocalDate.now()).consumedFoods(new ArrayList<>()).totalCalories(new BigDecimal(0))
+                          .user(user).build();
             dayDao.create(day);
         }
 
@@ -51,9 +46,9 @@ public class DayServiceDefault implements DayService {
         foods.sort((food1, food2) -> (food2.getTime().toSecondOfDay() - food1.getTime().toSecondOfDay()));
     }
 
-//    public Map<Day, ConsumeStatsDTO> getDaysToConsumeStatsForUser(User user) {
-//        return mapDaysToConsumeStats(getAllDaysByUser(user));
-//    }
+    //    public Map<Day, ConsumeStatsDTO> getDaysToConsumeStatsForUser(User user) {
+    //        return mapDaysToConsumeStats(getAllDaysByUser(user));
+    //    }
 
     private Map<Day, ConsumeStatsDTO> mapDaysToConsumeStats(List<Day> days) {
         Map<Day, ConsumeStatsDTO> dayToConsumeStats = new LinkedHashMap<>();
@@ -86,16 +81,13 @@ public class DayServiceDefault implements DayService {
 
         if (userDailyNorm.compareTo(currentDayTotalCalories) > 0) {
             exceededCalories = new BigDecimal(0);
-        } else {
+        } else{
             exceededCalories = currentDayTotalCalories.subtract(userDailyNorm);
             isNormExceeded = true;
         }
         LOG.debug("exceeded calories: {}", exceededCalories);
 
-        return ConsumeStatsDTO.builder()
-                       .caloriesConsumed(currentDayTotalCalories)
-                       .isDailyNormExceeded(isNormExceeded)
-                       .exceededCalories(exceededCalories)
-                       .build();
+        return ConsumeStatsDTO.builder().caloriesConsumed(currentDayTotalCalories).isDailyNormExceeded(isNormExceeded)
+                       .exceededCalories(exceededCalories).build();
     }
 }
