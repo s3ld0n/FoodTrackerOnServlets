@@ -30,7 +30,7 @@ public class DayServiceDefault implements DayService {
 
     public Day getCurrentDayOfUser(User user) throws DaoException {
 
-        Day day = null;
+        Day day;
         try {
             day = dayDao.findByUserAndDate(user, LocalDate.now());
             sortConsumedFoodByTimeDesc(day.getConsumedFoods());
