@@ -14,8 +14,6 @@ public interface FoodService {
 
     List<FoodDTO> findAllCommonExcludingPersonalByUserIdInDTO(Long userId) throws DaoException;
 
-    List<FoodDTO> findAllByOwnerInDTOs(User user) throws DaoException;
-
     void removeByNameAndUserId(String foodName, User user);
 
     List<FoodDTO> findAllCommonInDtos();

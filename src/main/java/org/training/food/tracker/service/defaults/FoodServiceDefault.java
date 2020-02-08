@@ -51,17 +51,6 @@ public class FoodServiceDefault implements FoodService {
         return foodDao.findAllCommonExcludingPersonalByUserId(userId);
     }
 
-    public List<FoodDTO> findAllByOwnerInDTOs(User user) throws DaoException {
-        List<FoodDTO> foodDTOS = new ArrayList<>();
-        foodDao.findAllByUserIdOrderByIdDesc(user.getId())
-                .forEach(food -> foodDTOS.add(FoodDTO.builder()
-                                                .name(food.getName())
-                                                .totalCalories(food.getCalories())
-                                                .build())
-        );
-        return foodDTOS;
-    }
-
     public void removeByNameAndUserId(String foodName, User user) {
         foodDao.removeByNameAndOwner(foodName, user);
     }
