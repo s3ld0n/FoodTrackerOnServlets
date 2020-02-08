@@ -45,8 +45,8 @@ public class UserMainServlet extends HttpServlet {
 
         request.setAttribute("food", new FoodDTO());
         try {
-            LOG.debug("setting allCommonFood");
-            request.setAttribute("allCommonFood", foodService.findAllCommon());
+            LOG.debug("setting allCommonFoodDTOs");
+            request.setAttribute("allCommonFoodDTOs", DTOconverter.foodsToFoodDTOs(foodService.findAllCommon()));
 
             LOG.debug("getting current day");
             Day currentDay = dayService.getCurrentDayOfUser(currentUser);
