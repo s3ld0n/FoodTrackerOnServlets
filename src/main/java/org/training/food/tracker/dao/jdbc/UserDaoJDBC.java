@@ -91,7 +91,7 @@ public class UserDaoJDBC implements UserDao {
             LOG.debug("Creating result set");
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
-                    throw new SQLException("No such user with id: " + id);
+                    throw new DaoException("No such user with id: " + id);
                 }
 
                 user = extractUser(resultSet);
