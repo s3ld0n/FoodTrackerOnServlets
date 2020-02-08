@@ -2,7 +2,7 @@ package org.training.food.tracker.dto;
 
 import java.math.BigDecimal;
 
-public class ConsumeStatsDTO {
+public class ConsumptionDataDTO {
     private BigDecimal caloriesConsumed;
     private BigDecimal exceededCalories;
     private boolean isDailyNormExceeded;
@@ -12,29 +12,29 @@ public class ConsumeStatsDTO {
     }
 
     public static class Builder {
-        private ConsumeStatsDTO consumeStatsDTO;
+        private ConsumptionDataDTO consumptionDataDTO;
 
         Builder() {
-            this.consumeStatsDTO = new ConsumeStatsDTO();
+            this.consumptionDataDTO = new ConsumptionDataDTO();
         }
 
         public Builder caloriesConsumed(BigDecimal caloriesConsumed) {
-            consumeStatsDTO.setCaloriesConsumed(caloriesConsumed);
+            consumptionDataDTO.setCaloriesConsumed(caloriesConsumed);
             return this;
         }
 
         public Builder exceededCalories(BigDecimal exceededCalories) {
-            consumeStatsDTO.setExceededCalories(exceededCalories);
+            consumptionDataDTO.setExceededCalories(exceededCalories);
             return this;
         }
 
         public Builder isDailyNormExceeded(boolean isDailyNormExceeded) {
-            consumeStatsDTO.setDailyNormExceeded(isDailyNormExceeded);
+            consumptionDataDTO.setDailyNormExceeded(isDailyNormExceeded);
             return this;
         }
 
-        public ConsumeStatsDTO build() {
-            return consumeStatsDTO;
+        public ConsumptionDataDTO build() {
+            return consumptionDataDTO;
         }
     }
     public BigDecimal getCaloriesConsumed() {

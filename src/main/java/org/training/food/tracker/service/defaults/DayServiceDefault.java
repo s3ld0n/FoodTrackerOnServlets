@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.DayDao;
-import org.training.food.tracker.dto.ConsumeStatsDTO;
+import org.training.food.tracker.dto.ConsumptionDataDTO;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
@@ -53,8 +53,8 @@ public class DayServiceDefault implements DayService {
     //        return mapDaysToConsumeStats(getAllDaysByUser(user));
     //    }
 
-    private Map<Day, ConsumeStatsDTO> mapDaysToConsumeStats(List<Day> days) {
-        Map<Day, ConsumeStatsDTO> dayToConsumeStats = new LinkedHashMap<>();
+    private Map<Day, ConsumptionDataDTO> mapDaysToConsumeStats(List<Day> days) {
+        Map<Day, ConsumptionDataDTO> dayToConsumeStats = new LinkedHashMap<>();
         days.forEach(day -> dayToConsumeStats.put(day, getConsumeStatsForDay(day)));
         return dayToConsumeStats;
     }
@@ -71,7 +71,7 @@ public class DayServiceDefault implements DayService {
         return totalCalories;
     }
 
-    public ConsumeStatsDTO getConsumeStatsForDay(Day day) {
+    public ConsumptionDataDTO getConsumeStatsForDay(Day day) {
         LOG.debug("Getting day statistics for user");
 
         BigDecimal userDailyNorm = day.getUser().getDailyNormCalories();
@@ -90,7 +90,7 @@ public class DayServiceDefault implements DayService {
         }
         LOG.debug("exceeded calories: {}", exceededCalories);
 
-        return ConsumeStatsDTO.builder().caloriesConsumed(currentDayTotalCalories).isDailyNormExceeded(isNormExceeded)
+        return ConsumptionDataDTO.builder().caloriesConsumed(currentDayTotalCalories).isDailyNormExceeded(isNormExceeded)
                        .exceededCalories(exceededCalories).build();
     }
 }
