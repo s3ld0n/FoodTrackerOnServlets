@@ -87,7 +87,7 @@ public class UserDaoJDBC implements UserDao {
     @Override
     public User findById(Long id) throws DaoException {
         LOG.debug("Finding user by id:{}", id);
-        User user = null;
+        User user;
 
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
