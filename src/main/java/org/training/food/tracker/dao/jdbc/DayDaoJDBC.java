@@ -26,8 +26,8 @@ public class DayDaoJDBC implements DayDao {
     public static final String FIND_ALL_BY_USER_ORDERED_BY_DATE_DESC = "SELECT id, date, total_calories, user_id "
                                                                      + "FROM days WHERE user_id = ? ORDER BY date DESC";
 
-    public static final String FIND_ALL_CONSUMED_FOOD_BY_DAY_ID = "SELECT id, amount, name, time, total_calories, day_id FROM "
-                                                                  + "consumed_foods WHERE day_id = ?";
+    public static final String FIND_ALL_CONSUMED_FOOD_BY_DAY_ID_ORDER_BY_TIME_DESC =
+            "SELECT id, amount, name, time, total_calories, day_id FROM consumed_foods WHERE day_id = ? ORDER BY time DESC";
 
     public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
 
@@ -99,7 +99,8 @@ public class DayDaoJDBC implements DayDao {
         try (Connection connection = ConnectionFactory.getConnection();
                 AutoRollbacker autoRollbacker = new AutoRollbacker(connection);
                 PreparedStatement dayStatement = connection.prepareStatement(FIND_BY_USER_AND_DATE_QUERY);
-                PreparedStatement consumedFoodStatement = connection.prepareStatement(FIND_ALL_CONSUMED_FOOD_BY_DAY_ID);
+                PreparedStatement consumedFoodStatement = connection.prepareStatement(
+                        FIND_ALL_CONSUMED_FOOD_BY_DAY_ID_ORDER_BY_TIME_DESC);
         ) {
             connection.setAutoCommit(false);
 
