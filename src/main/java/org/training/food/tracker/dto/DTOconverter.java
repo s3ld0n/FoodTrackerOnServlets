@@ -4,6 +4,9 @@ import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DTOconverter {
 
     public static UserDTO userToUserDTO(User user) {
@@ -30,5 +33,11 @@ public class DTOconverter {
                        .name(food.getName())
                        .totalCalories(food.getCalories())
                        .build();
+    }
+
+    public static List<FoodDTO> foodsToFoodDTOs(List<Food> foods) {
+        List<FoodDTO> foodDTOS = new ArrayList<>();
+        foods.forEach(DTOconverter::foodToFoodDTO);
+        return foodDTOS;
     }
 }
