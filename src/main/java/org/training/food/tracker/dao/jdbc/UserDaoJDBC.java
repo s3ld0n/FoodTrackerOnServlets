@@ -37,25 +37,7 @@ public class UserDaoJDBC implements UserDao {
 
             LOG.debug("Prepared statement was created.");
 
-            LOG.trace("Setting user's name: {}", user.getUsername());
-            statement.setString(1, user.getUsername());
-
-            statement.setString(2, user.getPassword());
-
-            LOG.trace("Setting user's first name: {}", user.getFirstName());
-            statement.setString(3, user.getFirstName());
-
-            LOG.trace("Setting user's last name: {}", user.getLastName());
-            statement.setString(4, user.getLastName());
-
-            LOG.trace("Setting user's email: {}", user.getEmail());
-            statement.setString(5, user.getEmail());
-
-            LOG.trace("Setting user to be active : {}", user.isActive());
-            statement.setBoolean(6, user.isActive());
-
-            LOG.trace("Setting user's role: {}", user.getRole());
-            statement.setString(7, user.getRole().toString());
+            setPreparedStatementParams(user, statement);
 
             LOG.debug("Executing prepared statement");
             statement.executeUpdate();
@@ -64,8 +46,7 @@ public class UserDaoJDBC implements UserDao {
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
 
                 LOG.debug("Result set was created. Setting id from DB to lecture object to return");
-                resultSet.next();
-                user.setId(resultSet.getLong(1));
+                setGeneratedId(user, resultSet);
             }
         } catch (SQLException e) {
             LOG.error("Creation of user has failed.", e);
@@ -74,6 +55,33 @@ public class UserDaoJDBC implements UserDao {
 
         LOG.debug("user {} was created.", user);
         return user;
+    }
+
+    private void setGeneratedId(User user, ResultSet resultSet) throws SQLException {
+        resultSet.next();
+        user.setId(resultSet.getLong(1));
+    }
+
+    private void setPreparedStatementParams(User user, PreparedStatement statement) throws SQLException {
+        LOG.trace("Setting user's name: {}", user.getUsername());
+        statement.setString(1, user.getUsername());
+
+        statement.setString(2, user.getPassword());
+
+        LOG.trace("Setting user's first name: {}", user.getFirstName());
+        statement.setString(3, user.getFirstName());
+
+        LOG.trace("Setting user's last name: {}", user.getLastName());
+        statement.setString(4, user.getLastName());
+
+        LOG.trace("Setting user's email: {}", user.getEmail());
+        statement.setString(5, user.getEmail());
+
+        LOG.trace("Setting user to be active : {}", user.isActive());
+        statement.setBoolean(6, user.isActive());
+
+        LOG.trace("Setting user's role: {}", user.getRole());
+        statement.setString(7, user.getRole().toString());
     }
 
     @Override
