@@ -42,24 +42,24 @@ public class UserDaoJDBC implements UserDao {
             LOG.debug("Executing prepared statement");
             statement.executeUpdate();
 
-            LOG.debug("Creating result set");
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-
-                LOG.debug("Result set was created. Setting id from DB to lecture object to return");
-                setGeneratedId(user, resultSet);
-            }
+            setGeneratedId(user, statement);
         } catch (SQLException e) {
             LOG.error("Creation of user has failed.", e);
             throw new DaoException("Creation of user has failed.", e);
         }
 
-        LOG.debug("user {} was created.", user);
+        LOG.debug("user: {} was created.", user.getUsername());
         return user;
     }
 
-    private void setGeneratedId(User user, ResultSet resultSet) throws SQLException {
-        resultSet.next();
-        user.setId(resultSet.getLong(1));
+    private void setGeneratedId(User user, PreparedStatement statement) throws SQLException {
+        LOG.debug("Creating result set");
+        try (ResultSet resultSet = statement.getGeneratedKeys()) {
+
+            LOG.debug("Result set was created. Setting id from DB to lecture object to return");
+            resultSet.next();
+            user.setId(resultSet.getLong(1));
+        }
     }
 
     private void setPreparedStatementParams(User user, PreparedStatement statement) throws SQLException {
@@ -88,7 +88,6 @@ public class UserDaoJDBC implements UserDao {
     public User findById(Long id) throws DaoException {
         LOG.debug("Finding user by id:{}", id);
         User user = null;
-        Biometrics biometrics = null;
 
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
@@ -96,20 +95,26 @@ public class UserDaoJDBC implements UserDao {
             LOG.debug("Prepared statement was created. Setting id: {}", id);
             statement.setLong(1, id);
 
-            LOG.debug("Creating result set");
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    throw new DaoException("No such user with id: " + id);
-                }
-
-                user = extractUser(resultSet);
-            }
+            user = getUser(id, statement);
         } catch (SQLException e) {
             LOG.error("Finding user has failed", e);
             throw new DaoException("Finding user has failed", e);
         }
 
         LOG.debug("User {} was found by id: {}.", user.getUsername(), user.getId());
+        return user;
+    }
+
+    private User getUser(Long id, PreparedStatement statement) throws SQLException, DaoException {
+        User user;
+        LOG.debug("Creating result set");
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (!resultSet.next()) {
+                throw new DaoException("No such user with id: " + id);
+            }
+
+            user = extractUser(resultSet);
+        }
         return user;
     }
 
