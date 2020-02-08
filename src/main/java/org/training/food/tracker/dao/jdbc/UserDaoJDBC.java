@@ -95,7 +95,7 @@ public class UserDaoJDBC implements UserDao {
             LOG.debug("Prepared statement was created. Setting id: {}", id);
             statement.setLong(1, id);
 
-            user = getUser(id, statement);
+            user = extractUserWithBiometrics(statement);
         } catch (SQLException e) {
             LOG.error("Finding user has failed", e);
             throw new DaoException("Finding user has failed", e);
@@ -105,33 +105,26 @@ public class UserDaoJDBC implements UserDao {
         return user;
     }
 
-    private User getUser(Long id, PreparedStatement statement) throws SQLException, DaoException {
+    private User extractUserWithBiometrics(PreparedStatement statement) throws SQLException, DaoException {
         User user;
         LOG.debug("Creating result set");
         try (ResultSet resultSet = statement.executeQuery()) {
             if (!resultSet.next()) {
-                throw new DaoException("No such user with id: " + id);
+                throw new DaoException("No such user");
             }
 
+            LOG.debug("Creating biometrics object");
+            Biometrics biometrics = extractBiometrics(resultSet);
+
+            LOG.debug("Creating user object");
             user = extractUser(resultSet);
+            user.setBiometrics(biometrics);
         }
         return user;
     }
 
     private User extractUser(ResultSet resultSet) throws SQLException {
-        Biometrics biometrics;
         User user;
-        LOG.debug("Creating biometrics object");
-        biometrics = Biometrics.builder()
-                             .id(resultSet.getLong("bio_id"))
-                             .age(resultSet.getBigDecimal("age"))
-                             .sex(Sex.valueOf(resultSet.getString("sex")))
-                             .weight(resultSet.getBigDecimal("weight"))
-                             .height(resultSet.getBigDecimal("height"))
-                             .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
-                             .build();
-
-        LOG.debug("Creating user object");
         user = User.builder()
                        .id(resultSet.getLong("u_id"))
                        .username(resultSet.getString("username"))
@@ -140,9 +133,21 @@ public class UserDaoJDBC implements UserDao {
                        .firstName(resultSet.getString("first_name"))
                        .lastName(resultSet.getString("last_name"))
                        .role(Role.valueOf(resultSet.getString("role")))
-                       .biometrics(biometrics)
                        .build();
         return user;
+    }
+
+    private Biometrics extractBiometrics(ResultSet resultSet) throws SQLException {
+        Biometrics biometrics;
+        biometrics = Biometrics.builder()
+                             .id(resultSet.getLong("bio_id"))
+                             .age(resultSet.getBigDecimal("age"))
+                             .sex(Sex.valueOf(resultSet.getString("sex")))
+                             .weight(resultSet.getBigDecimal("weight"))
+                             .height(resultSet.getBigDecimal("height"))
+                             .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
+                             .build();
+        return biometrics;
     }
 
     public User findByUsername(String username) throws DaoException {
@@ -154,15 +159,8 @@ public class UserDaoJDBC implements UserDao {
 
             LOG.debug("Prepared statement was created. Setting username");
             statement.setString(1, username);
+            user = extractUserWithBiometrics(statement);
 
-            LOG.debug("Creating result set");
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    throw new SQLException("No such user with username: " + username);
-                }
-
-                user = extractUser(resultSet);
-            }
         } catch (SQLException e) {
             LOG.error("Finding user has failed", e);
             throw new DaoException("Finding user has failed", e);
@@ -180,12 +178,7 @@ public class UserDaoJDBC implements UserDao {
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL_QUERY)) {
 
-            LOG.debug("Creating result set");
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    users.add(extractUser(resultSet));
-                }
-            }
+            extractAllUsers(users, statement);
         } catch (SQLException e) {
             LOG.error("Get all users has failed", e);
             throw new DaoException("Get all users has failed", e);
@@ -193,6 +186,21 @@ public class UserDaoJDBC implements UserDao {
 
         LOG.debug("{} users were found.", users.size());
         return users;
+    }
+
+    private void extractAllUsers(List<User> users, PreparedStatement statement) throws SQLException {
+        LOG.debug("Creating result set");
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                LOG.debug("Creating biometrics object");
+                Biometrics biometrics = extractBiometrics(resultSet);
+
+                LOG.debug("Creating user object");
+                User user = extractUser(resultSet);
+                user.setBiometrics(biometrics);
+                users.add(user);
+            }
+        }
     }
 
     @Override public User update(User user) {
