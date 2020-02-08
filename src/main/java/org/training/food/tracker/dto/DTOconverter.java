@@ -1,9 +1,8 @@
 package org.training.food.tracker.dto;
 
-import org.training.food.tracker.model.Biometrics;
-import org.training.food.tracker.model.Food;
-import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,5 +38,35 @@ public class DTOconverter {
         List<FoodDTO> foodDTOS = new ArrayList<>();
         foods.forEach(DTOconverter::foodToFoodDTO);
         return foodDTOS;
+    }
+
+    public static ConsumptionDataDTO buildConsumptionDataDTO(List<ConsumedFood> consumedFoods, User user) {
+        BigDecimal totalCalories = sumTotalCalories(consumedFoods);
+        BigDecimal dailyNorm = user.getDailyNormCalories();
+        BigDecimal exceededCalories = findExceededCalories(totalCalories, dailyNorm);
+
+        return ConsumptionDataDTO.builder()
+                       .consumedFoods(consumedFoods)
+                       .caloriesConsumed(totalCalories)
+                       .exceededCalories(exceededCalories)
+                       .isDailyNormExceeded(checkIfDailyNormExceeded(exceededCalories))
+                       .build();
+    }
+
+    private static boolean checkIfDailyNormExceeded(BigDecimal exceededCalories) {
+        return exceededCalories.compareTo(new BigDecimal(0)) > 0;
+    }
+
+    private static BigDecimal findExceededCalories(BigDecimal totalCalories, BigDecimal dailyNorm) {
+        return dailyNorm.compareTo(totalCalories) > 0 ? new BigDecimal(0) : totalCalories.subtract(dailyNorm);
+    }
+
+    private static BigDecimal sumTotalCalories(List<ConsumedFood> foodDTOs) {
+        BigDecimal sum = new BigDecimal(0);
+
+        for (ConsumedFood food : foodDTOs) {
+            sum = sum.add(food.getTotalCalories());
+        }
+        return sum;
     }
 }
