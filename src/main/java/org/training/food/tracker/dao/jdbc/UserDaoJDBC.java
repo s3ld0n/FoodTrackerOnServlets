@@ -16,7 +16,7 @@ public class UserDaoJDBC implements UserDao {
     public static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
                                                       + "last_name, email, active, role) VALUES(?,?,?,?,?,?,?)";
 
-    public static final String READ_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
+    public static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                     + "role, biometrics.id, user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
                                                     + "biometrics ON user_id = users.id WHERE users.id = ?";
 
@@ -83,7 +83,7 @@ public class UserDaoJDBC implements UserDao {
         Biometrics biometrics = null;
 
         try (Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(READ_QUERY)) {
+                PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
 
             LOG.debug("Prepared statement was created. Setting id: {}", id);
             statement.setLong(1, id);
