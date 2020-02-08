@@ -38,27 +38,34 @@ public class FoodDaoJDBC implements FoodDao {
         List<Food> foods = new ArrayList<>();
         LOG.debug("creating connection, making prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
-                PreparedStatement statement =
-                        connection.prepareStatement(query)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, userId);
 
-            LOG.debug("executing statement, getting result set and extracting results");
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    LOG.debug("creating food");
-                    Food food = Food.builder()
-                                        .id(resultSet.getLong("id"))
-                                        .name(resultSet.getString("name"))
-                                        .calories(resultSet.getBigDecimal("calories"))
-                                        .build();
-                    foods.add(food);
-                }
-            }
+            getFoods(foods, statement);
+
         } catch (SQLException e) {
             throw new DaoException("selection of common food that does not belong to user has failed", e);
         }
         LOG.debug("{} foods were found", foods.size());
         return foods;
+    }
+
+    private void getFoods(List<Food> foods, PreparedStatement statement) throws SQLException {
+        LOG.debug("executing statement, getting result set and extracting results");
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                LOG.debug("creating food");
+                foods.add(extractFood(resultSet));
+            }
+        }
+    }
+
+    private Food extractFood(ResultSet resultSet) throws SQLException {
+        return Food.builder()
+                                        .id(resultSet.getLong("id"))
+                                        .name(resultSet.getString("name"))
+                                        .calories(resultSet.getBigDecimal("calories"))
+                                        .build();
     }
 
     public List<Food> findAllByUserIdOrderByIdDesc(Long userId) throws DaoException {
