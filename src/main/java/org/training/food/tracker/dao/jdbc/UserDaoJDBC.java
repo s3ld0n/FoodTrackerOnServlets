@@ -17,15 +17,15 @@ public class UserDaoJDBC implements UserDao {
                                                       + "last_name, email, active, role) VALUES(?,?,?,?,?,?,?)";
 
     public static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
-                                                    + "role, biometrics.id, user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
+                                                    + "role, biometrics.id, user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                     + "biometrics ON user_id = users.id WHERE users.id = ?";
 
     public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
-                                                            + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
+                                                            + "role, biometrics.id AS bio_id, biometrics.user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                             + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
 
     public static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
-                                                  + "role, biometrics.id AS bio_id, biometrics.user_id, age, norm, height, lifestyle, sex, weight FROM users JOIN "
+                                                  + "role, biometrics.id AS bio_id, biometrics.user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                   + "biometrics ON users.id = biometrics.user_id";
 
     private static final Logger LOG = LogManager.getLogger(UserDaoJDBC.class.getName());
