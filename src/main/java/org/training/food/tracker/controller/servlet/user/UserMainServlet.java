@@ -29,9 +29,9 @@ public class UserMainServlet extends HttpServlet {
 
     private UserService userService;
     private FoodService foodService;
+    private DayServiceDefault dayService;
 
     private static final Logger LOG = LogManager.getLogger(UserMainServlet.class.getName());
-    private DayServiceDefault dayService;
 
     @Override public void init() throws ServletException {
         userService = new UserServiceDefault();
@@ -46,8 +46,7 @@ public class UserMainServlet extends HttpServlet {
         request.setAttribute("food", new FoodDTO());
         try {
             LOG.debug("setting allCommonFood");
-            request.setAttribute("allCommonFood",
-                    foodService.findAllCommonExcludingPersonalByUserIdInDTO(currentUser.getId()));
+            request.setAttribute("allCommonFood", foodService.findAllCommon());
 
             LOG.debug("getting current day");
             Day currentDay = dayService.getCurrentDayOfUser(currentUser);
@@ -57,7 +56,8 @@ public class UserMainServlet extends HttpServlet {
             request.setAttribute("consumedStatsDTO", dayService.getConsumeStatsForDay(currentDay));
 
             LOG.debug("setting usersFoodDTOs");
-            request.setAttribute("usersFoodDTOs", foodService.findAllByOwnerInDTOs(currentUser));
+            request.setAttribute("usersFoodDTOs",
+                    DTOconverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser)));
 
         } catch (DaoException e) {
             e.printStackTrace();

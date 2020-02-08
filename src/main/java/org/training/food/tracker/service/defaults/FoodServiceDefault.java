@@ -47,15 +47,19 @@ public class FoodServiceDefault implements FoodService {
                        .collect(Collectors.toList());
     }
 
-    private List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException {
+    public List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException {
         return foodDao.findAllCommonExcludingPersonalByUserId(userId);
+    }
+
+    public List<Food> findAllByOwner(User user) throws DaoException {
+        return foodDao.findAllByUserIdOrderByIdDesc(user.getId());
     }
 
     public void removeByNameAndUserId(String foodName, User user) {
         foodDao.removeByNameAndOwner(foodName, user);
     }
 
-    public List<FoodDTO> findAllCommonInDtos() {
-        return foodDao.findAllCommon().stream().map(DTOconverter::foodToFoodDTO).collect(Collectors.toList());
+    public List<Food> findAllCommon() {
+        return foodDao.findAllCommon();
     }
 }
