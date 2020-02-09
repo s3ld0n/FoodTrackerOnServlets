@@ -94,19 +94,26 @@ public class DayDaoJDBC implements DayDao {
     }
 
     public Day findByUserAndDate(User user, LocalDate date) throws DaoException {
+        LOG.debug("findByUserAndDate()");
         Day day;
 
+        LOG.debug("getting connection, preparing statements, creating autoRollbacker");
         try (Connection connection = ConnectionFactory.getConnection();
                 AutoRollbacker autoRollbacker = new AutoRollbacker(connection);
                 PreparedStatement dayStatement = connection.prepareStatement(FIND_BY_USER_AND_DATE_QUERY);
                 PreparedStatement consumedFoodStatement = connection.prepareStatement(
                         FIND_ALL_CONSUMED_FOOD_BY_DAY_ID_ORDER_BY_TIME_DESC);
         ) {
+            LOG.debug("setting autocommit false");
             connection.setAutoCommit(false);
 
+            LOG.debug("getting day");
             day = getDay(user, date, dayStatement);
+
+            LOG.debug("getting and setting consumed food");
             day.setConsumedFoods(getConsumedFoods(day, consumedFoodStatement));
 
+            LOG.debug("making commit");
             autoRollbacker.commit();
         } catch (SQLException e) {
             throw new DaoException("Finding day failed of date " + date, e);
@@ -116,13 +123,16 @@ public class DayDaoJDBC implements DayDao {
 
     private Day getDay(User user, LocalDate date, PreparedStatement dayStatement) throws SQLException, DaoException {
         Day day;
+        LOG.debug("setting params of statement");
         dayStatement.setLong(1, user.getId());
         dayStatement.setDate(2, Date.valueOf(date));
 
+        LOG.debug("executing query");
         try (ResultSet resultSet = dayStatement.executeQuery()){
             if (!resultSet.next()) {
                 throw new DaoException("No such day of " + date);
             }
+            LOG.debug("extracting day from result set");
             day = extractDay(user, resultSet);
         }
         return day;
