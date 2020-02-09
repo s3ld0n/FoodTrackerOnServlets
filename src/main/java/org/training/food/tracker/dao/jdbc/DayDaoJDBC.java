@@ -124,6 +124,7 @@ public class DayDaoJDBC implements DayDao {
 
     private Day getDay(User user, LocalDate date, PreparedStatement dayStatement) throws SQLException, DaoException {
         Day day;
+        LOG.debug("getDay()");
         LOG.debug("setting params of statement");
         dayStatement.setLong(1, user.getId());
         dayStatement.setDate(2, Date.valueOf(date));
@@ -140,6 +141,7 @@ public class DayDaoJDBC implements DayDao {
     }
 
     private Day extractDay(User user, ResultSet resultSet) throws SQLException {
+        LOG.debug("extractDay()");
         Day day;
         day = Day.builder()
                       .id(resultSet.getLong("days_id"))
@@ -151,6 +153,7 @@ public class DayDaoJDBC implements DayDao {
     }
 
     private List<ConsumedFood> getConsumedFoods(Day day, PreparedStatement consumedFoodStatement) throws SQLException {
+        LOG.debug("getConsumedFoods()");
         consumedFoodStatement.setLong(1, day.getId());
 
         List<ConsumedFood> consumedFoods = new ArrayList<>();
@@ -164,13 +167,16 @@ public class DayDaoJDBC implements DayDao {
     }
 
     public List<Day> findAllByUserOrderByDateDesc(User user) throws DaoException {
+        LOG.debug("findAllByUserOrderByDateDesc()");
         List<Day> days = new ArrayList<>();
 
+        LOG.debug("making connection, prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement =
                         connection.prepareStatement(FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC)) {
 
             statement.setLong(1, user.getId());
+            LOG.debug("executing query");
             try (ResultSet resultSet = statement.executeQuery()){
                 extractDaysWithConsumedFoods(user, days, resultSet);
             }
@@ -182,6 +188,7 @@ public class DayDaoJDBC implements DayDao {
     }
 
     private void extractDaysWithConsumedFoods(User user, List<Day> days, ResultSet resultSet) throws SQLException {
+        LOG.debug("extractDaysWithConsumedFoods()");
         resultSet.next();
 
         Day day = extractDay(user, resultSet);
@@ -189,6 +196,7 @@ public class DayDaoJDBC implements DayDao {
         days.add(day);
         long previousDayId = day.getId();
 
+        LOG.debug("looping throw result set");
         while (resultSet.next()) {
             long currentDayId = resultSet.getLong("days_id");
 
