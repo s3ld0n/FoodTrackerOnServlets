@@ -12,5 +12,5 @@ public interface FoodDao extends CrudDao<Food> {
 
     void removeByNameAndOwner(String foodName, User user);
 
-    List<Food> findAllCommon();
+    List<Food> findAllCommon() throws DaoException;
 }
