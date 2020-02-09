@@ -18,11 +18,13 @@ import java.util.List;
 public class FoodDaoJDBC implements FoodDao {
 
     public static final String FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID =
-            "SELECT id, name, calories, user_id FROM food WHERE user_id IS NULL AND name NOT IN "
+            "SELECT id, name, calories, user_id FROM foods WHERE user_id IS NULL AND name NOT IN "
                                                          + "(SELECT name FROM food WHERE user_id = ?) ORDER BY id DESC";
 
     public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
-            "SELECT id, name, calories, user_id FROM food WHERE user_id = ? ORDER BY id DESC";
+            "SELECT id, name, calories, user_id FROM foods WHERE user_id = ? ORDER BY id DESC";
+
+    private static final String FIND_ALL_COMMON = "SELECT id, calories, name FROM foods WHERE id IS NULL";
 
     private static final Logger LOG = LogManager.getLogger(FoodDaoJDBC.class.getName());
 
@@ -92,7 +94,14 @@ public class FoodDaoJDBC implements FoodDao {
 
     }
 
-    public List<Food> findAllCommon() {
-        return null;
+    public List<Food> findAllCommon() throws DaoException {
+        List<Food> commonFoods = new ArrayList<>();
+
+        try (Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMMON)) {
+
+        } catch (SQLException e) {
+
+        }
     }
 }
