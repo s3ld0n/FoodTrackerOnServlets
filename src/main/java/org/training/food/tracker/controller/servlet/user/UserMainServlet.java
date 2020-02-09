@@ -48,13 +48,12 @@ public class UserMainServlet extends HttpServlet {
             LOG.debug("setting allCommonFoodDTOs");
             request.setAttribute("allCommonFoodDTOs", DTOConverter.foodsToFoodDTOs(foodService.findAllCommon()));
 
-            LOG.debug("getting current day");
-            Day currentDay = dayService.getCurrentDayOfUser(currentUser);
-            request.setAttribute("currentDay", currentDay);
-
-            LOG.debug("getting ConsumptionDataDTO");
+            LOG.debug("making ConsumptionDataDTO from consumed food of the current day");
             request.setAttribute("ConsumptionDataDTO",
-                    DTOConverter.buildConsumptionDataDTO(currentDay.getConsumedFoods(), currentUser));
+                    DTOConverter.buildConsumptionDataDTO(
+                            dayService.getCurrentDayOfUser(currentUser).getConsumedFoods(),
+                            currentUser
+                    ));
 
             LOG.debug("setting usersFoodDTOs");
             request.setAttribute("usersFoodDTOs",
