@@ -28,11 +28,12 @@ public class DayServiceDefault implements DayService {
     }
 
     public Day getCurrentDayOfUser(User user) throws DaoException {
-
+        LOG.debug("getCurrentDayOfUser()");
         Day day;
         try {
+            LOG.debug("finding current day");
             day = dayDao.findByUserAndDate(user, LocalDate.now());
-            sortConsumedFoodByTimeDesc(day.getConsumedFoods());
+//            sortConsumedFoodByTimeDesc(day.getConsumedFoods());
         } catch (DaoException e) {
             day = Day.builder()
                           .date(LocalDate.now())
