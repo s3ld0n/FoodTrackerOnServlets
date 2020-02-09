@@ -97,7 +97,7 @@
         <div class="col">
             <div class="card card-body" id="consumed">
                 <h2>Consumed Today</h2>
-                <table class="table table-striped border-dark" object="${currentDay}">
+                <table class="table table-striped border-dark">
                     <thead>
                     <tr>
                         <th scope="col">Name</th>
@@ -106,7 +106,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="consumedFood" items="${currentDay.consumedFoods}">
+                        <c:forEach var="consumedFood" items="${ConsumptionDataDTO.consumedFoods}">
                             <tr>
                                 <td>${consumedFood.name}</td>
                                 <td>${consumedFood.amount}</td>
