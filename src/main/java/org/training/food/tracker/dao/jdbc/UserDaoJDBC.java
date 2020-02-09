@@ -1,7 +1,9 @@
 package org.training.food.tracker.dao.jdbc;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.UserDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
@@ -28,7 +30,7 @@ public class UserDaoJDBC implements UserDao {
                                                   + "role, biometrics.id AS bio_id, biometrics.user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                   + "biometrics ON users.id = biometrics.user_id";
 
-    private static final Logger LOG = LogManager.getLogger(UserDaoJDBC.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(UserDaoJDBC.class.getName());
 
     @Override public User create(User user) throws DaoException {
         try (Connection connection = ConnectionFactory.getConnection();

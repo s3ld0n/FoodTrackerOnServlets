@@ -1,7 +1,10 @@
 package org.training.food.tracker.controller.filter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +17,7 @@ public class LocaleFilter implements Filter {
 
     }
 
-    private static final Logger LOG = LogManager.getLogger(LocaleFilter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(LocaleFilter.class.getName());
 
     @Override
     public void doFilter(ServletRequest servletRequest,

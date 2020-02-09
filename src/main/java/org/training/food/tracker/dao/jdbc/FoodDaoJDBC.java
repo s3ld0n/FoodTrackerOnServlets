@@ -1,7 +1,9 @@
 package org.training.food.tracker.dao.jdbc;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.FoodDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
@@ -26,7 +28,7 @@ public class FoodDaoJDBC implements FoodDao {
 
     private static final String FIND_ALL_COMMON = "SELECT id, calories, name FROM foods WHERE id IS NULL";
 
-    private static final Logger LOG = LogManager.getLogger(FoodDaoJDBC.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FoodDaoJDBC.class.getName());
 
     @Override public Food create(Food food) throws DaoException {
         return null;

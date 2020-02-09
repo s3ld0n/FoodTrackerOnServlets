@@ -1,7 +1,7 @@
 package org.training.food.tracker.dao.jdbc;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.ConsumedFoodDao;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.util.ConnectionFactory;
@@ -25,7 +25,7 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
                                                           + "FROM consumed_foods "
                                                           + "WHERE day_id = ?";
 
-    private static final Logger LOG = LogManager.getLogger(ConsumedFoodDaoJDBC.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(ConsumedFoodDaoJDBC.class.getName());
 
     public List<ConsumedFood> findAllByDayId(Long dayId) throws DaoException {
         LOG.debug("Finding all consumed foods");

@@ -1,6 +1,9 @@
 package org.training.food.tracker.dto;
 
-import org.training.food.tracker.model.*;
+import org.training.food.tracker.model.Biometrics;
+import org.training.food.tracker.model.ConsumedFood;
+import org.training.food.tracker.model.Food;
+import org.training.food.tracker.model.User;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

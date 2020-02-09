@@ -1,7 +1,8 @@
 package org.training.food.tracker.dao.jdbc;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.ConsumedFoodDao;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.DayDao;
@@ -46,7 +47,7 @@ public class DayDaoJDBC implements DayDao {
                                                 + "LEFT JOIN consumed_foods ON consumed_foods.day_id = days.id "
                                                 + "WHERE user_id = ? ORDER BY days_date DESC";
 
-    private static final Logger LOG = LogManager.getLogger(DayDaoJDBC.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DayDaoJDBC.class.getName());
 
     private static ConsumedFoodDao consumedFoodDao = new ConsumedFoodDaoJDBC();
 

@@ -1,7 +1,9 @@
 package org.training.food.tracker.service.defaults;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.FoodDao;
 import org.training.food.tracker.dto.DTOConverter;
@@ -19,7 +21,7 @@ public class FoodServiceDefault implements FoodService {
     private FoodDao foodDao;
     private ConsumedFoodService consumedFoodService;
 
-    private static final Logger LOG = LogManager.getLogger(FoodServiceDefault.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FoodServiceDefault.class.getName());
 
     public FoodServiceDefault(FoodDao foodDao, ConsumedFoodServiceDefault consumedFoodService) {
         this.foodDao = foodDao;

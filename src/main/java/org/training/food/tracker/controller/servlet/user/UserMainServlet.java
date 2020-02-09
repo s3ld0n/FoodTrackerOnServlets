@@ -1,7 +1,7 @@
 package org.training.food.tracker.controller.servlet.user;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.ConsumedFoodDao;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.jdbc.ConsumedFoodDaoJDBC;
@@ -10,7 +10,6 @@ import org.training.food.tracker.dao.jdbc.FoodDaoJDBC;
 import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
-import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.service.FoodService;
 import org.training.food.tracker.service.defaults.ConsumedFoodServiceDefault;
@@ -31,7 +30,7 @@ public class UserMainServlet extends HttpServlet {
     private DayServiceDefault dayService;
     private ConsumedFoodDao consumedFoodDao;
 
-    private static final Logger LOG = LogManager.getLogger(UserMainServlet.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(UserMainServlet.class.getName());
 
     @Override public void init() throws ServletException {
         foodService = new FoodServiceDefault(new FoodDaoJDBC(), new ConsumedFoodServiceDefault());

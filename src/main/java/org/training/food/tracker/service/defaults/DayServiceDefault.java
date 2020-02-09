@@ -1,7 +1,9 @@
 package org.training.food.tracker.service.defaults;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.DayDao;
 import org.training.food.tracker.dto.ConsumptionDataDTO;
@@ -21,7 +23,7 @@ public class DayServiceDefault implements DayService {
 
     private DayDao dayDao;
 
-    private static final Logger LOG = LogManager.getLogger(DayServiceDefault.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DayServiceDefault.class.getName());
 
     public DayServiceDefault(DayDao dayDao) {
         this.dayDao = dayDao;

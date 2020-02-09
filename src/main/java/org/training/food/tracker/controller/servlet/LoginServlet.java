@@ -1,7 +1,8 @@
 package org.training.food.tracker.controller.servlet;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.Role;
 import org.training.food.tracker.model.User;
@@ -19,7 +20,7 @@ import java.util.HashSet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private static final Logger LOG = LogManager.getLogger(LoginServlet.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class.getName());
 
     private UserService userService;
 

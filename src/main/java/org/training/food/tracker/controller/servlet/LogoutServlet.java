@@ -1,7 +1,7 @@
 package org.training.food.tracker.controller.servlet;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.model.User;
 
 import javax.servlet.ServletException;
@@ -16,7 +16,7 @@ import java.util.HashSet;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 
-    private static final Logger LOG = LogManager.getLogger(LogoutServlet.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(LogoutServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
