@@ -6,7 +6,6 @@ import java.time.LocalTime;
 public class ConsumedFood {
 
     private Long id;
-    private Day day;
     private String name;
     private BigDecimal amount;
     private BigDecimal totalCalories;
@@ -25,11 +24,6 @@ public class ConsumedFood {
 
         public Builder id(Long id) {
             consumedFood.setId(id);
-            return this;
-        }
-
-        public Builder day(Day day) {
-            consumedFood.setDay(day);
             return this;
         }
 
@@ -63,14 +57,6 @@ public class ConsumedFood {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Day getDay() {
-        return day;
-    }
-
-    public void setDay(Day day) {
-        this.day = day;
     }
 
     public String getName() {
