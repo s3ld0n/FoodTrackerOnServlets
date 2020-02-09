@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DTOconverter {
+public class DTOConverter {
 
     public static UserDTO userToUserDTO(User user) {
         Biometrics biometrics = user.getBiometrics();
@@ -36,7 +36,7 @@ public class DTOconverter {
 
     public static List<FoodDTO> foodsToFoodDTOs(List<Food> foods) {
         List<FoodDTO> foodDTOS = new ArrayList<>();
-        foods.forEach(DTOconverter::foodToFoodDTO);
+        foods.forEach(DTOConverter::foodToFoodDTO);
         return foodDTOS;
     }
 
