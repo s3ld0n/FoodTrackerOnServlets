@@ -31,10 +31,8 @@
             <div class="card card-body mb-2 bottom-tables">
                 <h2>Food Personal</h2>
 
-                <form action="/user/add" method="post" class="needs-validation" role="form" object="${food}" novalidate>
+                <form action="/user/add" method="post" class="needs-validation" role="form" novalidate>
                     <div class="form-row">
-
-
                         <div class="col-6">
                             <input type="text" id="name" name="name" placeholder="food.name" required="true" class="form-control" required/>
                         </div>
@@ -50,7 +48,7 @@
                     </div>
                 </form>
 
-                <table class="table table-bordered table-responsive-md table-striped text-center" object="${usersFoodDTOs}">
+                <table class="table table-bordered table-responsive-md table-striped text-center">
                     <thead class="border-dark">
                     <col width="130">
                     <col width="150">
