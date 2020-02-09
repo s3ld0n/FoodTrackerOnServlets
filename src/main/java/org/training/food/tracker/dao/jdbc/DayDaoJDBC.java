@@ -187,7 +187,6 @@ public class DayDaoJDBC implements DayDao {
             }
 
             ConsumedFood consumedFood = consumedFoodDao.extractConsumedFood(resultSet);
-            consumedFood.setDay(day);
 
             day.getConsumedFoods().add(consumedFood);
             previousDayId = currentDayId;
