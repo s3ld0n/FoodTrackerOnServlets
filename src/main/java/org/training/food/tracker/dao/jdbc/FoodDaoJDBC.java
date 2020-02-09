@@ -93,15 +93,4 @@ public class FoodDaoJDBC implements FoodDao {
     public void removeByNameAndOwner(String foodName, User user) {
 
     }
-
-    public List<Food> findAllCommon() throws DaoException {
-        List<Food> commonFoods = new ArrayList<>();
-
-        try (Connection connection = ConnectionFactory.getConnection();
-        PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMMON)) {
-
-        } catch (SQLException e) {
-
-        }
-    }
 }

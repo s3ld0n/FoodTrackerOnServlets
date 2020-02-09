@@ -18,6 +18,4 @@ public interface FoodService {
     List<Food> findAllByOwner(User user) throws DaoException;
 
     void removeByNameAndUserId(String foodName, User user);
-
-    public List<Food> findAllCommon();
 }

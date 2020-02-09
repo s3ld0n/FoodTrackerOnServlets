@@ -57,8 +57,4 @@ public class FoodServiceDefault implements FoodService {
     public void removeByNameAndUserId(String foodName, User user) {
         foodDao.removeByNameAndOwner(foodName, user);
     }
-
-    public List<Food> findAllCommon() {
-        return foodDao.findAllCommon();
-    }
 }

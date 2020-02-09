@@ -46,7 +46,8 @@ public class UserMainServlet extends HttpServlet {
         request.setAttribute("food", new FoodDTO());
         try {
             LOG.debug("setting allCommonFoodDTOs");
-            request.setAttribute("allCommonFoodDTOs", DTOConverter.foodsToFoodDTOs(foodService.findAllCommon()));
+            request.setAttribute("allCommonFoodDTOs",
+                    DTOConverter.foodsToFoodDTOs(foodService.findAllCommonExcludingPersonalByUserId(currentUser.getId())));
 
             LOG.debug("making ConsumptionDataDTO from consumed food of the current day");
             request.setAttribute("ConsumptionDataDTO",
