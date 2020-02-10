@@ -138,7 +138,7 @@
                     </thead>
                     <tbody>
 
-                    <c:forEach var="nextFood" items="${allCommonFood}">
+                    <c:forEach var="nextFood" items="${allCommonFoodDTOs}">
                         <tr>
                             <td><span>${nextFood.name}</span></td>
                             <td>${nextFood.totalCalories}</td>
