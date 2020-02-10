@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/user/main")
 public class UserMainServlet extends HttpServlet {
@@ -58,9 +59,9 @@ public class UserMainServlet extends HttpServlet {
             LOG.debug("doGet() :: consumptionDataDTO {}", consumptionDataDTO);
             request.setAttribute("consumptionDataDTO", consumptionDataDTO);
 
-            LOG.debug("doGet() :: setting usersFoodDTOs");
-            request.setAttribute("userFoodDTOs",
-                    DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser)));
+            List<FoodDTO> userFoodDTOs = DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser));
+            LOG.debug("doGet() :: setting usersFoodDTOs {}", userFoodDTOs);
+            request.setAttribute("userFoodDTOs", userFoodDTOs);
 
         } catch (DaoException e) {
             e.printStackTrace();
