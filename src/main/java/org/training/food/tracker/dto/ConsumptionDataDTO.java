@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class ConsumptionDataDTO {
-    private List<ConsumedFood> consumedFood;
+    private List<ConsumedFood> consumedFoods;
     private BigDecimal dailyNorm;
     private BigDecimal caloriesConsumed;
     private BigDecimal exceededCalories;
@@ -24,7 +24,7 @@ public class ConsumptionDataDTO {
         }
 
         public Builder consumedFoods(List<ConsumedFood> consumedFoods) {
-            consumptionDataDTO.setConsumedFood(consumedFoods);
+            consumptionDataDTO.setConsumedFoods(consumedFoods);
             return this;
         }
 
@@ -53,12 +53,12 @@ public class ConsumptionDataDTO {
         }
     }
 
-    public List<ConsumedFood> getConsumedFood() {
-        return consumedFood;
+    public List<ConsumedFood> getConsumedFoods() {
+        return consumedFoods;
     }
 
-    public void setConsumedFood(List<ConsumedFood> consumedFood) {
-        this.consumedFood = consumedFood;
+    public void setConsumedFoods(List<ConsumedFood> consumedFoods) {
+        this.consumedFoods = consumedFoods;
     }
 
     public BigDecimal getDailyNorm() {
