@@ -33,10 +33,11 @@ public class DayServiceDefault implements DayService {
         LOG.debug("getCurrentDayOfUser()");
         Day day;
         try {
-            LOG.debug("finding current day");
+            LOG.debug("getCurrentDayOfUser() :: finding current day");
             day = dayDao.findByUserAndDate(user, LocalDate.now());
 //            sortConsumedFoodByTimeDesc(day.getConsumedFoods());
         } catch (DaoException e) {
+            LOG.debug("getCurrentDayOfUser() :: current day finding has failed, creating a new day");
             day = Day.builder()
                           .date(LocalDate.now())
                           .consumedFoods(new ArrayList<>())

@@ -40,22 +40,23 @@ public class UserMainServlet extends HttpServlet {
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LOG.debug("doGet()");
         User currentUser = (User) request.getSession().getAttribute("user");
 
         request.setAttribute("food", new FoodDTO());
         try {
-            LOG.debug("setting allCommonFoodDTOs");
-            request.setAttribute("allCommonFoodDTOs",
+            LOG.debug("doGet() :: setting allCommonFoodDTOs");
+            request.setAttribute("doGet() :: allCommonFoodDTOs",
                     DTOConverter.foodsToFoodDTOs(foodService.findAllCommonExcludingPersonalByUserId(currentUser.getId())));
 
-            LOG.debug("making ConsumptionDataDTO from consumed food of the current day");
+            LOG.debug("doGet() :: making ConsumptionDataDTO from consumed food of the current day");
             request.setAttribute("ConsumptionDataDTO",
                     DTOConverter.buildConsumptionDataDTO(
                             dayService.getCurrentDayOfUser(currentUser).getConsumedFoods(),
                             currentUser
                     ));
 
-            LOG.debug("setting usersFoodDTOs");
+            LOG.debug("doGet() :: setting usersFoodDTOs");
             request.setAttribute("usersFoodDTOs",
                     DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser)));
 
@@ -65,7 +66,7 @@ public class UserMainServlet extends HttpServlet {
 
 
         UserDTO userDTO = DTOConverter.userToUserDTO(currentUser);
-        LOG.debug("setting userDTO {}", userDTO);
+        LOG.debug("doGet() :: setting userDTO {}", userDTO);
         request.setAttribute("userDTO", userDTO);
 
         request.getRequestDispatcher("/jsp/user/main.jsp").forward(request, response);
