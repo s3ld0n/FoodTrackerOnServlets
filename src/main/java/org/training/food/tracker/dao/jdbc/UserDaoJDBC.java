@@ -133,6 +133,7 @@ public class UserDaoJDBC implements UserDao {
                        .email(resultSet.getString("email"))
                        .firstName(resultSet.getString("first_name"))
                        .lastName(resultSet.getString("last_name"))
+                       .dailyNormCalories(resultSet.getBigDecimal("daily_norm_calories"))
                        .role(Role.valueOf(resultSet.getString("role")))
                        .build();
     }
