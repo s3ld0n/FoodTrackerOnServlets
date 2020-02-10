@@ -165,10 +165,10 @@
                 <a inline="text">User: </a>
             </li>
             <li class="nav-item">
-                <a>Daily norm: ${userDTO.dailyNorm}</a>
+                <a>Daily norm: ${consumptionDataDTO.dailyNorm}</a>
             </li>
             <li class="nav-item">
-                <a>Consumed today: ${consumedStatsDTO.caloriesConsumed}</a>
+                <a>Consumed today: ${consumptionDataDTO.caloriesConsumed}</a>
             </li>
             <li class="nav-item">
                 <c:if test="${consumedStatsDTO.dailyNormExceeded}">
