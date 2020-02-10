@@ -45,7 +45,7 @@ public class DayServiceDefault implements DayService {
                           .user(user).build();
             dayDao.create(day);
         }
-
+        LOG.debug("getCurrentDayOfUser() :: day was successfully found");
         return day;
     }
 

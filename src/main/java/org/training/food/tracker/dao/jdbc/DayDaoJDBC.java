@@ -117,6 +117,7 @@ public class DayDaoJDBC implements DayDao {
             LOG.debug("findByUserAndDate() ::  making commit");
             autoRollbacker.commit();
         } catch (SQLException e) {
+            LOG.error("Finding day failed of date {}, {}", date, e);
             throw new DaoException("Finding day failed of date " + date, e);
         }
         return day;
@@ -159,12 +160,15 @@ public class DayDaoJDBC implements DayDao {
         consumedFoodStatement.setLong(1, day.getId());
 
         List<ConsumedFood> consumedFoods = new ArrayList<>();
+        LOG.debug("getConsumedFoods() :: executing query");
         try (ResultSet resultSet = consumedFoodStatement.executeQuery()) {
+            LOG.debug("getConsumedFoods() :: looping result set extracting foods");
             while (resultSet.next()) {
                 consumedFoods.add(consumedFoodDao.extractConsumedFood(resultSet));
             }
 
         }
+        LOG.debug("extracted {} consumed foods", consumedFoods.size());
         return consumedFoods;
     }
 
@@ -184,6 +188,7 @@ public class DayDaoJDBC implements DayDao {
             }
 
         } catch (SQLException e) {
+            LOG.error("Days selection failed");
             throw new DaoException("Days selection failed");
         }
         return days;
