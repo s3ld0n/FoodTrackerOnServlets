@@ -60,9 +60,9 @@
                     </thead>
                     <c:forEach var="userFood" items="${userFoodDTOs}">
                         <tr>
-                            <td><span>name</span></td>
+                            <td>${userFood.name}</td>
                             <form class="form-inline needs-validation" role="form" action="${pageContext.request.contextPath}/user/use" object="${userFood}" method="post">
-                                <td>Total Calories <p name="totalCalories" ></p>${userFood.totalCalories}</td>
+                                <td><p name="totalCalories">${userFood.totalCalories}</p></td>
 
                                 <td>
                                     <div class="form-group">
