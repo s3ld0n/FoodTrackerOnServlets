@@ -22,7 +22,7 @@ public class DayDaoJDBC implements DayDao {
                                                                      + "date AS days_date, "
                                                                      + "total_calories AS days_total_calories, "
                                                                      + "user_id AS days_user_id "
-                                                                     + "FROM days WHERE days_user_id = ? AND days_date = ?";
+                                                                     + "FROM days WHERE user_id = ? AND date = ?";
 
     public static final String FIND_ALL_BY_USER_ORDERED_BY_DATE_DESC = "SELECT id, date, total_calories, user_id "
                                                                      + "FROM days WHERE user_id = ? ORDER BY date DESC";
@@ -127,6 +127,8 @@ public class DayDaoJDBC implements DayDao {
         LOG.debug("getDay() ::  setting params of statement");
         dayStatement.setLong(1, user.getId());
         dayStatement.setDate(2, Date.valueOf(date));
+
+        LOG.debug("params have been set - user_id: {}, date: {}", user.getId(), Date.valueOf(date));
 
         LOG.debug("getDay() ::  executing query");
         try (ResultSet resultSet = dayStatement.executeQuery()){
