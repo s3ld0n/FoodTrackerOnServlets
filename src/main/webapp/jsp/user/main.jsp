@@ -58,12 +58,12 @@
                         <th>Amount</th>
                     </tr>
                     </thead>
-                    <c:forEach var="userFood" items="${usersFoodDTOs}">
+                    <c:forEach var="userFood" items="${userFoodDTOs}">
                         <tr>
                             <td><span>name</span></td>
                             <form class="form-inline needs-validation" role="form" action="${pageContext.request.contextPath}/user/use" object="${userFood}" method="post">
-                                <td>Total Calories</td>
-                                <input type="hidden" name="totalCalories" value="${userFood.totalCalories}" >
+                                <td>Total Calories <p name="totalCalories" ></p>${userFood.totalCalories}</td>
+
                                 <td>
                                     <div class="form-group">
                                         <input type="hidden" name="name" value="${userFood.name}" class="form-control">
