@@ -1,15 +1,21 @@
 package org.training.food.tracker.dto;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.service.defaults.FoodServiceDefault;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DTOConverter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DTOConverter.class.getName());
 
     public static UserDTO userToUserDTO(User user) {
         Biometrics biometrics = user.getBiometrics();
@@ -38,9 +44,10 @@ public class DTOConverter {
     }
 
     public static List<FoodDTO> foodsToFoodDTOs(List<Food> foods) {
-        List<FoodDTO> foodDTOS = new ArrayList<>();
-        foods.forEach(DTOConverter::foodToFoodDTO);
-        return foodDTOS;
+        List<FoodDTO> foodDTOs = new ArrayList<>();
+        foodDTOs.addAll(foods.stream().map(DTOConverter::foodToFoodDTO).collect(Collectors.toList()));
+        LOG.debug("foodsToFoodDTOs() :: foodsDTOs: {}", foodDTOs);
+        return foodDTOs;
     }
 
     public static ConsumptionDataDTO buildConsumptionDataDTO(List<ConsumedFood> consumedFoods, User user) {
