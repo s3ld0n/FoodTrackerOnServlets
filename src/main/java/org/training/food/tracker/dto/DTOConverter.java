@@ -51,6 +51,7 @@ public class DTOConverter {
         return ConsumptionDataDTO.builder()
                        .consumedFoods(consumedFoods)
                        .caloriesConsumed(totalCalories)
+                       .dailyNorm(dailyNorm)
                        .exceededCalories(exceededCalories)
                        .isDailyNormExceeded(checkIfDailyNormExceeded(exceededCalories))
                        .build();
