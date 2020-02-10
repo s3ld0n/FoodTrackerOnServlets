@@ -52,28 +52,28 @@ public class DayDaoJDBC implements DayDao {
     private static ConsumedFoodDao consumedFoodDao = new ConsumedFoodDaoJDBC();
 
     public Day create(Day day) throws DaoException {
-
-        LOG.debug("making connection and prepared statement");
+        LOG.debug("create()");
+        LOG.debug("create() :: making connection and prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
                         Statement.RETURN_GENERATED_KEYS)) {
 
-            LOG.debug("setting date, totalCalories, user_id");
+            LOG.debug("create() :: setting date, totalCalories, user_id");
             statement.setDate(1, Date.valueOf(day.getDate()));
             statement.setBigDecimal(2, day.getTotalCalories());
             statement.setLong(3, day.getUser().getId());
 
-            LOG.debug("executing update");
+            LOG.debug("create() :: executing update");
             statement.executeUpdate();
 
 
             try (ResultSet resultSet = statement.getGeneratedKeys()){
-                LOG.debug("setting day id from generated keys of result set");
+                LOG.debug("create() :: setting day id from generated keys of result set");
                 resultSet.next();
                 day.setId(resultSet.getLong(1));
             }
         } catch (SQLException e) {
-            throw new DaoException("Creation of day has failed", e);
+            throw new DaoException("create() :: Creation of day has failed", e);
         }
         return day;
     }
@@ -98,23 +98,23 @@ public class DayDaoJDBC implements DayDao {
         LOG.debug("findByUserAndDate()");
         Day day;
 
-        LOG.debug("getting connection, preparing statements, creating autoRollbacker");
+        LOG.debug("findByUserAndDate() ::  getting connection, preparing statements, creating autoRollbacker");
         try (Connection connection = ConnectionFactory.getConnection();
                 AutoRollbacker autoRollbacker = new AutoRollbacker(connection);
                 PreparedStatement dayStatement = connection.prepareStatement(FIND_BY_USER_AND_DATE_QUERY);
                 PreparedStatement consumedFoodStatement = connection.prepareStatement(
                         FIND_ALL_CONSUMED_FOOD_BY_DAY_ID_ORDER_BY_TIME_DESC);
         ) {
-            LOG.debug("setting autocommit false");
+            LOG.debug("findByUserAndDate() ::  setting autocommit false");
             connection.setAutoCommit(false);
 
-            LOG.debug("getting day");
+            LOG.debug("findByUserAndDate() ::  getting day");
             day = getDay(user, date, dayStatement);
 
-            LOG.debug("getting and setting consumed food");
+            LOG.debug("findByUserAndDate() ::  getting and setting consumed food");
             day.setConsumedFoods(getConsumedFoods(day, consumedFoodStatement));
 
-            LOG.debug("making commit");
+            LOG.debug("findByUserAndDate() ::  making commit");
             autoRollbacker.commit();
         } catch (SQLException e) {
             throw new DaoException("Finding day failed of date " + date, e);
@@ -124,17 +124,17 @@ public class DayDaoJDBC implements DayDao {
 
     private Day getDay(User user, LocalDate date, PreparedStatement dayStatement) throws SQLException, DaoException {
         Day day;
-        LOG.debug("getDay()");
-        LOG.debug("setting params of statement");
+        LOG.debug("getDay() ::  setting params of statement");
         dayStatement.setLong(1, user.getId());
         dayStatement.setDate(2, Date.valueOf(date));
 
-        LOG.debug("executing query");
+        LOG.debug("getDay() ::  executing query");
         try (ResultSet resultSet = dayStatement.executeQuery()){
             if (!resultSet.next()) {
+                LOG.warn("getDay() ::  query returned nothing");
                 throw new DaoException("No such day of " + date);
             }
-            LOG.debug("extracting day from result set");
+            LOG.debug("getDay() ::  extracting day from result set");
             day = extractDay(user, resultSet);
         }
         return day;
@@ -170,13 +170,13 @@ public class DayDaoJDBC implements DayDao {
         LOG.debug("findAllByUserOrderByDateDesc()");
         List<Day> days = new ArrayList<>();
 
-        LOG.debug("making connection, prepared statement");
+        LOG.debug("findAllByUserOrderByDateDesc() ::  making connection, prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement =
                         connection.prepareStatement(FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC)) {
 
             statement.setLong(1, user.getId());
-            LOG.debug("executing query");
+            LOG.debug("findAllByUserOrderByDateDesc() ::  executing query");
             try (ResultSet resultSet = statement.executeQuery()){
                 extractDaysWithConsumedFoods(user, days, resultSet);
             }
@@ -196,7 +196,7 @@ public class DayDaoJDBC implements DayDao {
         days.add(day);
         long previousDayId = day.getId();
 
-        LOG.debug("looping throw result set");
+        LOG.debug("extractDaysWithConsumedFoods() :: looping throw result set");
         while (resultSet.next()) {
             long currentDayId = resultSet.getLong("days_id");
 
