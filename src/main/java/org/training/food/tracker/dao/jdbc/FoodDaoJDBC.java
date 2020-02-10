@@ -21,7 +21,7 @@ public class FoodDaoJDBC implements FoodDao {
 
     public static final String FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID =
             "SELECT id, name, calories, user_id FROM foods WHERE user_id IS NULL AND name NOT IN "
-                                                         + "(SELECT name FROM food WHERE user_id = ?) ORDER BY id DESC";
+                                                         + "(SELECT name FROM foods WHERE user_id = ?) ORDER BY id DESC";
 
     public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
             "SELECT id, name, calories, user_id FROM foods WHERE user_id = ? ORDER BY id DESC";
