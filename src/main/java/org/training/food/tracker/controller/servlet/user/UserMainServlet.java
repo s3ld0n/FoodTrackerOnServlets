@@ -7,6 +7,7 @@ import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.jdbc.ConsumedFoodDaoJDBC;
 import org.training.food.tracker.dao.jdbc.DayDaoJDBC;
 import org.training.food.tracker.dao.jdbc.FoodDaoJDBC;
+import org.training.food.tracker.dto.ConsumptionDataDTO;
 import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
@@ -50,11 +51,12 @@ public class UserMainServlet extends HttpServlet {
                     DTOConverter.foodsToFoodDTOs(foodService.findAllCommonExcludingPersonalByUserId(currentUser.getId())));
 
             LOG.debug("doGet() :: making ConsumptionDataDTO from consumed food of the current day");
-            request.setAttribute("ConsumptionDataDTO",
-                    DTOConverter.buildConsumptionDataDTO(
-                            dayService.getCurrentDayOfUser(currentUser).getConsumedFoods(),
-                            currentUser
-                    ));
+            ConsumptionDataDTO consumptionDataDTO = DTOConverter.buildConsumptionDataDTO(
+                    dayService.getCurrentDayOfUser(currentUser).getConsumedFoods(),
+                    currentUser
+            );
+            LOG.debug("doGet() :: consumptionDataDTO {}", consumptionDataDTO);
+            request.setAttribute("consumptionDataDTO", consumptionDataDTO);
 
             LOG.debug("doGet() :: setting usersFoodDTOs");
             request.setAttribute("usersFoodDTOs",
@@ -66,9 +68,10 @@ public class UserMainServlet extends HttpServlet {
 
 
         UserDTO userDTO = DTOConverter.userToUserDTO(currentUser);
-        LOG.debug("doGet() :: setting userDTO {}", userDTO);
+        LOG.debug("doGet() :: setting userDTO ");
         request.setAttribute("userDTO", userDTO);
 
+        LOG.debug("doGet() :: forwarding page");
         request.getRequestDispatcher("/jsp/user/main.jsp").forward(request, response);
     }
 }
