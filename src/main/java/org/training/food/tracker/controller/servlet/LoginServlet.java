@@ -9,6 +9,7 @@ import org.training.food.tracker.model.User;
 import org.training.food.tracker.service.UserService;
 import org.training.food.tracker.service.defaults.UserServiceDefault;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -58,7 +59,7 @@ public class LoginServlet extends HttpServlet {
         Role role = user.getRole();
 
         LOG.debug("user's role: {}", role);
-        setUserToSession(request, user);
+        addUserToContext(request, user);
 
         response.sendRedirect(getRedirectForRole(role));
 
@@ -78,8 +79,9 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private void setUserToSession(HttpServletRequest request, User user) {
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
+    private void addUserToContext(HttpServletRequest request, User user) {
+        ServletContext context = request.getServletContext();
+        HashSet<User> loggedUsers = (HashSet<User>) context.getAttribute("loggedUsers");
+        context.setAttribute("user", user);
     }
 }
