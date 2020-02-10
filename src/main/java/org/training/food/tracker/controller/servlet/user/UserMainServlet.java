@@ -59,7 +59,7 @@ public class UserMainServlet extends HttpServlet {
             request.setAttribute("consumptionDataDTO", consumptionDataDTO);
 
             LOG.debug("doGet() :: setting usersFoodDTOs");
-            request.setAttribute("usersFoodDTOs",
+            request.setAttribute("userFoodDTOs",
                     DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser)));
 
         } catch (DaoException e) {
