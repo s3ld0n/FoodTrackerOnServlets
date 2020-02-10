@@ -92,4 +92,10 @@ public class ConsumptionDataDTO {
     public void setDailyNormExceeded(boolean dailyNormExceeded) {
         isDailyNormExceeded = dailyNormExceeded;
     }
+
+    @Override public String toString() {
+        return "ConsumptionDataDTO{" + "consumedFoods=" + consumedFoods + ", dailyNorm=" + dailyNorm
+                       + ", caloriesConsumed=" + caloriesConsumed + ", exceededCalories=" + exceededCalories
+                       + ", isDailyNormExceeded=" + isDailyNormExceeded + '}';
+    }
 }
