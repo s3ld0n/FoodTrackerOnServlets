@@ -35,12 +35,13 @@ public class FoodDaoJDBC implements FoodDao {
     }
 
     public List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException {
-        return findFoodsByUserIdUsingQuery(userId, FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC);
+        return findFoodsByUserIdUsingQuery(userId, FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID);
     }
 
     private List<Food> findFoodsByUserIdUsingQuery(Long userId, String query) throws DaoException {
+        LOG.debug("findFoodsByUserIdUsingQuery()");
         List<Food> foods = new ArrayList<>();
-        LOG.debug("creating connection, making prepared statement");
+        LOG.debug("findFoodsByUserIdUsingQuery() :: creating connection, making prepared statement");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, userId);
@@ -48,9 +49,10 @@ public class FoodDaoJDBC implements FoodDao {
             getFoods(foods, statement);
 
         } catch (SQLException e) {
+            LOG.debug("findFoodsByUserIdUsingQuery() :: selection of common food that does not belong to user has failed");
             throw new DaoException("selection of common food that does not belong to user has failed", e);
         }
-        LOG.debug("{} foods were found", foods.size());
+        LOG.debug("findFoodsByUserIdUsingQuery() :: {} foods were found", foods.size());
         return foods;
     }
 
@@ -66,14 +68,14 @@ public class FoodDaoJDBC implements FoodDao {
 
     private Food extractFood(ResultSet resultSet) throws SQLException {
         return Food.builder()
-                                        .id(resultSet.getLong("id"))
-                                        .name(resultSet.getString("name"))
-                                        .calories(resultSet.getBigDecimal("calories"))
-                                        .build();
+                            .id(resultSet.getLong("id"))
+                            .name(resultSet.getString("name"))
+                            .calories(resultSet.getBigDecimal("calories"))
+                            .build();
     }
 
     public List<Food> findAllByUserIdOrderByIdDesc(Long userId) throws DaoException {
-        return findFoodsByUserIdUsingQuery(userId, FIND_ALL_COMMON_EXCLUDING_PERSONAL_BY_USER_ID);
+        return findFoodsByUserIdUsingQuery(userId, FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC);
     }
 
     @Override public Food findById(Long id) throws DaoException {
