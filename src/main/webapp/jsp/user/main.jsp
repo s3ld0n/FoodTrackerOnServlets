@@ -95,24 +95,32 @@
         <div class="col">
             <div class="card card-body" id="consumed">
                 <h2>Consumed Today</h2>
-                <table class="table table-striped border-dark">
-                    <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Calories</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="consumedFood" items="${ConsumptionDataDTO.consumedFoods}">
+                <c:choose>
+                    <c:when test="${empty consumptionDataDTO.consumedFoods}">
+                        <h3>Nothing here yet</h3>
+                    </c:when>
+                    <c:otherwise>
+                        <table class="table table-striped border-dark">
+                            <thead>
                             <tr>
-                                <td>${consumedFood.name}</td>
-                                <td>${consumedFood.amount}</td>
-                                <td>${consumedFood.totalCalories}</td>
+                                <th scope="col">Name</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Calories</th>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+
+                            <c:forEach var="consumedFood" items="${consumptionDataDTO.consumedFoods}">
+                                <tr>
+                                    <td>${consumedFood.name}</td>
+                                    <td>${consumedFood.amount}</td>
+                                    <td>${consumedFood.totalCalories}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
