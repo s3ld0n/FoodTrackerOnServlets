@@ -13,6 +13,10 @@ public class BiometricsDTO {
     private BigDecimal height;
     private Lifestyle lifestyle;
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private BiometricsDTO biometricsDTO;
 
