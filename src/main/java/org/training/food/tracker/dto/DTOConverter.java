@@ -6,7 +6,6 @@ import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.service.defaults.FoodServiceDefault;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,20 +19,23 @@ public class DTOConverter {
     public static UserDTO userToUserDTO(User user) {
         Biometrics biometrics = user.getBiometrics();
         return UserDTO.builder()
-                       .id(user.getId())
                        .username(user.getUsername())
                        .email(user.getEmail())
                        .firstName(user.getFirstName())
                        .lastName(user.getLastName())
-                       .age(biometrics.getAge())
-                       .sex(biometrics.getSex())
-                       .weight(biometrics.getWeight())
-                       .height(biometrics.getHeight())
-                       .lifestyle(biometrics.getLifestyle())
-                       .dailyNorm(user.getDailyNormCalories())
+                       .biometricsDTO(biometricsToBiometricsDTO(biometrics))
                        .role(user.getRole())
                        .password(user.getPassword())
                        .build();
+    }
+
+    public static BiometricsDTO biometricsToBiometricsDTO(Biometrics biometrics) {
+        return BiometricsDTO.builder()
+                       .age(biometrics.getAge())
+                       .height(biometrics.getHeight())
+                       .weight(biometrics.getWeight())
+                       .lifestyle(biometrics.getLifestyle())
+                       .sex(biometrics.getSex()).build();
     }
 
     public static FoodDTO foodToFoodDTO(Food food) {
@@ -48,20 +50,6 @@ public class DTOConverter {
         foodDTOs.addAll(foods.stream().map(DTOConverter::foodToFoodDTO).collect(Collectors.toList()));
         LOG.debug("foodsToFoodDTOs() :: foodsDTOs: {}", foodDTOs);
         return foodDTOs;
-    }
-
-    public static ConsumptionDataDTO buildConsumptionDataDTO(List<ConsumedFood> consumedFoods, User user) {
-        BigDecimal totalCalories = sumTotalCalories(consumedFoods);
-        BigDecimal dailyNorm = user.getDailyNormCalories();
-        BigDecimal exceededCalories = findExceededCalories(totalCalories, dailyNorm);
-
-        return ConsumptionDataDTO.builder()
-                       .consumedFoods(consumedFoods)
-                       .caloriesConsumed(totalCalories)
-                       .dailyNorm(dailyNorm)
-                       .exceededCalories(exceededCalories)
-                       .isDailyNormExceeded(checkIfDailyNormExceeded(exceededCalories))
-                       .build();
     }
 
     private static boolean checkIfDailyNormExceeded(BigDecimal exceededCalories) {
