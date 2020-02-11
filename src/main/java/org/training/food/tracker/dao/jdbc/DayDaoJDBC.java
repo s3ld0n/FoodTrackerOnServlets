@@ -61,7 +61,7 @@ public class DayDaoJDBC implements DayDao {
 
             LOG.debug("create() :: setting date, totalCalories, user_id");
             statement.setDate(1, Date.valueOf(day.getDate()));
-            statement.setBigDecimal(2, day.getTotalCalories());
+            statement.setBigDecimal(2, day.getCaloriesConsumed());
             statement.setLong(3, day.getUser().getId());
 
             LOG.debug("create() :: executing update");
