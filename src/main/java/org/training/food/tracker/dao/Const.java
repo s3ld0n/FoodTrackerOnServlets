@@ -10,4 +10,6 @@ public interface Const {
     String DATASOURCE_MIN_IDLE = "datasource.min-idle";
     String DATASOURCE_MAX_WAIT = "datasource.max-wait";
     String DATASOURCE_MAX_OPEN_PREPARED_STATEMENTS = "datasource.max-open-prepared-statements";
+
+    String URL_AUTH_NOT_REQUIRED = "url.auth-not-required";
 }
