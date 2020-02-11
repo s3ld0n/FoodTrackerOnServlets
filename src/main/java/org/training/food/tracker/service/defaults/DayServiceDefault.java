@@ -10,6 +10,7 @@ import org.training.food.tracker.dto.ConsumptionDataDTO;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.builder.DayBuilder;
 import org.training.food.tracker.service.DayService;
 
 import java.math.BigDecimal;
@@ -38,7 +39,7 @@ public class DayServiceDefault implements DayService {
 //            sortConsumedFoodByTimeDesc(day.getConsumedFoods());
         } catch (DaoException e) {
             LOG.debug("getCurrentDayOfUser() :: current day finding has failed, creating a new day");
-            day = Day.builder()
+            day = DayBuilder.instance()
                           .date(LocalDate.now())
                           .consumedFoods(new ArrayList<>())
                           .totalCalories(new BigDecimal(0))

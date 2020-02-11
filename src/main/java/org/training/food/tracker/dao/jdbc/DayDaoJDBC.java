@@ -11,6 +11,7 @@ import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.builder.DayBuilder;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -146,7 +147,7 @@ public class DayDaoJDBC implements DayDao {
     private Day extractDay(User user, ResultSet resultSet) throws SQLException {
         LOG.debug("extractDay()");
         Day day;
-        day = Day.builder()
+        day = DayBuilder.instance()
                       .id(resultSet.getLong("days_id"))
                       .date(resultSet.getDate("days_date").toLocalDate())
                       .totalCalories(resultSet.getBigDecimal("days_total_calories"))
