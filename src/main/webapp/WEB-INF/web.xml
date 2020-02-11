@@ -52,12 +52,6 @@
 
   <listener>
     <listener-class>
-      org.training.food.tracker.controller.listener.SessionListener
-    </listener-class>
-  </listener>
-
-  <listener>
-    <listener-class>
       org.training.food.tracker.controller.listener.ContextListener
     </listener-class>
   </listener>
