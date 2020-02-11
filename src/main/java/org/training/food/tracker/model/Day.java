@@ -8,17 +8,11 @@ public class Day {
 
     private Long id;
     private List<ConsumedFood> consumedFoods;
-    private BigDecimal totalCalories;
+    private BigDecimal caloriesConsumed;
+    private BigDecimal exceededCalories;
+    private boolean isDailyNormExceeded;
     private User user;
     private LocalDate date;
-
-    public void addCalories(BigDecimal calories) {
-        totalCalories = totalCalories.add(calories);
-    }
-
-    @Override public String toString() {
-        return "Day{" + "id=" + id + ", consumedFoods=" + consumedFoods + '}';
-    }
 
     public Long getId() {
         return id;
@@ -36,12 +30,28 @@ public class Day {
         this.consumedFoods = consumedFoods;
     }
 
-    public BigDecimal getTotalCalories() {
-        return totalCalories;
+    public BigDecimal getCaloriesConsumed() {
+        return caloriesConsumed;
     }
 
-    public void setTotalCalories(BigDecimal totalCalories) {
-        this.totalCalories = totalCalories;
+    public void setCaloriesConsumed(BigDecimal caloriesConsumed) {
+        this.caloriesConsumed = caloriesConsumed;
+    }
+
+    public BigDecimal getExceededCalories() {
+        return exceededCalories;
+    }
+
+    public void setExceededCalories(BigDecimal exceededCalories) {
+        this.exceededCalories = exceededCalories;
+    }
+
+    public boolean isDailyNormExceeded() {
+        return isDailyNormExceeded;
+    }
+
+    public void setDailyNormExceeded(boolean dailyNormExceeded) {
+        isDailyNormExceeded = dailyNormExceeded;
     }
 
     public User getUser() {
