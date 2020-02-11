@@ -42,7 +42,9 @@ public class DayServiceDefault implements DayService {
             day = DayBuilder.instance()
                           .date(LocalDate.now())
                           .consumedFoods(new ArrayList<>())
-                          .totalCalories(new BigDecimal(0))
+                          .caloriesConsumed(new BigDecimal(0))
+                          .exceededCalories(new BigDecimal(0))
+                          .isDailyNormExceeded(false)
                           .user(user).build();
             dayDao.create(day);
         }
@@ -82,7 +84,7 @@ public class DayServiceDefault implements DayService {
         BigDecimal userDailyNorm = day.getUser().getDailyNormCalories();
         LOG.debug("User's daily norm {}", userDailyNorm);
 
-        BigDecimal currentDayTotalCalories = day.getTotalCalories();
+        BigDecimal currentDayTotalCalories = day.getCaloriesConsumed();
         LOG.debug("Current day total calories: {}", currentDayTotalCalories);
         boolean isNormExceeded = false;
         BigDecimal exceededCalories;
