@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.DayDao;
-import org.training.food.tracker.dto.ConsumptionDataDTO;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
@@ -60,12 +59,6 @@ public class DayServiceDefault implements DayService {
     //        return mapDaysToConsumeStats(getAllDaysByUser(user));
     //    }
 
-    private Map<Day, ConsumptionDataDTO> mapDaysToConsumeStats(List<Day> days) {
-        Map<Day, ConsumptionDataDTO> dayToConsumeStats = new LinkedHashMap<>();
-        days.forEach(day -> dayToConsumeStats.put(day, getConsumeStatsForDay(day)));
-        return dayToConsumeStats;
-    }
-
     public List<Day> getAllDaysByUser(User user) throws DaoException {
         return dayDao.findAllByUserOrderByDateDesc(user);
     }
@@ -76,28 +69,5 @@ public class DayServiceDefault implements DayService {
             totalCalories = totalCalories.add(food.getTotalCalories());
         }
         return totalCalories;
-    }
-
-    public ConsumptionDataDTO getConsumeStatsForDay(Day day) {
-        LOG.debug("Getting day statistics for user");
-
-        BigDecimal userDailyNorm = day.getUser().getDailyNormCalories();
-        LOG.debug("User's daily norm {}", userDailyNorm);
-
-        BigDecimal currentDayTotalCalories = day.getCaloriesConsumed();
-        LOG.debug("Current day total calories: {}", currentDayTotalCalories);
-        boolean isNormExceeded = false;
-        BigDecimal exceededCalories;
-
-        if (userDailyNorm.compareTo(currentDayTotalCalories) > 0) {
-            exceededCalories = new BigDecimal(0);
-        } else{
-            exceededCalories = currentDayTotalCalories.subtract(userDailyNorm);
-            isNormExceeded = true;
-        }
-        LOG.debug("exceeded calories: {}", exceededCalories);
-
-        return ConsumptionDataDTO.builder().caloriesConsumed(currentDayTotalCalories).isDailyNormExceeded(isNormExceeded)
-                       .exceededCalories(exceededCalories).build();
     }
 }

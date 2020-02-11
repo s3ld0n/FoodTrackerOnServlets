@@ -1,7 +1,6 @@
 package org.training.food.tracker.service;
 
 import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.dto.ConsumptionDataDTO;
 import org.training.food.tracker.model.Day;
 import org.training.food.tracker.model.User;
 
@@ -14,6 +13,4 @@ public interface DayService {
     List<Day> getAllDaysByUser(User user) throws DaoException;
 
     BigDecimal getTotalCaloriesOfDay(Day day);
-
-    ConsumptionDataDTO getConsumeStatsForDay(Day day);
 }
