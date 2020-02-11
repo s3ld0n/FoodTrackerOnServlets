@@ -31,8 +31,18 @@ public class DayBuilder {
         return this;
     }
 
-    public DayBuilder totalCalories(BigDecimal totalCalories) {
-        day.setTotalCalories(totalCalories);
+    public DayBuilder caloriesConsumed(BigDecimal totalCalories) {
+        day.setCaloriesConsumed(totalCalories);
+        return this;
+    }
+
+    public DayBuilder exceededCalories(BigDecimal exceededCalories) {
+        day.setExceededCalories(exceededCalories);
+        return this;
+    }
+
+    public DayBuilder isDailyNormExceeded(boolean isDailyNormExceeded) {
+        day.setDailyNormExceeded(isDailyNormExceeded);
         return this;
     }
 

@@ -3,6 +3,7 @@ package org.training.food.tracker.controller.servlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.training.food.tracker.controller.UserCredentials;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.Role;
 import org.training.food.tracker.model.User;
@@ -15,7 +16,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -37,13 +37,13 @@ public class LoginServlet extends HttpServlet {
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        LOG.debug("doPost");
+        LOG.debug("doPost()");
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         LOG.debug("validating username and password");
-        validateCredentialsAndSendBackIfNot(request, response, username, password);
+        validateUserAndSendBackIfNot(request, response, username, password);
 
         User user;
 
@@ -51,16 +51,19 @@ public class LoginServlet extends HttpServlet {
         try {
             user = userService.findByUsername(username);
         } catch (DaoException e) {
-            e.printStackTrace();
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
         }
 
         Role role = user.getRole();
 
-        LOG.debug("user's role: {}", role);
-        addUserToContext(request, user);
+        UserCredentials userCredentials = new UserCredentials(username, role.toString());
 
+
+        placeUserCredentialsIntoSession(request, userCredentials);
+        addUserToContext(request, userCredentials);
+
+        LOG.debug("user added to session {} and context {}", request.getSession().getAttribute("userCredentials"), ((HashSet) getServletContext().getAttribute("loggedUsers")).toArray());
         response.sendRedirect(getRedirectForRole(role));
     }
 
@@ -68,16 +71,20 @@ public class LoginServlet extends HttpServlet {
         return (role == Role.USER) ? "user/main" : "admin/main";
     }
 
-    private void validateCredentialsAndSendBackIfNot(HttpServletRequest request, HttpServletResponse response,
+    private void validateUserAndSendBackIfNot(HttpServletRequest request, HttpServletResponse response,
             String username, String password) throws IOException {
         if(username == null || username.equals("") || password == null || password.equals("")){
             response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 
-    private void addUserToContext(HttpServletRequest request, User user) {
+    private void placeUserCredentialsIntoSession(HttpServletRequest request, UserCredentials userCredentials) {
+        request.getSession().setAttribute("userCredentials", userCredentials);
+    }
+
+    private void addUserToContext(HttpServletRequest request, UserCredentials userCredentials) {
         ServletContext context = request.getServletContext();
-        HashSet<User> loggedUsers = (HashSet<User>) context.getAttribute("loggedUsers");
-        context.setAttribute("user", user);
+        HashSet<UserCredentials> loggedUsers = (HashSet<UserCredentials>) context.getAttribute("loggedUsers");
+        loggedUsers.add(userCredentials);
     }
 }

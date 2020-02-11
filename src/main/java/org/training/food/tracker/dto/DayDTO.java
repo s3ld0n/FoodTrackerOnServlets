@@ -3,53 +3,55 @@ package org.training.food.tracker.dto;
 import org.training.food.tracker.model.ConsumedFood;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
-public class ConsumptionDataDTO {
+public class DayDTO {
+
     private List<ConsumedFood> consumedFoods;
-    private BigDecimal dailyNorm;
     private BigDecimal caloriesConsumed;
     private BigDecimal exceededCalories;
     private boolean isDailyNormExceeded;
+    private LocalDate date;
 
     public static Builder builder() {
         return new Builder();
     }
 
     public static class Builder {
-        private ConsumptionDataDTO consumptionDataDTO;
+        private DayDTO dayDTO;
 
         Builder() {
-            this.consumptionDataDTO = new ConsumptionDataDTO();
+            this.dayDTO = new DayDTO();
         }
 
         public Builder consumedFoods(List<ConsumedFood> consumedFoods) {
-            consumptionDataDTO.setConsumedFoods(consumedFoods);
+            dayDTO.setConsumedFoods(consumedFoods);
             return this;
         }
 
-        public Builder dailyNorm(BigDecimal dailyNorm) {
-            consumptionDataDTO.setDailyNorm(dailyNorm);
-            return this;
-        }
-
-        public Builder caloriesConsumed(BigDecimal caloriesConsumed) {
-            consumptionDataDTO.setCaloriesConsumed(caloriesConsumed);
+        public Builder caloriesConsumed(BigDecimal totalCalories) {
+            dayDTO.setCaloriesConsumed(totalCalories);
             return this;
         }
 
         public Builder exceededCalories(BigDecimal exceededCalories) {
-            consumptionDataDTO.setExceededCalories(exceededCalories);
+            dayDTO.setExceededCalories(exceededCalories);
             return this;
         }
 
-        public Builder isDailyNormExceeded(boolean isDailyNormExceeded) {
-            consumptionDataDTO.setDailyNormExceeded(isDailyNormExceeded);
+        public Builder setDailyNormExceeded(boolean isDailyNormExceeded) {
+            dayDTO.setDailyNormExceeded(isDailyNormExceeded);
             return this;
         }
 
-        public ConsumptionDataDTO build() {
-            return consumptionDataDTO;
+        public Builder date(LocalDate date) {
+            dayDTO.setDate(date);
+            return this;
+        }
+
+        public DayDTO build() {
+            return dayDTO;
         }
     }
 
@@ -59,14 +61,6 @@ public class ConsumptionDataDTO {
 
     public void setConsumedFoods(List<ConsumedFood> consumedFoods) {
         this.consumedFoods = consumedFoods;
-    }
-
-    public BigDecimal getDailyNorm() {
-        return dailyNorm;
-    }
-
-    public void setDailyNorm(BigDecimal dailyNorm) {
-        this.dailyNorm = dailyNorm;
     }
 
     public BigDecimal getCaloriesConsumed() {
@@ -93,9 +87,11 @@ public class ConsumptionDataDTO {
         isDailyNormExceeded = dailyNormExceeded;
     }
 
-    @Override public String toString() {
-        return "ConsumptionDataDTO{" + "consumedFoods=" + consumedFoods + ", dailyNorm=" + dailyNorm
-                       + ", caloriesConsumed=" + caloriesConsumed + ", exceededCalories=" + exceededCalories
-                       + ", isDailyNormExceeded=" + isDailyNormExceeded + '}';
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

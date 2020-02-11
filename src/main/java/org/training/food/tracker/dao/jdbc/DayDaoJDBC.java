@@ -21,7 +21,9 @@ import java.util.List;
 public class DayDaoJDBC implements DayDao {
     public static final String FIND_BY_USER_AND_DATE_QUERY = "SELECT id AS days_id, "
                                                                      + "date AS days_date, "
-                                                                     + "total_calories AS days_total_calories, "
+                                                                     + "calories_consumed AS days_calories_consumed,"
+                                                                     + "exceeded_calories AS  days_exceeded_calories,"
+                                                                     + "is_daily_norm_exceeded AS days_is_daily_norm_exceeded,"
                                                                      + "user_id AS days_user_id "
                                                                      + "FROM days WHERE user_id = ? AND date = ?";
 
@@ -31,12 +33,12 @@ public class DayDaoJDBC implements DayDao {
     public static final String FIND_ALL_CONSUMED_FOOD_BY_DAY_ID_ORDER_BY_TIME_DESC =
             "SELECT id, amount, name, time, total_calories, day_id FROM consumed_foods WHERE day_id = ? ORDER BY time DESC";
 
-    public static final String CREATE_QUERY = "INSERT INTO days (date, total_calories, user_id) VALUES (?,?,?)";
+    public static final String CREATE_QUERY = "INSERT INTO days (date, calories_consumed, user_id) VALUES (?,?,?)";
 
     public static final String FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC =
                                                   "SELECT days.id AS days_id, "
                                                         + "days.date AS days_date, "
-                                                        + "days.total_calories AS days_total_calories, "
+                                                        + "days.calories_consumed AS days_total_calories, "
                                                         + "days.user_id AS days_user_id, "
                                                         + "consumed_foods.id AS consumed_foods_id, "
                                                         + "consumed_foods.amount AS consumed_foods_amount, "
@@ -61,7 +63,7 @@ public class DayDaoJDBC implements DayDao {
 
             LOG.debug("create() :: setting date, totalCalories, user_id");
             statement.setDate(1, Date.valueOf(day.getDate()));
-            statement.setBigDecimal(2, day.getTotalCalories());
+            statement.setBigDecimal(2, day.getCaloriesConsumed());
             statement.setLong(3, day.getUser().getId());
 
             LOG.debug("create() :: executing update");
@@ -150,7 +152,7 @@ public class DayDaoJDBC implements DayDao {
         day = DayBuilder.instance()
                       .id(resultSet.getLong("days_id"))
                       .date(resultSet.getDate("days_date").toLocalDate())
-                      .totalCalories(resultSet.getBigDecimal("days_total_calories"))
+                      .caloriesConsumed(resultSet.getBigDecimal("days_calories_consumed"))
                       .user(user)
                       .build();
         return day;

@@ -12,7 +12,8 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private Role role;
-    private BigDecimal dailyNormCalories;
+    private BiometricsDTO biometricsDTO;
+    private BigDecimal dailyNorm;
 
     public static Builder builder() {
         return new Builder();
@@ -50,14 +51,18 @@ public class UserDTO {
             return this;
         }
 
+        public Builder biometricsDTO(BiometricsDTO biometricsDTO) {
+            userDTO.setBiometricsDTO(biometricsDTO);
+            return this;
+        }
+
         public Builder role(Role role) {
             userDTO.setRole(role);
             return this;
         }
 
-
         public Builder dailyNorm(BigDecimal dailyNorm) {
-            userDTO.setDailyNormCalories(dailyNorm);
+            userDTO.setDailyNorm(dailyNorm);
             return this;
         }
 
@@ -106,6 +111,14 @@ public class UserDTO {
         this.email = email;
     }
 
+    public BiometricsDTO getBiometricsDTO() {
+        return biometricsDTO;
+    }
+
+    public void setBiometricsDTO(BiometricsDTO biometricsDTO) {
+        this.biometricsDTO = biometricsDTO;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -114,11 +127,11 @@ public class UserDTO {
         this.role = role;
     }
 
-    public BigDecimal getDailyNormCalories() {
-        return dailyNormCalories;
+    public BigDecimal getDailyNorm() {
+        return dailyNorm;
     }
 
-    public void setDailyNormCalories(BigDecimal dailyNormCalories) {
-        this.dailyNormCalories = dailyNormCalories;
+    public void setDailyNorm(BigDecimal dailyNorm) {
+        this.dailyNorm = dailyNorm;
     }
 }
