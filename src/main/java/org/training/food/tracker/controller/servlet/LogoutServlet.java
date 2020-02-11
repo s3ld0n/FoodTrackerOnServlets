@@ -2,6 +2,7 @@ package org.training.food.tracker.controller.servlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.training.food.tracker.controller.UserCredentials;
 import org.training.food.tracker.model.User;
 
 import javax.servlet.ServletException;
@@ -23,13 +24,14 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        User currentUser = (User) session.getAttribute("user");
+        UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
 
-        LOG.debug("current user in session: {}",  currentUser.getUsername());
+        LOG.debug("invalidate session");
+        session.invalidate();
 
-        ((HashSet<String>) getServletContext().getAttribute("loggedUsers")).remove(currentUser.getUsername());
+        HashSet<UserCredentials> loggedUsers = ((HashSet<UserCredentials>) getServletContext().getAttribute("loggedUsers"));
+        loggedUsers.remove(userCredentials);
 
-        session.setAttribute("user", "");
         response.sendRedirect("/");
     }
 }
