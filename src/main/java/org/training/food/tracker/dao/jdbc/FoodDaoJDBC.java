@@ -9,6 +9,7 @@ import org.training.food.tracker.dao.FoodDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.builder.FoodBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -67,7 +68,7 @@ public class FoodDaoJDBC implements FoodDao {
     }
 
     private Food extractFood(ResultSet resultSet) throws SQLException {
-        return Food.builder()
+        return FoodBuilder.instance()
                             .id(resultSet.getLong("id"))
                             .name(resultSet.getString("name"))
                             .calories(resultSet.getBigDecimal("calories"))

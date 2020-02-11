@@ -8,6 +8,8 @@ import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.UserDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.*;
+import org.training.food.tracker.model.builder.BiometricsBuilder;
+import org.training.food.tracker.model.builder.UserBuilder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -126,7 +128,7 @@ public class UserDaoJDBC implements UserDao {
     }
 
     private User buildUser(ResultSet resultSet) throws SQLException {
-        return User.builder()
+        return UserBuilder.instance()
                        .id(resultSet.getLong("u_id"))
                        .username(resultSet.getString("username"))
                        .password(resultSet.getString("password"))
@@ -139,7 +141,7 @@ public class UserDaoJDBC implements UserDao {
     }
 
     private Biometrics buildBiometrics(ResultSet resultSet) throws SQLException {
-        return Biometrics.builder()
+        return BiometricsBuilder.instance()
                              .id(resultSet.getLong("bio_id"))
                              .age(resultSet.getBigDecimal("age"))
                              .sex(Sex.valueOf(resultSet.getString("sex")))

@@ -62,10 +62,6 @@ public class LoginServlet extends HttpServlet {
         addUserToContext(request, user);
 
         response.sendRedirect(getRedirectForRole(role));
-
-        HashSet<String> loggedUsers = (HashSet<String>) getServletContext().getAttribute("loggedUsers");
-        loggedUsers.add(username);
-
     }
 
     private String getRedirectForRole(Role role) {

@@ -10,6 +10,7 @@ import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.builder.FoodBuilder;
 import org.training.food.tracker.service.ConsumedFoodService;
 import org.training.food.tracker.service.FoodService;
 
@@ -30,7 +31,7 @@ public class FoodServiceDefault implements FoodService {
 
     public void addForOwner(FoodDTO foodDTO, User owner) throws DaoException {
         LOG.debug("adding foodDTO: {}", foodDTO);
-        Food food = Food.builder()
+        Food food = FoodBuilder.instance()
                         .name(foodDTO.getName())
                         .calories(foodDTO.getTotalCalories())
                         .owner(owner)

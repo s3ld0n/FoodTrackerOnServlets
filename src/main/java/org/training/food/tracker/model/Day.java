@@ -12,47 +12,6 @@ public class Day {
     private User user;
     private LocalDate date;
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private Day day;
-
-        Builder() {
-            this.day = new Day();
-        }
-
-        public Builder id(Long id) {
-            day.setId(id);
-            return this;
-        }
-
-        public Builder consumedFoods(List<ConsumedFood> consumedFoods) {
-            day.setConsumedFoods(consumedFoods);
-            return this;
-        }
-
-        public Builder totalCalories(BigDecimal totalCalories) {
-            day.setTotalCalories(totalCalories);
-            return this;
-        }
-
-        public Builder user(User user) {
-            day.setUser(user);
-            return this;
-        }
-
-        public Builder date(LocalDate date) {
-            day.setDate(date);
-            return this;
-        }
-
-        public Day build() {
-            return day;
-        }
-    }
-
     public void addCalories(BigDecimal calories) {
         totalCalories = totalCalories.add(calories);
     }
