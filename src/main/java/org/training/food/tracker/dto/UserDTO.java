@@ -1,25 +1,18 @@
 package org.training.food.tracker.dto;
 
-import org.training.food.tracker.model.Lifestyle;
 import org.training.food.tracker.model.Role;
-import org.training.food.tracker.model.Sex;
 
 import java.math.BigDecimal;
 
 public class UserDTO {
 
-    private Long id;
     private String username;
     private String password;
     private String email;
     private String firstName;
     private String lastName;
     private Role role;
-    private BigDecimal age;
-    private Sex sex;
-    private BigDecimal weight;
-    private BigDecimal height;
-    private Lifestyle lifestyle;
+    private BiometricsDTO biometricsDTO;
     private BigDecimal dailyNorm;
 
     public static Builder builder() {
@@ -29,13 +22,8 @@ public class UserDTO {
     public static class Builder {
         private UserDTO userDTO;
 
-        public Builder() {
+        private Builder() {
             this.userDTO = new UserDTO();
-        }
-
-        public Builder id(Long id) {
-            userDTO.setId(id);
-            return this;
         }
 
         public Builder username(String username) {
@@ -63,33 +51,13 @@ public class UserDTO {
             return this;
         }
 
+        public Builder biometricsDTO(BiometricsDTO biometricsDTO) {
+            userDTO.setBiometricsDTO(biometricsDTO);
+            return this;
+        }
+
         public Builder role(Role role) {
             userDTO.setRole(role);
-            return this;
-        }
-
-        public Builder age(BigDecimal age) {
-            userDTO.setAge(age);
-            return this;
-        }
-
-        public Builder sex(Sex sex) {
-            userDTO.setSex(sex);
-            return this;
-        }
-
-        public Builder height(BigDecimal height) {
-            userDTO.setHeight(height);
-            return this;
-        }
-
-        public Builder weight(BigDecimal weight) {
-            userDTO.setWeight(weight);
-            return this;
-        }
-
-        public Builder lifestyle(Lifestyle lifestyle) {
-            userDTO.setLifestyle(lifestyle);
             return this;
         }
 
@@ -101,14 +69,6 @@ public class UserDTO {
         public UserDTO build() {
             return userDTO;
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -151,52 +111,20 @@ public class UserDTO {
         this.email = email;
     }
 
+    public BiometricsDTO getBiometricsDTO() {
+        return biometricsDTO;
+    }
+
+    public void setBiometricsDTO(BiometricsDTO biometricsDTO) {
+        this.biometricsDTO = biometricsDTO;
+    }
+
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public BigDecimal getAge() {
-        return age;
-    }
-
-    public void setAge(BigDecimal age) {
-        this.age = age;
-    }
-
-    public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
-
-    public BigDecimal getWeight() {
-        return weight;
-    }
-
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
-    }
-
-    public BigDecimal getHeight() {
-        return height;
-    }
-
-    public void setHeight(BigDecimal height) {
-        this.height = height;
-    }
-
-    public Lifestyle getLifestyle() {
-        return lifestyle;
-    }
-
-    public void setLifestyle(Lifestyle lifestyle) {
-        this.lifestyle = lifestyle;
     }
 
     public BigDecimal getDailyNorm() {
