@@ -25,13 +25,15 @@ public class LogoutServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
+        LOG.debug("doGet :: logged user before invalidate session {}", userCredentials);
 
         LOG.debug("invalidate session");
         session.invalidate();
 
         HashSet<UserCredentials> loggedUsers = ((HashSet<UserCredentials>) getServletContext().getAttribute("loggedUsers"));
-        loggedUsers.remove(userCredentials);
 
+        loggedUsers.remove(userCredentials);
+        LOG.debug("logged users :: {}", loggedUsers.toArray());
         response.sendRedirect("/");
     }
 }
