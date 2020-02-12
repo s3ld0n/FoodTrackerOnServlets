@@ -3,7 +3,10 @@ package org.training.food.tracker.controller.servlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.controller.validator.RegistrationFormValidator;
+import org.training.food.tracker.dao.UserDao;
+import org.training.food.tracker.dao.jdbc.UserDaoJDBC;
 import org.training.food.tracker.dto.UserDTO;
+import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.Lifestyle;
 import org.training.food.tracker.model.Sex;
 
@@ -19,10 +22,11 @@ import java.text.DecimalFormat;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
+    private UserDao userDao;
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationServlet.class.getName());
 
     @Override public void init() throws ServletException {
-
+        userDao = new UserDaoJDBC();
     }
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
