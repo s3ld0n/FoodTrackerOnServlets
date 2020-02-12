@@ -2,13 +2,7 @@ package org.training.food.tracker.controller.servlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.training.food.tracker.controller.validator.RegistrationFormValidator;
-import org.training.food.tracker.dao.BiometricsDao;
 import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.dao.UserDao;
-import org.training.food.tracker.dao.jdbc.BiometricsDaoJDBC;
-import org.training.food.tracker.dao.jdbc.UserDaoJDBC;
-import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.Lifestyle;
 import org.training.food.tracker.model.Sex;
@@ -27,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
@@ -50,49 +43,55 @@ public class RegistrationServlet extends HttpServlet {
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String firstName = request.getParameter("firstName");
-
 //        LOG.debug("validate first name {}", RegistrationFormValidator.validateFirstName(firstName));
 
-        String lastName = request.getParameter("lastName");
-        BigDecimal age = new BigDecimal(Double.parseDouble(request.getParameter("age")));
-        Sex sex = Sex.valueOf(request.getParameter("sex"));
-        BigDecimal weight = new BigDecimal(Double.parseDouble(request.getParameter("weight")));
-        BigDecimal height = new BigDecimal(Double.parseDouble(request.getParameter("height")));
-        Lifestyle lifestyle = Lifestyle.valueOf(request.getParameter("lifestyle"));
-        String password = request.getParameter("password");
-        String passwordConfirm = request.getParameter("passwordConfirm");
+        Biometrics biometrics = buildBiometrics(request);
 
-        User user = UserBuilder.instance()
-                            .username(username)
-                            .email(email)
-                            .firstName(firstName)
-                            .lastName(lastName)
-                            .password(password)
-                            .build();
+        User user = builderUser(request);
+        user.setDailyNormCalories(userService.calculateDailyNormCalories(biometrics));
+        user = insertUserIntoDB(user);
 
-        try {
-            user = userService.create(user);
-        } catch (DaoException e) {
-            LOG.error("user creation failed", e);
-        }
+        biometrics.setOwner(user);
+        biometrics = insertBiometricsIntoDB(biometrics);
 
-        Biometrics biometrics = BiometricsBuilder.instance()
-                                        .owner(user)
-                                        .age(age)
-                                        .sex(sex)
-                                        .weight(weight)
-                                        .height(height)
-                                        .lifestyle(lifestyle)
-                                        .build();
+        user.setBiometrics(biometrics);
+    }
 
+    private Biometrics insertBiometricsIntoDB(Biometrics biometrics) {
         try {
             biometrics = biometricsService.create(biometrics);
         } catch (DaoException e) {
             LOG.error("biometrics creation failed", e);
         }
-        user.setBiometrics(biometrics);
+        return biometrics;
+    }
+
+    private User insertUserIntoDB(User user) {
+        try {
+            user = userService.create(user);
+        } catch (DaoException e) {
+            LOG.error("user creation failed", e);
+        }
+        return user;
+    }
+
+    private Biometrics buildBiometrics(HttpServletRequest request) {
+        return BiometricsBuilder.instance()
+                                    .age(new BigDecimal(Double.parseDouble(request.getParameter("age"))))
+                                    .sex(Sex.valueOf(request.getParameter("sex")))
+                                    .weight(new BigDecimal(Double.parseDouble(request.getParameter("weight"))))
+                                    .height(new BigDecimal(Double.parseDouble(request.getParameter("height"))))
+                                    .lifestyle(Lifestyle.valueOf(request.getParameter("lifestyle")))
+                                    .build();
+    }
+
+    private User builderUser(HttpServletRequest request) {
+        return UserBuilder.instance()
+                                .username(request.getParameter("username"))
+                                .email(request.getParameter("email"))
+                                .firstName(request.getParameter("firstName"))
+                                .lastName(request.getParameter("lastName"))
+                                .password(request.getParameter("password"))
+                                .build();
     }
 }
