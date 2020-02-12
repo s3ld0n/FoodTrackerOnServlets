@@ -11,6 +11,7 @@ import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.service.DayService;
 import org.training.food.tracker.service.FoodService;
 import org.training.food.tracker.service.defaults.ConsumedFoodServiceDefault;
 import org.training.food.tracker.service.defaults.DayServiceDefault;
@@ -28,15 +29,13 @@ import java.util.List;
 public class UserMainServlet extends HttpServlet {
 
     private FoodService foodService;
-    private DayServiceDefault dayService;
-    private ConsumedFoodDao consumedFoodDao;
+    private DayService dayService;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserMainServlet.class.getName());
 
     @Override public void init() throws ServletException {
         foodService = new FoodServiceDefault(new FoodDaoJDBC(), new ConsumedFoodServiceDefault());
         dayService = new DayServiceDefault(new DayDaoJDBC());
-        consumedFoodDao = new ConsumedFoodDaoJDBC();
     }
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
