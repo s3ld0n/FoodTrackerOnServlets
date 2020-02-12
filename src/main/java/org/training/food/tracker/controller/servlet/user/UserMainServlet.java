@@ -11,6 +11,7 @@ import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.User;
+import org.training.food.tracker.service.DayService;
 import org.training.food.tracker.service.FoodService;
 import org.training.food.tracker.service.defaults.ConsumedFoodServiceDefault;
 import org.training.food.tracker.service.defaults.DayServiceDefault;
@@ -28,15 +29,13 @@ import java.util.List;
 public class UserMainServlet extends HttpServlet {
 
     private FoodService foodService;
-    private DayServiceDefault dayService;
-    private ConsumedFoodDao consumedFoodDao;
+    private DayService dayService;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserMainServlet.class.getName());
 
     @Override public void init() throws ServletException {
         foodService = new FoodServiceDefault(new FoodDaoJDBC(), new ConsumedFoodServiceDefault());
         dayService = new DayServiceDefault(new DayDaoJDBC());
-        consumedFoodDao = new ConsumedFoodDaoJDBC();
     }
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,27 +44,24 @@ public class UserMainServlet extends HttpServlet {
         User currentUser = (User) request.getSession().getAttribute("user");
 
         request.setAttribute("food", new FoodDTO());
+        List<FoodDTO> allCommonFoodDTOs = null;
+        List<FoodDTO> userFoodDTOs = null;
+
         try {
             LOG.debug("doGet() :: setting allCommonFoodDTOs");
-            request.setAttribute("allCommonFoodDTOs",
-                    DTOConverter.foodsToFoodDTOs(foodService.findAllCommonExcludingPersonalByUserId(currentUser.getId())));
+            allCommonFoodDTOs =
+                    DTOConverter.foodsToFoodDTOs(foodService.findAllCommonExcludingPersonalByUserId(currentUser.getId()));
 
-//            LOG.debug("doGet() :: making ConsumptionDataDTO from consumed food of the current day");
-//            ConsumptionDataDTO consumptionDataDTO = DTOConverter.buildConsumptionDataDTO(
-//                    dayService.getCurrentDayOfUser(currentUser).getConsumedFoods(),
-//                    currentUser
-//            );
-//            LOG.debug("doGet() :: consumptionDataDTO {}", consumptionDataDTO);
-//            request.setAttribute("consumptionDataDTO", consumptionDataDTO);
-
-            List<FoodDTO> userFoodDTOs = DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser));
-            LOG.debug("doGet() :: setting usersFoodDTOs {}", userFoodDTOs);
-            request.setAttribute("userFoodDTOs", userFoodDTOs);
-
+            userFoodDTOs = DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser));
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOG.error("doGet() :: error occurred", e);
+            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
         }
 
+        request.setAttribute("allCommonFoodDTOs", allCommonFoodDTOs);
+
+        LOG.debug("doGet() :: setting usersFoodDTOs {}", userFoodDTOs);
+        request.setAttribute("userFoodDTOs", userFoodDTOs);
 
         UserDTO userDTO = DTOConverter.userToUserDTO(currentUser);
         LOG.debug("doGet() :: setting userDTO ");

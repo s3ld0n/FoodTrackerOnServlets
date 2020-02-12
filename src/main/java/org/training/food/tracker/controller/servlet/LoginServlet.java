@@ -63,7 +63,8 @@ public class LoginServlet extends HttpServlet {
         placeUserCredentialsIntoSession(request, userCredentials);
         addUserToContext(request, userCredentials);
 
-        LOG.debug("user added to session {} and context {}", request.getSession().getAttribute("userCredentials"), ((HashSet) getServletContext().getAttribute("loggedUsers")).toArray());
+        LOG.debug("user added to session {} and context {}", request.getSession().getAttribute("userCredentials"),
+                ((HashSet) getServletContext().getAttribute("loggedUsers")).toArray());
         response.sendRedirect(getRedirectForRole(role));
     }
 
