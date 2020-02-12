@@ -33,7 +33,7 @@
         <div class="form-group row field">
             <label class="col-sm-2 col-form-label">Username</label>
             <div class="col-sm-6 field">
-                <input type="text" class="form-control" maxlength="32" placeholder="username"/>
+                <input type="text" name="username" class="form-control" maxlength="32" placeholder="username"/>
             </div>
         </div>
 
@@ -45,16 +45,16 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Full name</label>
+            <label class="col-sm-2 col-form-label">First name</label>
             <div class="col-sm-6 field" >
-                <input type="text" name="fullName" value="" class="form-control" placeholder="full name" />
+                <input type="text" name="firstName" value="" class="form-control" placeholder="first name" />
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">National name</label>
+            <label class="col-sm-2 col-form-label">Last name</label>
             <div class="col-sm-6 field">
-                <input type="text" name="nationalName" value="" class="form-control" placeholder="national_name" />
+                <input type="text" name="lastName" value="" class="form-control" placeholder="last name" />
             </div>
         </div>
 

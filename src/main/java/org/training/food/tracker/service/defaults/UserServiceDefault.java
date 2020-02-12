@@ -34,7 +34,7 @@ public class UserServiceDefault implements UserService {
      * Total energy expenditure calculation using Harris–Benedict equation
      * @return daily norm of calories
      */
-    public BigDecimal getDailyNormCalories(Biometrics biometrics) {
+    public BigDecimal calculateDailyNormCalories(Biometrics biometrics) {
         if (biometrics.getSex() == Sex.FEMALE) {
             return (new BigDecimal(655.1)
                             .add(new BigDecimal(9.563).multiply(biometrics.getWeight()))
