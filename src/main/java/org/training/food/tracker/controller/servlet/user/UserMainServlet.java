@@ -45,27 +45,24 @@ public class UserMainServlet extends HttpServlet {
         User currentUser = (User) request.getSession().getAttribute("user");
 
         request.setAttribute("food", new FoodDTO());
+        List<FoodDTO> allCommonFoodDTOs = null;
+        List<FoodDTO> userFoodDTOs = null;
+
         try {
             LOG.debug("doGet() :: setting allCommonFoodDTOs");
-            request.setAttribute("allCommonFoodDTOs",
-                    DTOConverter.foodsToFoodDTOs(foodService.findAllCommonExcludingPersonalByUserId(currentUser.getId())));
+            allCommonFoodDTOs =
+                    DTOConverter.foodsToFoodDTOs(foodService.findAllCommonExcludingPersonalByUserId(currentUser.getId()));
 
-//            LOG.debug("doGet() :: making ConsumptionDataDTO from consumed food of the current day");
-//            ConsumptionDataDTO consumptionDataDTO = DTOConverter.buildConsumptionDataDTO(
-//                    dayService.getCurrentDayOfUser(currentUser).getConsumedFoods(),
-//                    currentUser
-//            );
-//            LOG.debug("doGet() :: consumptionDataDTO {}", consumptionDataDTO);
-//            request.setAttribute("consumptionDataDTO", consumptionDataDTO);
-
-            List<FoodDTO> userFoodDTOs = DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser));
-            LOG.debug("doGet() :: setting usersFoodDTOs {}", userFoodDTOs);
-            request.setAttribute("userFoodDTOs", userFoodDTOs);
-
+            userFoodDTOs = DTOConverter.foodsToFoodDTOs(foodService.findAllByOwner(currentUser));
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOG.error("doGet() :: error occurred", e);
+            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
         }
 
+        request.setAttribute("allCommonFoodDTOs", allCommonFoodDTOs);
+
+        LOG.debug("doGet() :: setting usersFoodDTOs {}", userFoodDTOs);
+        request.setAttribute("userFoodDTOs", userFoodDTOs);
 
         UserDTO userDTO = DTOConverter.userToUserDTO(currentUser);
         LOG.debug("doGet() :: setting userDTO ");
