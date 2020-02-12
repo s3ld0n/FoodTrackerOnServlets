@@ -60,7 +60,7 @@ public class UserDaoJDBC implements UserDao {
         LOG.debug("Creating result set");
         try (ResultSet resultSet = statement.getGeneratedKeys()) {
 
-            LOG.debug("Result set was created. Setting id from DB to lecture object to return");
+            LOG.debug("Result set was created. Setting id from DB to user object to return");
             resultSet.next();
             user.setId(resultSet.getLong(1));
         }
@@ -85,7 +85,7 @@ public class UserDaoJDBC implements UserDao {
         statement.setBoolean(6, user.isActive());
 
         LOG.trace("Setting user's role: {}", user.getRole());
-        statement.setString(7, user.getRole().toString());
+        statement.setString(7, "USER");
     }
 
     @Override
