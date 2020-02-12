@@ -1,8 +1,8 @@
 package org.training.food.tracker.service;
 
-import org.training.food.tracker.dto.BiometricsDTO;
-import org.training.food.tracker.dto.UserDTO;
+import org.training.food.tracker.model.User;
 
 public interface RegistrationService {
-    boolean validateFields(UserDTO userDTO, BiometricsDTO biometricsDTO);
+
+    User registerUser(User user);
 }
