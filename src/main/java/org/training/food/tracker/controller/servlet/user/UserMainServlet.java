@@ -63,7 +63,7 @@ public class UserMainServlet extends HttpServlet {
             request.setAttribute("userFoodDTOs", userFoodDTOs);
 
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOG.error("doGet() :: error occurred", e);
         }
 
 
