@@ -42,29 +42,32 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        LOG.debug("validating username and password");
+        LOG.debug("doPost() :: validating username and password");
         validateUserAndSendBackIfNot(request, response, username, password);
 
         User user;
 
-        LOG.debug("getting user from DB");
+        LOG.debug("doPost() :: getting user from DB");
         try {
             user = userService.findByUsername(username);
         } catch (DaoException e) {
+            LOG.error("error occurred during selection of user");
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
         }
 
         Role role = user.getRole();
 
+        LOG.debug("doPost() :: creating userCredentials");
         UserCredentials userCredentials = new UserCredentials(username, role.toString());
 
-
+        LOG.debug("doPost() :: placing userCredentials into session");
         placeUserCredentialsIntoSession(request, userCredentials);
+
+        LOG.debug("doPost() :: placing userCredentials into context");
         addUserToContext(request, userCredentials);
 
-        LOG.debug("user added to session {} and context {}", request.getSession().getAttribute("userCredentials"),
-                ((HashSet) getServletContext().getAttribute("loggedUsers")).toArray());
+        LOG.debug("doPost() :: sending redirect based on role");
         response.sendRedirect(getRedirectForRole(role));
     }
 

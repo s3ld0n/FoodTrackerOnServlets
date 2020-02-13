@@ -1,8 +1,5 @@
 package org.training.food.tracker.controller.filter;
 
-
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +23,13 @@ public class LocaleFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResp = (HttpServletResponse) servletResponse;
 
-        LOG.debug("inside LocaleFilter");
+        LOG.trace("inside LocaleFilter");
 
         String localeName = servletRequest.getParameter("lang");
-        LOG.debug("set locale name: {}", localeName);
+        LOG.trace("set locale name: {}", localeName);
 
         if (localeName != null) {
-            LOG.debug("setting session attribute 'lang' to locale name");
+            LOG.trace("setting session attribute 'lang' to locale name");
             httpReq.getSession().setAttribute("lang", localeName);
         }
         filterChain.doFilter(httpReq, httpResp);

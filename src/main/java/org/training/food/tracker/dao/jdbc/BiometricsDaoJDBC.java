@@ -24,6 +24,7 @@ public class BiometricsDaoJDBC implements BiometricsDao {
             LOG.debug("create() :: prepared statement created");
 
             setPreparedStatement(biometrics, statement);
+            LOG.debug("create() :: executing statement");
             statement.executeUpdate();
 
             setGeneratedId(biometrics, statement);

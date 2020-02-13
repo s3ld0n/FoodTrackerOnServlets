@@ -132,7 +132,7 @@ public class DayDaoJDBC implements DayDao {
         dayStatement.setLong(1, user.getId());
         dayStatement.setDate(2, Date.valueOf(date));
 
-        LOG.debug("params have been set - user_id: {}, date: {}", user.getId(), Date.valueOf(date));
+        LOG.debug("getDay() :: params have been set - user_id: {}, date: {}", user.getId(), Date.valueOf(date));
 
         LOG.debug("getDay() ::  executing query");
         try (ResultSet resultSet = dayStatement.executeQuery()){
