@@ -43,12 +43,16 @@ public class RegistrationServlet extends HttpServlet {
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        LOG.debug("validate first name {}", RegistrationFormValidator.validateFirstName(firstName));
-
+        LOG.debug("doPost() :: building biometrics from request");
         Biometrics biometrics = buildBiometrics(request);
 
+        LOG.debug("doPost() :: building user from request");
         User user = builderUser(request);
+
+        LOG.debug("doPost() :: calculating and setting daily norm for user");
         user.setDailyNormCalories(userService.calculateDailyNormCalories(biometrics));
+
+        LOG.debug("doPost() :: inserting user into DB");
         user = insertUserIntoDB(user);
 
         biometrics.setOwner(user);
@@ -61,7 +65,7 @@ public class RegistrationServlet extends HttpServlet {
         try {
             biometrics = biometricsService.create(biometrics);
         } catch (DaoException e) {
-            LOG.error("biometrics creation failed", e);
+            LOG.error("doPost() :: biometrics creation failed", e);
         }
         return biometrics;
     }
@@ -70,7 +74,7 @@ public class RegistrationServlet extends HttpServlet {
         try {
             user = userService.create(user);
         } catch (DaoException e) {
-            LOG.error("user creation failed", e);
+            LOG.error("doPost() :: user creation failed", e);
         }
         return user;
     }

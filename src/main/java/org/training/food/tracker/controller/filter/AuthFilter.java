@@ -1,7 +1,9 @@
 package org.training.food.tracker.controller.filter;
 
-import com.sun.deploy.net.HttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.training.food.tracker.controller.UserCredentials;
+import org.training.food.tracker.controller.servlet.LogoutServlet;
 import org.training.food.tracker.dao.Const;
 
 import javax.servlet.*;
@@ -13,6 +15,8 @@ import java.util.ResourceBundle;
 
 public class AuthFilter implements Filter {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LogoutServlet.class.getName());
+
     @Override public void init(FilterConfig filterConfig) throws ServletException {
 
     }
@@ -21,33 +25,44 @@ public class AuthFilter implements Filter {
             throws IOException, ServletException {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
-
+        LOG.trace("doFilter()");
+        LOG.trace("doFilter() :: disabling browsers cache");
         setNoCache(response);
 
+        LOG.trace("doFilter() :: getting uri from request");
         String uri = request.getRequestURI();
+
+        LOG.trace("doFilter() :: getting session request");
         HttpSession session = request.getSession();
 
+        LOG.trace("doFilter() :: getting userCredentials from session");
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
 
+        LOG.trace("doFilter() :: check if it's a webjar resource");
         if (uri.contains("webjars")) {
             chain.doFilter(servletRequest,servletResponse);
             return;
         }
 
         if (userCredentials == null && authIsNotRequired(uri)) {
+            LOG.trace("doFilter() :: user is not logged and requested page that doesn't need an auth.\nAllowing");
             chain.doFilter(servletRequest,servletResponse);
             return;
-
-        } else if (userCredentials == null) {
+        }
+        else if (userCredentials == null) {
+            LOG.trace("doFilter() :: user is not logged and requested page that needs an auth. Redirecting to /login");
             response.sendRedirect("/login");
             return;
         } else if (authIsNotRequired(uri)) {
+            LOG.trace("doFilter() :: user is logged and requested page that doesn't need an auth. Signing him out.");
             response.sendRedirect("/logout");
             return;
         } else if (!userCredentials.getRole().equalsIgnoreCase("admin") && uri.contains("admin")) {
+            LOG.trace("doFilter() :: user requested admins page but is not an admin. Giving him 403.");
             sendErrorPage(request, response);
             return;
         } else if (!userCredentials.getRole().equalsIgnoreCase("user") && uri.contains("user")) {
+            LOG.trace("doFilter() :: user requested user's page but is an admin. Giving him 403.");
             sendErrorPage(request, response);
             return;
         }

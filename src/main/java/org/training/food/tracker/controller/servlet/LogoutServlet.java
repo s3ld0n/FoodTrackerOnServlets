@@ -27,13 +27,13 @@ public class LogoutServlet extends HttpServlet {
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
         LOG.debug("doGet :: logged user before invalidate session {}", userCredentials);
 
-        LOG.debug("invalidate session");
+        LOG.debug("doGet :: invalidate session");
         session.invalidate();
 
         HashSet<UserCredentials> loggedUsers = ((HashSet<UserCredentials>) getServletContext().getAttribute("loggedUsers"));
 
         loggedUsers.remove(userCredentials);
-        LOG.debug("logged users :: {}", loggedUsers.toArray());
+        LOG.debug("doGet :: logged users :: {}", loggedUsers.toArray());
         response.sendRedirect("/");
     }
 }

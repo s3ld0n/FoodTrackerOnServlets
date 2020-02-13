@@ -58,10 +58,10 @@ public class FoodDaoJDBC implements FoodDao {
     }
 
     private void getFoods(List<Food> foods, PreparedStatement statement) throws SQLException {
-        LOG.debug("executing statement, getting result set and extracting results");
+        LOG.debug("getFoods() :: executing statement, getting result set and extracting results");
         try (ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                LOG.debug("creating food");
+                LOG.debug("getFoods() :: creating food");
                 foods.add(extractFood(resultSet));
             }
         }

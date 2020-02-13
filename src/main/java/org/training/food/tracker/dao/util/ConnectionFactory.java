@@ -17,9 +17,10 @@ public class ConnectionFactory {
     public static Connection getConnection() throws DaoException {
         Connection connection = null;
 
-        LOG.debug("Creating a new connection");
+        LOG.debug("getConnection() :: creating a new connection");
 
         try {
+            LOG.debug("getConnection() :: getting datasource");
             BasicDataSource dataSource = dataSourceInstance.getDataSource();
             connection = dataSource.getConnection();
 
@@ -28,7 +29,7 @@ public class ConnectionFactory {
             throw new DaoException("Connection has not been created." , e);
         }
 
-        LOG.debug("Connection was successfully created.");
+        LOG.debug("getConnection() :: connection was successfully created.");
 
         return connection;
     }

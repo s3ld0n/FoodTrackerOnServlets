@@ -35,15 +35,16 @@ public class UserDaoJDBC implements UserDao {
     private static final Logger LOG = LoggerFactory.getLogger(UserDaoJDBC.class.getName());
 
     @Override public User create(User user) throws DaoException {
+        LOG.debug("create() :: establishing connection");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
                         Statement.RETURN_GENERATED_KEYS)) {
 
-            LOG.debug("Prepared statement was created.");
+            LOG.debug("create() :: prepared statement was created.");
 
             setPreparedStatementParams(user, statement);
 
-            LOG.debug("Executing prepared statement");
+            LOG.debug("create() :: executing prepared statement");
             statement.executeUpdate();
 
             setGeneratedId(user, statement);
@@ -52,42 +53,42 @@ public class UserDaoJDBC implements UserDao {
             throw new DaoException("Creation of user has failed.", e);
         }
 
-        LOG.debug("user: {} was created.", user.getUsername());
+        LOG.debug("create() :: user: {} was created.", user.getUsername());
         return user;
     }
 
     private void setGeneratedId(User user, PreparedStatement statement) throws SQLException {
-        LOG.debug("Creating result set");
+        LOG.debug("setGeneratedId() :: creating result set");
         try (ResultSet resultSet = statement.getGeneratedKeys()) {
 
-            LOG.debug("Result set was created. Setting id from DB to user object to return");
+            LOG.debug("setGeneratedId() :: result set was created. Setting id from DB to user object to return");
             resultSet.next();
             user.setId(resultSet.getLong(1));
         }
     }
 
     private void setPreparedStatementParams(User user, PreparedStatement statement) throws SQLException {
-        LOG.trace("Setting user's name: {}", user.getUsername());
+        LOG.trace("setPreparedStatementParams() :: setting user's name: {}", user.getUsername());
         statement.setString(1, user.getUsername());
 
         statement.setString(2, user.getPassword());
 
-        LOG.trace("Setting user's first name: {}", user.getFirstName());
+        LOG.trace("setPreparedStatementParams() :: setting user's first name: {}", user.getFirstName());
         statement.setString(3, user.getFirstName());
 
-        LOG.trace("Setting user's last name: {}", user.getLastName());
+        LOG.trace("setPreparedStatementParams() :: setting user's last name: {}", user.getLastName());
         statement.setString(4, user.getLastName());
 
-        LOG.trace("Setting user's email: {}", user.getEmail());
+        LOG.trace("setPreparedStatementParams() :: setting user's email: {}", user.getEmail());
         statement.setString(5, user.getEmail());
 
-        LOG.trace("Setting user to be active : {}", user.isActive());
+        LOG.trace("setPreparedStatementParams() :: setting user to be active : {}", user.isActive());
         statement.setBoolean(6, user.isActive());
 
-        LOG.trace("Setting user's role: {}", user.getRole());
+        LOG.trace("setPreparedStatementParams() :: setting user's role: {}", user.getRole());
         statement.setString(7, "USER");
 
-        LOG.trace("Setting user's daily norm calories: {}", user.getRole());
+        LOG.trace("setPreparedStatementParams() :: setting user's daily norm calories: {}", user.getRole());
         statement.setBigDecimal(8, user.getDailyNormCalories());
     }
 
@@ -95,11 +96,11 @@ public class UserDaoJDBC implements UserDao {
     public User findById(Long id) throws DaoException {
         LOG.debug("Finding user by id:{}", id);
         User user;
-
+        LOG.debug("findById() :: establishing connection");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
 
-            LOG.debug("Prepared statement was created. Setting id: {}", id);
+            LOG.debug("findById() :: prepared statement was created. Setting id: {}", id);
             statement.setLong(1, id);
 
             user = buildUserWithBiometrics(statement);
@@ -108,22 +109,22 @@ public class UserDaoJDBC implements UserDao {
             throw new DaoException("Finding user has failed", e);
         }
 
-        LOG.debug("User {} was found by id: {}.", user.getUsername(), user.getId());
+        LOG.debug("findById() :: user {} was found by id: {}.", user.getUsername(), user.getId());
         return user;
     }
 
     private User buildUserWithBiometrics(PreparedStatement statement) throws SQLException, DaoException {
         User user;
-        LOG.debug("Creating result set");
+        LOG.debug("buildUserWithBiometrics() :: creating result set");
         try (ResultSet resultSet = statement.executeQuery()) {
             if (!resultSet.next()) {
                 throw new DaoException("No such user");
             }
 
-            LOG.debug("Creating biometrics object");
+            LOG.debug("buildUserWithBiometrics() :: creating biometrics object");
             Biometrics biometrics = buildBiometrics(resultSet);
 
-            LOG.debug("Creating user object");
+            LOG.debug("buildUserWithBiometrics() :: creating user object");
             user = buildUser(resultSet);
             user.setBiometrics(biometrics);
         }
@@ -155,13 +156,14 @@ public class UserDaoJDBC implements UserDao {
     }
 
     public User findByUsername(String username) throws DaoException {
-        LOG.debug("Finding user by username:{}", username);
+        LOG.debug("Finding user by username: {}", username);
         User user;
 
+        LOG.debug("findByUsername() :: establishing connection");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_USERNAME_QUERY)) {
 
-            LOG.debug("Prepared statement was created. Setting username");
+            LOG.debug("findByUsername() :: prepared statement was created. Setting username");
             statement.setString(1, username);
             user = buildUserWithBiometrics(statement);
 
@@ -170,7 +172,7 @@ public class UserDaoJDBC implements UserDao {
             throw new DaoException("Finding user has failed", e);
         }
 
-        LOG.debug("User {} was found by username", user.getUsername());
+        LOG.debug("findByUsername() :: user {} was found by username", user.getUsername());
         return user;
     }
 
@@ -179,27 +181,31 @@ public class UserDaoJDBC implements UserDao {
         LOG.debug("Finding all users");
         List<User> users = new ArrayList<>();
 
+        LOG.debug("findAll() :: establishing connection");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL_QUERY)) {
 
+            LOG.debug("findAll() :: extracting users from resultSet");
             extractAllUsers(users, statement);
         } catch (SQLException e) {
-            LOG.error("Get all users has failed", e);
-            throw new DaoException("Get all users has failed", e);
+            LOG.error("Finding all users failed", e);
+            throw new DaoException("Finding all users failed", e);
         }
 
-        LOG.debug("{} users were found.", users.size());
+        LOG.debug("findAll() :: {} users were found.", users.size());
         return users;
     }
 
     private void extractAllUsers(List<User> users, PreparedStatement statement) throws SQLException {
-        LOG.debug("Creating result set");
+        LOG.debug("extractAllUsers() :: creating result set");
         try (ResultSet resultSet = statement.executeQuery()) {
+
+            LOG.debug("extractAllUsers() :: iterating through result set");
             while (resultSet.next()) {
-                LOG.debug("Creating biometrics object");
+                LOG.trace("extractAllUsers() :: creating biometrics object");
                 Biometrics biometrics = buildBiometrics(resultSet);
 
-                LOG.debug("Creating user object");
+                LOG.trace("extractAllUsers() :: creating user object");
                 User user = buildUser(resultSet);
                 user.setBiometrics(biometrics);
                 users.add(user);

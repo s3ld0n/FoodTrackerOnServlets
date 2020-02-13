@@ -29,26 +29,29 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
     private static final Logger LOG = LoggerFactory.getLogger(ConsumedFoodDaoJDBC.class.getName());
 
     public List<ConsumedFood> findAllByDayId(Long dayId) throws DaoException {
+        LOG.debug("findAllByDayId()");
         LOG.debug("Finding all consumed foods");
         List<ConsumedFood> foods = new ArrayList<>();
 
+        LOG.debug("findAllByDayId() :: getting connection");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_DAY_ID_QUERY)) {
 
             statement.setLong(1, dayId);
 
-            LOG.debug("Creating result set");
+            LOG.debug("findAllByDayId() :: Creating result set");
             try (ResultSet resultSet = statement.executeQuery()) {
+                LOG.debug("findAllByDayId() :: extracting foods from result set");
                 while (resultSet.next()) {
                     foods.add(extractConsumedFood(resultSet));
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Get consumed food has failed", e);
+            LOG.error("findAllByDayId() :: Get consumed food has failed", e);
             throw new DaoException("Get consumed food has failed", e);
         }
 
-        LOG.debug("{} consumed foods were found.", foods.size());
+        LOG.debug("findAllByDayId() :: {} consumed foods were found.", foods.size());
         return foods;
     }
 
