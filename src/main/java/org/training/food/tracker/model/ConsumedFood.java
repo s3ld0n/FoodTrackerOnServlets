@@ -9,6 +9,7 @@ public class ConsumedFood {
     private String name;
     private BigDecimal amount;
     private BigDecimal totalCalories;
+    private Day day;
     private LocalTime time;
 
     public Long getId() {
@@ -41,6 +42,14 @@ public class ConsumedFood {
 
     public void setTotalCalories(BigDecimal totalCalories) {
         this.totalCalories = totalCalories;
+    }
+
+    public Day getDay() {
+        return day;
+    }
+
+    public void setDay(Day day) {
+        this.day = day;
     }
 
     public LocalTime getTime() {

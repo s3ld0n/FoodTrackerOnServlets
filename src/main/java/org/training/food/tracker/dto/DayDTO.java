@@ -40,7 +40,7 @@ public class DayDTO {
             return this;
         }
 
-        public Builder setDailyNormExceeded(boolean isDailyNormExceeded) {
+        public Builder isDailyNormExceeded(boolean isDailyNormExceeded) {
             dayDTO.setDailyNormExceeded(isDailyNormExceeded);
             return this;
         }
