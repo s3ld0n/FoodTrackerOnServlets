@@ -26,7 +26,7 @@ public class FoodDaoJDBC implements FoodDao {
     public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
             "SELECT id, name, calories, user_id FROM foods WHERE user_id = ? ORDER BY id DESC";
 
-    private static final String FIND_ALL_COMMON = "SELECT id, calories, name FROM foods WHERE id IS NULL";
+    private static final String FIND_ALL_COMMON = "SELECT id, name, calories FROM foods WHERE user_id IS NULL";
 
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM foods WHERE id = ?";
 
@@ -115,6 +115,29 @@ public class FoodDaoJDBC implements FoodDao {
 
     public List<Food> findAllByUserIdOrderByIdDesc(Long userId) throws DaoException {
         return findFoodsByUserIdUsingQuery(userId, FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC);
+    }
+
+    @Override public List<Food> findAllCommon() throws DaoException {
+        LOG.debug("findAllCommon()");
+        List<Food> foods = new ArrayList<>();
+        try (Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMMON)) {
+
+            extractFoods(foods, statement);
+
+        } catch (SQLException e) {
+            LOG.error("findAllCommon() :: FAILED");
+            throw new DaoException("findAllCommon() :: FAILED", e);
+        }
+        return foods;
+    }
+
+    private void extractFoods(List<Food> foods, PreparedStatement statement) throws SQLException {
+        try (ResultSet resultSet = statement.executeQuery()){
+            while (resultSet.next()) {
+                foods.add(extractFood(resultSet));
+            }
+        }
     }
 
     @Override public Food findById(Long id) throws DaoException {

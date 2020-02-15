@@ -14,6 +14,8 @@ public interface FoodService {
 
     void registerConsumption(ConsumedFood food) throws DaoException;
 
+    List<Food> findAllCommon() throws DaoException;
+
     List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException;
 
     List<Food> findAllByOwner(User user) throws DaoException;

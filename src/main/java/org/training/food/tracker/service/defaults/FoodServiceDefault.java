@@ -55,6 +55,10 @@ public class FoodServiceDefault implements FoodService {
         return foodDao.findAllCommonExcludingPersonalByUserId(userId);
     }
 
+    public List<Food> findAllCommon() throws DaoException {
+        return foodDao.findAllCommon();
+    }
+
     public List<Food> findAllByOwner(User user) throws DaoException {
         return foodDao.findAllByUserIdOrderByIdDesc(user.getId());
     }
