@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.FoodDao;
+import org.training.food.tracker.dao.jdbc.FoodDaoJDBC;
 import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
+import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.model.builder.FoodBuilder;
@@ -24,9 +26,9 @@ public class FoodServiceDefault implements FoodService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FoodServiceDefault.class.getName());
 
-    public FoodServiceDefault(FoodDao foodDao, ConsumedFoodServiceDefault consumedFoodService) {
-        this.foodDao = foodDao;
-        this.consumedFoodService = consumedFoodService;
+    public FoodServiceDefault() {
+        this.foodDao = new FoodDaoJDBC();
+        this.consumedFoodService = new ConsumedFoodServiceDefault();
     }
 
     public void addForOwner(FoodDTO foodDTO, User owner) throws DaoException {
@@ -39,8 +41,8 @@ public class FoodServiceDefault implements FoodService {
         foodDao.create(food);
     }
 
-    public void registerConsumption(FoodDTO foodDTO) {
-        consumedFoodService.registerConsumption(foodDTO);
+    public void registerConsumption(ConsumedFood food) throws DaoException {
+        consumedFoodService.registerConsumption(food);
     }
 
     public List<FoodDTO> findAllCommonExcludingPersonalByUserIdInDTO(Long userId) throws DaoException {
@@ -57,7 +59,7 @@ public class FoodServiceDefault implements FoodService {
         return foodDao.findAllByUserIdOrderByIdDesc(user.getId());
     }
 
-    public void removeByNameAndUserId(String foodName, User user) {
-        foodDao.removeByNameAndOwner(foodName, user);
+    public void deleteByNameAndUserId(String foodName, User user) throws DaoException {
+        foodDao.deleteByNameAndOwner(foodName, user);
     }
 }

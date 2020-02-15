@@ -8,14 +8,17 @@ import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.ConsumedFood;
 import org.training.food.tracker.model.builder.ConsumedFoodBuilder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
+
+    private static final String CREATE_QUERY = "INSERT INTO consumed_foods (name, amount, total_calories, time, day_id) "
+                                                       + " VALUES (?,?,?,?, (SELECT id from days WHERE date = ?))";
 
     public static final String FIND_ALL_BY_DAY_ID_QUERY = "SELECT id AS consumed_foods_id, "
                                                               + "amount AS consumed_foods_amount, "
@@ -29,26 +32,29 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
     private static final Logger LOG = LoggerFactory.getLogger(ConsumedFoodDaoJDBC.class.getName());
 
     public List<ConsumedFood> findAllByDayId(Long dayId) throws DaoException {
+        LOG.debug("findAllByDayId()");
         LOG.debug("Finding all consumed foods");
         List<ConsumedFood> foods = new ArrayList<>();
 
+        LOG.debug("findAllByDayId() :: getting connection");
         try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_DAY_ID_QUERY)) {
 
             statement.setLong(1, dayId);
 
-            LOG.debug("Creating result set");
+            LOG.debug("findAllByDayId() :: Creating result set");
             try (ResultSet resultSet = statement.executeQuery()) {
+                LOG.debug("findAllByDayId() :: extracting foods from result set");
                 while (resultSet.next()) {
                     foods.add(extractConsumedFood(resultSet));
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Get consumed food has failed", e);
+            LOG.error("findAllByDayId() :: Get consumed food has failed", e);
             throw new DaoException("Get consumed food has failed", e);
         }
 
-        LOG.debug("{} consumed foods were found.", foods.size());
+        LOG.debug("findAllByDayId() :: {} consumed foods were found.", foods.size());
         return foods;
     }
 
@@ -63,7 +69,45 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
     }
 
     @Override public ConsumedFood create(ConsumedFood consumedFood) throws DaoException {
-        return null;
+        LOG.debug("create() :: establishing connection");
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(CREATE_QUERY,
+                        Statement.RETURN_GENERATED_KEYS)) {
+
+            LOG.debug("create() :: prepared statement was created.");
+
+            setPreparedStatementParams(consumedFood, statement);
+
+            LOG.debug("create() :: executing prepared statement");
+            statement.executeUpdate();
+
+            setGeneratedId(consumedFood, statement);
+        } catch (SQLException e) {
+            LOG.error("Creation of food has failed.", e);
+            throw new DaoException("Creation of food has failed.", e);
+        }
+
+        LOG.debug("create() :: food {} was successfully created", consumedFood.getName());
+
+        return consumedFood;
+    }
+
+    private void setPreparedStatementParams(ConsumedFood consumedFood, PreparedStatement statement)
+            throws SQLException {
+        statement.setString(1, consumedFood.getName());
+        statement.setBigDecimal(2, consumedFood.getAmount());
+        statement.setBigDecimal(3, consumedFood.getTotalCalories());
+        statement.setTime(4, Time.valueOf(consumedFood.getTime()));
+        statement.setDate(5, Date.valueOf(LocalDate.now()));
+    }
+
+    private void setGeneratedId(ConsumedFood consumedFood, PreparedStatement statement) throws SQLException {
+        LOG.debug("setGeneratedId() :: creating result set");
+        try (ResultSet resultSet = statement.getGeneratedKeys()) {
+            LOG.debug("setGeneratedId() :: result set was created. Setting id from DB to user object to return");
+            resultSet.next();
+            consumedFood.setId(resultSet.getLong(1));
+        }
     }
 
     @Override public ConsumedFood findById(Long id) throws DaoException {

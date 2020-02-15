@@ -2,10 +2,7 @@ package org.training.food.tracker.dto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.training.food.tracker.model.Biometrics;
-import org.training.food.tracker.model.ConsumedFood;
-import org.training.food.tracker.model.Food;
-import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,11 +18,12 @@ public class DTOConverter {
         return UserDTO.builder()
                        .username(user.getUsername())
                        .email(user.getEmail())
+                       .password(user.getPassword())
                        .firstName(user.getFirstName())
                        .lastName(user.getLastName())
                        .biometricsDTO(biometricsToBiometricsDTO(biometrics))
+                       .dailyNorm(user.getDailyNormCalories())
                        .role(user.getRole())
-                       .password(user.getPassword())
                        .build();
     }
 
@@ -50,6 +48,31 @@ public class DTOConverter {
         foodDTOs.addAll(foods.stream().map(DTOConverter::foodToFoodDTO).collect(Collectors.toList()));
         LOG.debug("foodsToFoodDTOs() :: foodsDTOs: {}", foodDTOs);
         return foodDTOs;
+    }
+
+    public static DayDTO dayToDayDTO(Day day) {
+        return DayDTO.builder()
+                    .date(day.getDate())
+                    .caloriesConsumed(day.getCaloriesConsumed())
+                    .exceededCalories(day.getExceededCalories())
+                    .consumedFoods(day.getConsumedFoods())
+                    .isDailyNormExceeded(day.isDailyNormExceeded())
+                    .build();
+    }
+
+    public static ConsumedFoodDTO consumedFoodToConsumedFoodDTO(ConsumedFood consumedFood) {
+        return ConsumedFoodDTO.builder()
+                       .name(consumedFood.getName())
+                       .amount(consumedFood.getAmount())
+                       .totalCalories(consumedFood.getTotalCalories())
+                       .time(consumedFood.getTime())
+                       .build();
+    }
+
+    public static List<ConsumedFoodDTO> consumedFoodsToConsumedFoodDTOs(List<ConsumedFood> consumedFoods) {
+        return consumedFoods.stream()
+                       .map(DTOConverter::consumedFoodToConsumedFoodDTO)
+                       .collect(Collectors.toList());
     }
 
     private static boolean checkIfDailyNormExceeded(BigDecimal exceededCalories) {
