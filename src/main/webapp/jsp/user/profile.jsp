@@ -26,94 +26,120 @@
 
 <t:user_navbar/>
 <div class="empty">.</div>
-<div class="container container mt-5">
-    <form action="user/update" method="post" novalidate>
+<div class="row justify-content-center">
+    <div class="col-md-6 bottom-tables">
+        <div class="card col-md-8 col-centered">
+            <header class="card-header">
+                <h4 class="card-title mt-2">Update </h4>
+            </header>
+            <article class="card-body">
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Username</label>
-            <p>${user.username}</p>
+                <form action="/user/profile/" method="post">
+                    <input type="hidden" name="id">
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label>Username</label>
+                            <div>
+                                <input type="text" class="form-control" value="${userDTO.username}" maxlength="32" id="username" placeholder="username" readonly="readonly"/>
+                            </div>
+                        </div>
+
+                        <div class="col form-group">
+                            <label>Email</label>
+                            <div>
+                                <input type="email" name="email" value="${userDTO.email}" class="form-control" placeholder="Email" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label>First Name</label>
+                            <div>
+                                <input type="text" name="firstName" value="${userDTO.firstName}" class="form-control" placeholder="first name" />
+                            </div>
+                        </div>
+
+                        <div class="col form-group">
+                            <label>Last name</label>
+                            <div>
+                                <input type="text" name="lastName" value="${userDTO.lastName}" class="form-control" placeholder="last name" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="sex">Sex</label>
+                            <div>
+                                <select id="sex" name="sex">
+                                    <option value="FEMALE">FEMALE</option>
+                                    <option value="MALE">Male</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Age</label>
+                            <div>
+
+                                <input type="number" name="age" value="" class="form-control" placeholder="age"/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Weight</label>
+                            <div>
+                                <input type="number" name="weight" min="1" value="" class="form-control" placeholder="weight" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Height</label>
+                            <div>
+                                <input type="number" name="height" min="1" value="" class="form-control" placeholder="height"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p>Lifestyle</p>
+                        <div>
+                            <select id="lifestyle" name="lifestyle">
+                                <option value="SEDENTARY">Sedentary</option>
+                                <option value="MODERATE">Moderate</option>
+                                <option value="VIGOROUS">Vigorous</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group col-md-6">
+                            <label>Daily Norm</label>
+                            <div>
+                                <input type="text" class="form-control" value="${userDTO.dailyNorm}" readonly/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group col-md-6">
+                            <label>Role: ${userDTO.role}</label>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="password" value="${userDTO.password}">
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                    </div>
+                </form>
+            </article>
         </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-6">
-                <input type="email" name="email" value="${user.email}" class="form-control" placeholder="Email" required/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">First name</label>
-            <div class="col-sm-6">
-                <input type="text" name="firstName" value="" class="form-control" placeholder="first name" required/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label" >Last name</label>
-            <div class="col-sm-6">
-                <input type="text" name="nationalName" value="" class="form-control" placeholder="National name" required/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Age</label>
-            <div class="col-sm-6">
-                <input type="datetime-local" name="age" value="" class="form-control" placeholder="Age" required/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="sex" class="col-sm-2 col-form-label">Sex</label>
-            <div class="col-sm-6">
-                <select id="sex" name="sex">
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Weight</label>
-            <div class="col-sm-6">
-                <input type="number" name="weight" value="" class="form-control" placeholder="Weight" required/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Height</label>
-            <div class="col-sm-6">
-                <input type="number" name="height" value="" class="form-control" placeholder="Height" required/>
-            </div>
-        </div>
-
-
-        <div class="form-group row">
-            <label for="lifestyle" class="col-sm-2 col-form-label">Lifestyle</label>
-            <div class="col-sm-6">
-                <select id="lifestyle" name="lifestyle">
-                    <option value="SEDENTARY">Sedentary</option>
-                    <option value="MODERATE">Moderate</option>
-                    <option value="VIGOROUS">Vigorous</option>
-                </select>
-            </div>
-        </div>
-        <div sec:au>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label" >Password</label>
-                <div class="col-sm-6">
-                    <input type="password" name="password" class="form-control" placeholder="Password" required/>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Confirm password</label>
-                <div class="col-sm-6">
-                    <input type="password" name="passwordConfirm" class="form-control" placeholder="Retype Password" required/>
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary mb-2">Update</button>
-    </form>
+    </div>
 </div>
 
 <%--<script src="webjars/jquery/3.4.1/jquery.min.js"></script>--%>
