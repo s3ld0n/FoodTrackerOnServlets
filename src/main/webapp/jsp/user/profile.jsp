@@ -20,12 +20,12 @@
         <%@ include file="/static/css/style.css" %>
     </style>
 
-    <title>Index</title>
+    <title>Update user</title>
 </head>
 <body>
 
 <t:user_navbar/>
-
+<div class="empty">.</div>
 <div class="container container mt-5">
     <form action="user/update" method="post" novalidate>
 
@@ -49,21 +49,21 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" text="#{user.national_name}">Last name</label>
+            <label class="col-sm-2 col-form-label" >Last name</label>
             <div class="col-sm-6">
                 <input type="text" name="nationalName" value="" class="form-control" placeholder="National name" required/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" text="#{user.biometrics.age}">Age</label>
+            <label class="col-sm-2 col-form-label">Age</label>
             <div class="col-sm-6">
                 <input type="datetime-local" name="age" value="" class="form-control" placeholder="Age" required/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="sex" class="col-sm-2 col-form-label" text="#{user.biometrics.sex}">Sex</label>
+            <label for="sex" class="col-sm-2 col-form-label">Sex</label>
             <div class="col-sm-6">
                 <select id="sex" name="sex">
                     <option value="MALE">Male</option>
@@ -73,14 +73,14 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" text="#{user.biometrics.weight}">Weight</label>
+            <label class="col-sm-2 col-form-label">Weight</label>
             <div class="col-sm-6">
                 <input type="number" name="weight" value="" class="form-control" placeholder="Weight" required/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" text="#{user.biometrics.height}">Height</label>
+            <label class="col-sm-2 col-form-label">Height</label>
             <div class="col-sm-6">
                 <input type="number" name="height" value="" class="form-control" placeholder="Height" required/>
             </div>
@@ -88,7 +88,7 @@
 
 
         <div class="form-group row">
-            <label for="lifestyle" class="col-sm-2 col-form-label" text="#{user.biometrics.lifestyle}">Lifestyle</label>
+            <label for="lifestyle" class="col-sm-2 col-form-label">Lifestyle</label>
             <div class="col-sm-6">
                 <select id="lifestyle" name="lifestyle">
                     <option value="SEDENTARY">Sedentary</option>
@@ -99,20 +99,20 @@
         </div>
         <div sec:au>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label"text="#{user.password}">Password</label>
+                <label class="col-sm-2 col-form-label" >Password</label>
                 <div class="col-sm-6">
                     <input type="password" name="password" class="form-control" placeholder="Password" required/>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" text="#{user.biometrics.сonfirm_password}">Confirm password</label>
+                <label class="col-sm-2 col-form-label">Confirm password</label>
                 <div class="col-sm-6">
                     <input type="password" name="passwordConfirm" class="form-control" placeholder="Retype Password" required/>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary mb-2" text="#{form.save}"></button>
+        <button type="submit" class="btn btn-primary mb-2">Update</button>
     </form>
 </div>
 
