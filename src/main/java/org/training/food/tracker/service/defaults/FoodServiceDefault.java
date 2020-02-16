@@ -31,13 +31,7 @@ public class FoodServiceDefault implements FoodService {
         this.consumedFoodService = new ConsumedFoodServiceDefault();
     }
 
-    public void addForOwner(FoodDTO foodDTO, User owner) throws DaoException {
-        LOG.debug("adding foodDTO: {}", foodDTO);
-        Food food = FoodBuilder.instance()
-                        .name(foodDTO.getName())
-                        .calories(foodDTO.getTotalCalories())
-                        .owner(owner)
-                        .build();
+    public void create(Food food) throws DaoException {
         foodDao.create(food);
     }
 

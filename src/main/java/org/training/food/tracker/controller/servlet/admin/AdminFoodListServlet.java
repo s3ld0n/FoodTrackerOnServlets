@@ -6,6 +6,7 @@ import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
 import org.training.food.tracker.model.Food;
+import org.training.food.tracker.model.builder.FoodBuilder;
 import org.training.food.tracker.service.FoodService;
 import org.training.food.tracker.service.defaults.FoodServiceDefault;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet("/admin/food-list")
@@ -52,6 +54,25 @@ public class AdminFoodListServlet extends HttpServlet {
 
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LOG.debug("doGet() :: adding food to common");
+        LOG.debug("doGet() :: getting food from request");
 
+        Food food = buildFood(request);
+
+        try {
+            foodService.create(food);
+        } catch (DaoException e) {
+            LOG.error("Error occurred during all food selection", e);
+            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            return;
+        }
+        response.sendRedirect("/admin/food-list");
+    }
+
+    private Food buildFood(HttpServletRequest request) {
+        return FoodBuilder.instance()
+                            .name(request.getParameter("name"))
+                            .calories(new BigDecimal(Double.parseDouble(request.getParameter("calories"))))
+                            .build();
     }
 }

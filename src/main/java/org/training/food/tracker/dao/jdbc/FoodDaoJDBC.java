@@ -26,7 +26,7 @@ public class FoodDaoJDBC implements FoodDao {
     public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
             "SELECT id, name, calories, user_id FROM foods WHERE user_id = ? ORDER BY id DESC";
 
-    private static final String FIND_ALL_COMMON = "SELECT id, name, calories FROM foods WHERE user_id IS NULL";
+    private static final String FIND_ALL_COMMON = "SELECT id, name, calories FROM foods WHERE user_id IS NULL ORDER BY id DESC";
 
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM foods WHERE id = ?";
 
@@ -70,6 +70,11 @@ public class FoodDaoJDBC implements FoodDao {
     private void setPreparedStatementParams(Food food, PreparedStatement statement) throws SQLException {
         statement.setString(1, food.getName());
         statement.setBigDecimal(2, food.getCalories());
+        if (food.getOwner() == null) {
+            LOG.debug("setPreparedStatementParams() :: adding common food -> setting owner to null");
+            statement.setNull(3, Types.BIGINT);
+            return;
+        }
         statement.setLong(3, food.getOwner().getId());
     }
 

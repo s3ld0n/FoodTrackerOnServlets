@@ -26,7 +26,7 @@
 
 <div class="container-md col-3" id="first">
 
-    <form action="/admin/food/add" method="post" class="needs-validation" role="form" novalidate>
+    <form action="/admin/food-list" method="post" class="needs-validation" role="form" novalidate>
         <div class="form-row">
 
 
@@ -35,7 +35,7 @@
             </div>
 
             <div class="col">
-                <input type="number" min="1" required="true" name="totalCalories" value="${food.totalCalories}"
+                <input type="number" min="1" required="true" name="calories" value="${food.totalCalories}"
                        class="form-control" placeholder="Calories" pattern="\d+" required/>
             </div>
 

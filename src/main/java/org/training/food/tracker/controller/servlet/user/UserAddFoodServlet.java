@@ -45,8 +45,9 @@ public class UserAddFoodServlet extends HttpServlet {
         try {
             LOG.debug("doPost() :: getting current user from DB");
             currentUser = userService.findByUsername(userCredentials.getUsername());
+            food.setOwner(currentUser);
             LOG.debug("doPost() :: adding food for current user");
-            foodService.addForOwner(DTOConverter.foodToFoodDTO(food), currentUser);
+            foodService.create(food);
         } catch (DaoException e) {
             LOG.error("doPost() :: error occurred", e);
             request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);

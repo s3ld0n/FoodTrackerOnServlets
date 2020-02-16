@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface FoodService {
 
-    void addForOwner(FoodDTO foodDTO, User owner) throws DaoException;
-
     void registerConsumption(ConsumedFood food) throws DaoException;
+
+    void create(Food food) throws DaoException;
 
     List<Food> findAllCommon() throws DaoException;
 
