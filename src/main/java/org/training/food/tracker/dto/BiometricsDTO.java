@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 public class BiometricsDTO {
 
     private BigDecimal age;
-    private Sex sex;
+    private String sex;
     private BigDecimal weight;
     private BigDecimal height;
-    private Lifestyle lifestyle;
+    private String lifestyle;
 
     public static Builder builder() {
         return new Builder();
@@ -29,7 +29,7 @@ public class BiometricsDTO {
             return this;
         }
 
-        public Builder sex(Sex sex) {
+        public Builder sex(String sex) {
             biometricsDTO.setSex(sex);
             return this;
         }
@@ -44,7 +44,7 @@ public class BiometricsDTO {
             return this;
         }
 
-        public Builder lifestyle(Lifestyle lifestyle) {
+        public Builder lifestyle(String lifestyle) {
             biometricsDTO.setLifestyle(lifestyle);
             return this;
         }
@@ -62,11 +62,11 @@ public class BiometricsDTO {
         this.age = age;
     }
 
-    public Sex getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -86,11 +86,11 @@ public class BiometricsDTO {
         this.height = height;
     }
 
-    public Lifestyle getLifestyle() {
+    public String getLifestyle() {
         return lifestyle;
     }
 
-    public void setLifestyle(Lifestyle lifestyle) {
+    public void setLifestyle(String lifestyle) {
         this.lifestyle = lifestyle;
     }
 }
