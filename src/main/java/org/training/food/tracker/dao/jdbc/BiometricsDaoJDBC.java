@@ -22,6 +22,14 @@ public class BiometricsDaoJDBC implements BiometricsDao {
     private static final String FIND_BY_USER_ID = "SELECT id, age, height, weight, lifestyle, sex, user_id "
                                                           + "FROM biometrics WHERE user_id = ?";
 
+    private static final String UPDATE_QUERY = "UPDATE biometrics"
+                                                       + " SET age = ?, "
+                                                       + "height = ?, "
+                                                       + "weight = ?, "
+                                                       + "lifestyle = ?, "
+                                                       + "sex = ? "
+                                               + "WHERE user_id = ?";
+
     private static final Logger LOG = LoggerFactory.getLogger(BiometricsDaoJDBC.class.getName());
 
     @Override public Biometrics create(Biometrics biometrics) throws DaoException {
@@ -102,8 +110,29 @@ public class BiometricsDaoJDBC implements BiometricsDao {
                                  .build();
             }
 
-    @Override public Biometrics update(Biometrics biometrics) {
-        return null;
+    @Override public Biometrics update(Biometrics biometrics) throws DaoException{
+        LOG.debug("update() :: updating biometrics");
+
+        try(Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+
+            setPreparedStatementParams(biometrics, statement);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("update() :: error occurred during biometrics update", e);
+            throw new DaoException("error occurred during biometrics update", e);
+        }
+        return biometrics;
+    }
+
+    private void setPreparedStatementParams(Biometrics biometrics, PreparedStatement statement) throws SQLException {
+        statement.setBigDecimal(1, biometrics.getAge());
+        statement.setBigDecimal(2, biometrics.getHeight());
+        statement.setBigDecimal(3, biometrics.getWeight());
+        statement.setString(4, biometrics.getLifestyle().toString());
+        statement.setString(5, biometrics.getSex().toString());
+        statement.setLong(6, biometrics.getOwner().getId());
     }
 
     @Override public List<Biometrics> findAll() throws DaoException {

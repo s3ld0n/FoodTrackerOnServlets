@@ -8,4 +8,6 @@ public interface BiometricsService {
     Biometrics create(Biometrics biometrics) throws DaoException;
 
     Biometrics findByOwner(User user) throws DaoException;
+
+    Biometrics update(Biometrics biometrics) throws DaoException;
 }

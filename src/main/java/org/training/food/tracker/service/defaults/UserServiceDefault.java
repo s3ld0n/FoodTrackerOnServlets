@@ -30,6 +30,10 @@ public class UserServiceDefault implements UserService {
         return userDao.findAll();
     }
 
+    @Override public User update(User user) throws DaoException {
+        return userDao.update(user);
+    }
+
     /**
      * Total energy expenditure calculation using Harris–Benedict equation
      * @return daily norm of calories

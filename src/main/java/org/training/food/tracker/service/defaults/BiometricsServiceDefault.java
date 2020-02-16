@@ -18,4 +18,8 @@ public class BiometricsServiceDefault implements BiometricsService {
         return biometricsDao.findByOwner(user);
     }
 
+    @Override public Biometrics update(Biometrics biometrics) throws DaoException {
+        return biometricsDao.update(biometrics);
+    }
+
 }
