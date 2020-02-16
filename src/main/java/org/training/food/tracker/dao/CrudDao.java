@@ -8,9 +8,9 @@ public interface CrudDao<T> {
     
     T findById(Long id) throws DaoException;
     
-    T update(T t);
+    T update(T t) throws DaoException;
     
     List<T> findAll() throws DaoException;
     
-    void deleteById(Long id);
+    void deleteById(Long id) throws DaoException;
 }

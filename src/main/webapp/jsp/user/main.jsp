@@ -31,15 +31,15 @@
             <div class="card card-body mb-2 bottom-tables">
                 <h2>Food Personal</h2>
 
-                <form action="/user/add" method="post" class="needs-validation" role="form" novalidate>
+                <form action="/user/food/add" method="post" class="needs-validation" role="form" novalidate>
                     <div class="form-row">
                         <div class="col-6">
                             <input type="text" id="name" name="name" placeholder="food.name" required="true" class="form-control" required/>
                         </div>
 
                         <div class="col">
-                            <input type="number" step="1" min="1" required="true" name="totalCalories" value="${food.totalCalories}" id="calories"
-                                   class="form-control" placeholder="food.calories" pattern="\d+" required/>
+                            <input type="number" step="1" min="1" required="true" name="calories" id="calories"
+                                   class="form-control" placeholder="calories" pattern="\d+" required/>
                         </div>
 
                         <div class="col">
@@ -61,16 +61,16 @@
                     <c:forEach var="userFood" items="${userFoodDTOs}">
                         <tr>
                             <td>${userFood.name}</td>
-                            <form class="form-inline needs-validation" role="form" action="${pageContext.request.contextPath}/user/use" object="${userFood}" method="post">
-                                <td><p name="totalCalories">${userFood.totalCalories}</p></td>
+                            <form class="form-inline needs-validation" role="form" action="${pageContext.request.contextPath}/user/food/consume" method="post">
+                                <input type="hidden" name="name" value="${userFood.name}">
+                                <input type="hidden" name="totalCalories" value="${userFood.totalCalories}">
+                                <td>
+                                    <p name="totalCalories">${userFood.totalCalories}</p>
+                                </td>
 
                                 <td>
                                     <div class="form-group">
-                                        <input type="hidden" name="name" value="${userFood.name}" class="form-control">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input type="number" name="amount" required="true" maxlength="2" size="4" value="1" min="0.5" step="0.5" class="form-control input-digit">
+                                        <input type="number" name="amount" required="true" maxlength="2" size="4" value="1" min="1" step="1" class="form-control input-digit">
                                     </div>
                                 </td>
                                 <td>
@@ -78,13 +78,16 @@
                                         <button type="submit" name="consume" class="btn btn-success btn-sm form-control">Consume</button>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="form-group">
+                            </form>
+                            <td>
+                                <div class="form-group">
+                                    <form action="${pageContext.request.contextPath}/user/food/delete" method="post">
+                                        <input type="hidden" name="name" value="${userFood.name}" class="form-control">
                                         <button type="submit" name="delete"
                                                 class="btn btn-danger btn-sm form-control">Delete</button>
-                                    </div>
-                                </td>
-                            </form>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     </c:forEach>
 
@@ -96,7 +99,7 @@
             <div class="card card-body" id="consumed">
                 <h2>Consumed Today</h2>
                 <c:choose>
-                    <c:when test="${empty consumptionDataDTO.consumedFoods}">
+                    <c:when test="${empty consumedFoodDTOs}">
                         <h3>Nothing here yet</h3>
                     </c:when>
                     <c:otherwise>
@@ -110,11 +113,11 @@
                             </thead>
                             <tbody>
 
-                            <c:forEach var="consumedFood" items="${consumptionDataDTO.consumedFoods}">
+                            <c:forEach var="consumedFoodDTO" items="${consumedFoodDTOs}">
                                 <tr>
-                                    <td>${consumedFood.name}</td>
-                                    <td>${consumedFood.amount}</td>
-                                    <td>${consumedFood.totalCalories}</td>
+                                    <td>${consumedFoodDTO.name}</td>
+                                    <td>${consumedFoodDTO.amount}</td>
+                                    <td>${consumedFoodDTO.totalCalories}</td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -143,9 +146,9 @@
                             <td><span>${nextFood.name}</span></td>
                             <td>${nextFood.totalCalories}</td>
                             <td>
-                                <form action="${pageContext.request.contextPath}/user/add" method="post" object="${nextFood}" novalidate>
+                                <form action="${pageContext.request.contextPath}/user/food/add" method="post" object="${nextFood}" novalidate>
                                     <input type="hidden" name="name" value="${nextFood.name}">
-                                    <input type="hidden" name="totalCalories" value="${nextFood.totalCalories}">
+                                    <input type="hidden" name="calories" value="${nextFood.totalCalories}">
                                     <button type="submit" class="btn btn-primary mb-2">Add</button>
                                 </form>
                             </td>
@@ -162,17 +165,17 @@
     <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
         <a class="collapse navbar-collapse text-center" id="navbarNav">
             <li class="nav-item">
-                <a inline="text">User: </a>
+                <a inline="text">User: ${userDTO.username}</a>
             </li>
             <li class="nav-item">
-                <a>Daily norm: ${consumptionDataDTO.dailyNorm}</a>
+                <a>Daily norm: ${userDTO.dailyNorm}</a>
             </li>
             <li class="nav-item">
-                <a>Consumed today: ${consumptionDataDTO.caloriesConsumed}</a>
+                <a>Consumed today: ${dayDTO.caloriesConsumed}</a>
             </li>
             <li class="nav-item">
-                <c:if test="${consumedStatsDTO.dailyNormExceeded}">
-                    <a class="card-footer" id="exceeded">Exceeded: ${consumedStatsDTO.exceededCalories}</a>
+                <c:if test="${dayDTO.isDailyNormExceeded()}">
+                    <a class="card-footer" id="exceeded">Exceeded: ${dayDTO.exceededCalories}</a>
                 </c:if>
             </li>
         </a>

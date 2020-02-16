@@ -1,6 +1,7 @@
 package org.training.food.tracker.model.builder;
 
 import org.training.food.tracker.model.ConsumedFood;
+import org.training.food.tracker.model.Day;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
@@ -33,6 +34,11 @@ public class ConsumedFoodBuilder {
 
     public ConsumedFoodBuilder totalCalories(BigDecimal totalCalories) {
         consumedFood.setTotalCalories(totalCalories);
+        return this;
+    }
+
+    public ConsumedFoodBuilder day(Day day) {
+        consumedFood.setDay(day);
         return this;
     }
 

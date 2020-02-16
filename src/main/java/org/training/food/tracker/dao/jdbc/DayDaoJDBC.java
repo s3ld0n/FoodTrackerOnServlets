@@ -31,9 +31,16 @@ public class DayDaoJDBC implements DayDao {
                                                                      + "FROM days WHERE user_id = ? ORDER BY date DESC";
 
     public static final String FIND_ALL_CONSUMED_FOOD_BY_DAY_ID_ORDER_BY_TIME_DESC =
-            "SELECT id, amount, name, time, total_calories, day_id FROM consumed_foods WHERE day_id = ? ORDER BY time DESC";
+            "SELECT id AS consumed_foods_id, "
+                    + "amount AS consumed_foods_amount, "
+                    + "name AS consumed_foods_name, "
+                    + "time AS consumed_foods_time, "
+                    + "total_calories AS consumed_foods_total_calories, "
+                    + "day_id AS consumed_foods_day_id "
+            + "FROM consumed_foods "
+            + "WHERE day_id = ? ORDER BY time DESC";
 
-    public static final String CREATE_QUERY = "INSERT INTO days (date, calories_consumed, user_id) VALUES (?,?,?)";
+    public static final String CREATE_QUERY = "INSERT INTO days (date, calories_consumed, exceeded_calories, user_id) VALUES (?,?,?,?)";
 
     public static final String FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC =
                                                   "SELECT days.id AS days_id, "
@@ -50,6 +57,12 @@ public class DayDaoJDBC implements DayDao {
                                                 + "LEFT JOIN consumed_foods ON consumed_foods.day_id = days.id "
                                                 + "WHERE user_id = ? ORDER BY days_date DESC";
 
+    private static final String UPDATE_QUERY = "UPDATE days "
+                                                       + "SET date = ?, calories_consumed = ?, "
+                                                       + "exceeded_calories = ?, is_daily_norm_exceeded = ?, "
+                                                       + "user_id = ? "
+                                                       + "WHERE id = ?";
+
     private static final Logger LOG = LoggerFactory.getLogger(DayDaoJDBC.class.getName());
 
     private static ConsumedFoodDao consumedFoodDao = new ConsumedFoodDaoJDBC();
@@ -64,12 +77,12 @@ public class DayDaoJDBC implements DayDao {
             LOG.debug("create() :: setting date, totalCalories, user_id");
             statement.setDate(1, Date.valueOf(day.getDate()));
             statement.setBigDecimal(2, day.getCaloriesConsumed());
-            statement.setLong(3, day.getUser().getId());
+            statement.setBigDecimal(3, day.getExceededCalories());
+            statement.setLong(4, day.getUser().getId());
 
             LOG.debug("create() :: executing update");
             statement.executeUpdate();
-
-
+            
             try (ResultSet resultSet = statement.getGeneratedKeys()){
                 LOG.debug("create() :: setting day id from generated keys of result set");
                 resultSet.next();
@@ -85,8 +98,30 @@ public class DayDaoJDBC implements DayDao {
         return null;
     }
 
-    @Override public Day update(Day day) {
-        return null;
+    @Override public Day update(Day day) throws DaoException {
+        LOG.debug("update()");
+        try (Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+
+            setParametersToStatement(day, statement);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("Day update of date {} failed", day.getId(), e);
+            throw new DaoException("Day update failed", e);
+        }
+
+        return day;
+    }
+
+    private void setParametersToStatement(Day day, PreparedStatement statement) throws SQLException {
+        LOG.debug("update() :: setting date, calories consumed, etc. to statement");
+        statement.setDate(1, Date.valueOf(day.getDate()));
+        statement.setBigDecimal(2, day.getCaloriesConsumed());
+        statement.setBigDecimal(3, day.getExceededCalories());
+        statement.setBoolean(4, day.isDailyNormExceeded());
+        statement.setLong(5, day.getUser().getId());
+        statement.setLong(6, day.getId());
     }
 
     @Override public List<Day> findAll() throws DaoException {
@@ -108,9 +143,6 @@ public class DayDaoJDBC implements DayDao {
                 PreparedStatement consumedFoodStatement = connection.prepareStatement(
                         FIND_ALL_CONSUMED_FOOD_BY_DAY_ID_ORDER_BY_TIME_DESC);
         ) {
-            LOG.debug("findByUserAndDate() ::  setting autocommit false");
-            connection.setAutoCommit(false);
-
             LOG.debug("findByUserAndDate() ::  getting day");
             day = getDay(user, date, dayStatement);
 
@@ -153,6 +185,8 @@ public class DayDaoJDBC implements DayDao {
                       .id(resultSet.getLong("days_id"))
                       .date(resultSet.getDate("days_date").toLocalDate())
                       .caloriesConsumed(resultSet.getBigDecimal("days_calories_consumed"))
+                      .isDailyNormExceeded(resultSet.getBoolean("days_is_daily_norm_exceeded"))
+                      .exceededCalories(resultSet.getBigDecimal("days_exceeded_calories"))
                       .user(user)
                       .build();
         return day;

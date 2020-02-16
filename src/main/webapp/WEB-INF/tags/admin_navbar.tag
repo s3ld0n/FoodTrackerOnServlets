@@ -15,7 +15,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/food_list">Add Food</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/food-list">Add Food</a>
                     </li>
 
                     <li class="nav-item">
