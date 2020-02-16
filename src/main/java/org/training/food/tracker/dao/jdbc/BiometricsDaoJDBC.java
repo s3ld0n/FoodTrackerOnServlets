@@ -6,6 +6,10 @@ import org.training.food.tracker.dao.BiometricsDao;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.Biometrics;
+import org.training.food.tracker.model.Lifestyle;
+import org.training.food.tracker.model.Sex;
+import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.builder.BiometricsBuilder;
 
 import java.sql.*;
 import java.util.List;
@@ -14,6 +18,9 @@ public class BiometricsDaoJDBC implements BiometricsDao {
 
     private static final String CREATE_QUERY = "INSERT INTO biometrics (user_id, age, height, weight, lifestyle, sex) "
                                                  + "VALUES (?,?,?,?,?,?)";
+
+    private static final String FIND_BY_USER_ID = "SELECT id, age, height, weight, lifestyle, sex, user_id "
+                                                          + "FROM biometrics WHERE user_id = ?";
 
     private static final Logger LOG = LoggerFactory.getLogger(BiometricsDaoJDBC.class.getName());
 
@@ -57,6 +64,35 @@ public class BiometricsDaoJDBC implements BiometricsDao {
 
     @Override public Biometrics findById(Long id) throws DaoException {
         return null;
+    }
+
+    public Biometrics findByOwner(User user) throws DaoException {
+        Biometrics biometrics;
+        try (Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)) {
+
+            statement.setLong(1, user.getId());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                biometrics = extractBiometrics(resultSet, user);
+            }
+
+        } catch (SQLException e) {
+            LOG.error("findByOwner() :: error occurred while finding biometrics");
+            throw new DaoException("error occurred while finding biometrics", e);
+        }
+        return biometrics;
+    }
+
+    private Biometrics extractBiometrics(ResultSet resultSet, User user) throws SQLException {
+        return BiometricsBuilder.instance()
+                             .id(resultSet.getLong("id"))
+                             .height(resultSet.getBigDecimal("height"))
+                             .weight(resultSet.getBigDecimal("weight"))
+                             .sex(Sex.valueOf(resultSet.getString("sex")))
+                             .age(resultSet.getBigDecimal("age"))
+                             .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
+                             .owner(user)
+                             .build();
     }
 
     @Override public Biometrics update(Biometrics biometrics) {
