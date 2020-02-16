@@ -26,26 +26,102 @@
 
 <t:user_navbar/>
 
-<div class="container mt-5">
-    <div class="custom-centered">
-        <div id="first">
-            <div class="col-md-12">
-                <h1>Welcome</h1>
-                <h2>lang: <c:out value="${lang}"/> </h2>
-                <h2>context: <c:out value="${pageContext.request.contextPath}"/></h2>
+<div class="container container mt-5">
+    <form action="user/update" method="post" novalidate>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <p>${user.username}</p>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-6">
+                <input type="email" name="email" value="${user.email}" class="form-control" placeholder="Email" required/>
             </div>
         </div>
 
-        <div class="container mt-4">
-            <a href="${pageContext.request.contextPath}/login">Login</a>
-            <a href="${pageContext.request.contextPath}/registration">Registration</a>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">First name</label>
+            <div class="col-sm-6">
+                <input type="text" name="firstName" value="" class="form-control" placeholder="first name" required/>
+            </div>
         </div>
 
-    </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" text="#{user.national_name}">Last name</label>
+            <div class="col-sm-6">
+                <input type="text" name="nationalName" value="" class="form-control" placeholder="National name" required/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" text="#{user.biometrics.age}">Age</label>
+            <div class="col-sm-6">
+                <input type="datetime-local" name="age" value="" class="form-control" placeholder="Age" required/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="sex" class="col-sm-2 col-form-label" text="#{user.biometrics.sex}">Sex</label>
+            <div class="col-sm-6">
+                <select id="sex" name="sex">
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" text="#{user.biometrics.weight}">Weight</label>
+            <div class="col-sm-6">
+                <input type="number" name="weight" value="" class="form-control" placeholder="Weight" required/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" text="#{user.biometrics.height}">Height</label>
+            <div class="col-sm-6">
+                <input type="number" name="height" value="" class="form-control" placeholder="Height" required/>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="lifestyle" class="col-sm-2 col-form-label" text="#{user.biometrics.lifestyle}">Lifestyle</label>
+            <div class="col-sm-6">
+                <select id="lifestyle" name="lifestyle">
+                    <option value="SEDENTARY">Sedentary</option>
+                    <option value="MODERATE">Moderate</option>
+                    <option value="VIGOROUS">Vigorous</option>
+                </select>
+            </div>
+        </div>
+        <div sec:au>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"text="#{user.password}">Password</label>
+                <div class="col-sm-6">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" text="#{user.biometrics.сonfirm_password}">Confirm password</label>
+                <div class="col-sm-6">
+                    <input type="password" name="passwordConfirm" class="form-control" placeholder="Retype Password" required/>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2" text="#{form.save}"></button>
+    </form>
 </div>
 
-<script src="webjars/jquery/3.4.1/jquery.min.js"></script>
-<script src="webjars/popper.js/1.14.3/popper.min.js"></script>
-<script src="webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<%--<script src="webjars/jquery/3.4.1/jquery.min.js"></script>--%>
+<%--<script src="webjars/popper.js/1.14.3/popper.min.js"></script>--%>
+<%--<script src="webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>--%>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 </body>
 </html>
