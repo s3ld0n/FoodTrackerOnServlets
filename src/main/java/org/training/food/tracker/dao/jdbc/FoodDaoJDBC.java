@@ -32,6 +32,8 @@ public class FoodDaoJDBC implements FoodDao {
 
     private static final String DELETE_BY_NAME_AND_USER_ID = "DELETE FROM foods WHERE name = ? AND user_id = ?";
 
+    private static final String DELETE_BY_NAME_WHERE_USER_ID_IS_NULL = "DELETE FROM foods WHERE name = ? AND user_id IS NULL";
+
     private static final Logger LOG = LoggerFactory.getLogger(FoodDaoJDBC.class.getName());
 
     @Override public Food create(Food food) throws DaoException {
@@ -188,6 +190,7 @@ public class FoodDaoJDBC implements FoodDao {
 
             statement.setString(1, foodName);
             statement.setLong(2, user.getId());
+
             affectedRows = statement.executeUpdate();
         } catch (SQLException e) {
             LOG.error("Deletion has failed", e);
@@ -195,7 +198,30 @@ public class FoodDaoJDBC implements FoodDao {
         }
 
         if (affectedRows == 0) {
-            LOG.debug("No food with name: {} and user id: {} in database", foodName, user.getId());
+            LOG.debug("No food with name: {} and user id: {} in database", foodName, user == null ? null : user.getId());
+        } else {
+            LOG.debug("Food was successfully deleted");
+        }
+    }
+
+    public void deleteCommonFoodByName(String foodName) throws DaoException {
+        LOG.debug("deleteCommonFoodByName()");
+        LOG.debug("deleteCommonFoodByName() :: establishing connection");
+
+        int affectedRows;
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(DELETE_BY_NAME_WHERE_USER_ID_IS_NULL)) {
+
+            statement.setString(1, foodName);
+
+            affectedRows = statement.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("Deletion has failed", e);
+            throw new DaoException("Deletion has failed", e);
+        }
+
+        if (affectedRows == 0) {
+            LOG.debug("No common food with name: {} in database", foodName);
         } else {
             LOG.debug("Food was successfully deleted");
         }

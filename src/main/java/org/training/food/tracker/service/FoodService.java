@@ -21,4 +21,6 @@ public interface FoodService {
     List<Food> findAllByOwner(User user) throws DaoException;
 
     void deleteByNameAndUserId(String foodName, User user) throws DaoException;
+
+    public void deleteCommonFoodByName(String foodName) throws DaoException;
 }

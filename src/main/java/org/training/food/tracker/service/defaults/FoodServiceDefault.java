@@ -60,4 +60,8 @@ public class FoodServiceDefault implements FoodService {
     public void deleteByNameAndUserId(String foodName, User user) throws DaoException {
         foodDao.deleteByNameAndOwner(foodName, user);
     }
+
+    public void deleteCommonFoodByName(String foodName) throws DaoException {
+        foodDao.deleteCommonFoodByName(foodName);
+    }
 }

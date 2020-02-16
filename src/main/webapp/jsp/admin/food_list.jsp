@@ -60,6 +60,13 @@
                             <tr>
                                 <td>${food.name}</td>
                                 <td>${food.totalCalories}</td>
+                                <td>
+                                    <form action="${pageContext.request.contextPath}/admin/food-list/delete" method="post">
+                                        <input type="hidden" name="name" value="${food.name}" class="form-control">
+                                        <button type="submit" name="delete"
+                                                class="btn btn-danger btn-sm form-control">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
