@@ -68,32 +68,39 @@ public class BiometricsDaoJDBC implements BiometricsDao {
 
     public Biometrics findByOwner(User user) throws DaoException {
         Biometrics biometrics;
+        LOG.debug("findByOwner() :: finding biometrics by owner");
+        LOG.debug("findByOwner() :: establishing connection");
         try (Connection connection = ConnectionFactory.getConnection();
         PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)) {
 
+            LOG.debug("findByOwner() :: setting user id to prepared statement");
             statement.setLong(1, user.getId());
+
+            LOG.debug("findByOwner() :: executing query");
             try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                LOG.debug("findByOwner() :: extracting biometrics from result set");
                 biometrics = extractBiometrics(resultSet, user);
             }
-
         } catch (SQLException e) {
             LOG.error("findByOwner() :: error occurred while finding biometrics");
             throw new DaoException("error occurred while finding biometrics", e);
         }
+        LOG.debug("findByOwner() :: biometrics was successfully found");
         return biometrics;
     }
 
     private Biometrics extractBiometrics(ResultSet resultSet, User user) throws SQLException {
         return BiometricsBuilder.instance()
-                             .id(resultSet.getLong("id"))
-                             .height(resultSet.getBigDecimal("height"))
-                             .weight(resultSet.getBigDecimal("weight"))
-                             .sex(Sex.valueOf(resultSet.getString("sex")))
-                             .age(resultSet.getBigDecimal("age"))
-                             .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
-                             .owner(user)
-                             .build();
-    }
+                                 .id(resultSet.getLong("id"))
+                                 .age(resultSet.getBigDecimal("age"))
+                                 .height(resultSet.getBigDecimal("height"))
+                                 .weight(resultSet.getBigDecimal("weight"))
+                                 .sex(Sex.valueOf(resultSet.getString("sex")))
+                                 .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
+                                 .owner(user)
+                                 .build();
+            }
 
     @Override public Biometrics update(Biometrics biometrics) {
         return null;

@@ -47,7 +47,7 @@
                         <div class="col form-group">
                             <label>Email</label>
                             <div>
-                                <input type="email" name="email" value="${userDTO.email}" class="form-control" placeholder="Email" />
+                                <input type="email" name="email" value="${userDTO.email}" class="form-control" placeholder="Email" readonly/>
                             </div>
                         </div>
                     </div>
@@ -70,12 +70,21 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="sex">Sex</label>
+                            <p>Sex</p>
                             <div>
-                                <select id="sex" name="sex">
-                                    <option value="FEMALE">FEMALE</option>
-                                    <option value="MALE">Male</option>
-                                </select>
+                                <c:if test="${biometricsDTO.sex.equals('FEMALE')}">
+                                    <input type="radio" name="sex" value="FEMALE" checked>Female
+                                </c:if>
+                                <c:if test="${!biometricsDTO.sex.equals('FEMALE')}">
+                                    <input type="radio" name="sex" value="FEMALE">Female
+                                </c:if>
+
+                                <c:if test="${biometricsDTO.sex.equals('MALE')}">
+                                    <input type="radio" name="sex" value="MALE" checked>Male
+                                </c:if>
+                                <c:if test="${!biometricsDTO.sex.equals('MALE')}">
+                                    <input type="radio" name="sex" value="MALE" >Male
+                                </c:if>
                             </div>
                         </div>
 
@@ -83,7 +92,7 @@
                             <label>Age</label>
                             <div>
 
-                                <input type="number" name="age" value="" class="form-control" placeholder="age"/>
+                                <input type="number" name="age" value="${biometricsDTO.age}" class="form-control" placeholder="age"/>
                             </div>
                         </div>
                     </div>
@@ -93,14 +102,14 @@
                         <div class="form-group col-md-6">
                             <label>Weight</label>
                             <div>
-                                <input type="number" name="weight" min="1" value="" class="form-control" placeholder="weight" />
+                                <input type="number" name="weight" min="1" value="${biometricsDTO.weight}" class="form-control" placeholder="weight" />
                             </div>
                         </div>
 
                         <div class="form-group col-md-6">
                             <label>Height</label>
                             <div>
-                                <input type="number" name="height" min="1" value="" class="form-control" placeholder="height"/>
+                                <input type="number" name="height" min="1" value="${biometricsDTO.height}" class="form-control" placeholder="height"/>
                             </div>
                         </div>
                     </div>
@@ -108,11 +117,26 @@
                     <div class="form-group">
                         <p>Lifestyle</p>
                         <div>
-                            <select id="lifestyle" name="lifestyle">
-                                <option value="SEDENTARY">Sedentary</option>
-                                <option value="MODERATE">Moderate</option>
-                                <option value="VIGOROUS">Vigorous</option>
-                            </select>
+                            <c:if test="${biometricsDTO.lifestyle.equals('SEDENTARY')}">
+                                <input type="radio" name="lifestyle" value="SEDENTARY" checked>Sedentary
+                            </c:if>
+                            <c:if test="${!biometricsDTO.lifestyle.equals('SEDENTARY')}">
+                                <input type="radio" name="lifestyle" value="SEDENTARY" >Sedentary
+                            </c:if>
+
+                            <c:if test="${biometricsDTO.lifestyle.equals('MODERATE')}">
+                                <input type="radio" name="lifestyle" value="MODERATE" checked>Moderate
+                            </c:if>
+                            <c:if test="${!biometricsDTO.lifestyle.equals('MODERATE')}">
+                                <input type="radio" name="lifestyle" value="MODERATE" >Moderate
+                            </c:if>
+
+                            <c:if test="${biometricsDTO.lifestyle.equals('VIGOROUS')}">
+                                <input type="radio" name="lifestyle" value="VIGOROUS" checked>Vigorous
+                            </c:if>
+                            <c:if test="${!biometricsDTO.lifestyle.equals('VIGOROUS')}">
+                                <input type="radio" name="lifestyle" value="VIGOROUS" >Vigorous
+                            </c:if>
                         </div>
                     </div>
 
