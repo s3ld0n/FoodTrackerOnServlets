@@ -10,5 +10,9 @@ public interface FoodDao extends CrudDao<Food> {
 
     List<Food> findAllByUserIdOrderByIdDesc(Long userId) throws DaoException;
 
+    List<Food> findAllCommon() throws DaoException;
+
     void deleteByNameAndOwner(String foodName, User user) throws DaoException;
+
+    void deleteCommonFoodByName(String foodName) throws DaoException;
 }

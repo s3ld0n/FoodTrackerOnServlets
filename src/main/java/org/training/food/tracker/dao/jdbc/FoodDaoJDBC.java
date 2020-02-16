@@ -26,11 +26,13 @@ public class FoodDaoJDBC implements FoodDao {
     public static final String FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC =
             "SELECT id, name, calories, user_id FROM foods WHERE user_id = ? ORDER BY id DESC";
 
-    private static final String FIND_ALL_COMMON = "SELECT id, calories, name FROM foods WHERE id IS NULL";
+    private static final String FIND_ALL_COMMON = "SELECT id, name, calories FROM foods WHERE user_id IS NULL ORDER BY id DESC";
 
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM foods WHERE id = ?";
 
     private static final String DELETE_BY_NAME_AND_USER_ID = "DELETE FROM foods WHERE name = ? AND user_id = ?";
+
+    private static final String DELETE_BY_NAME_WHERE_USER_ID_IS_NULL = "DELETE FROM foods WHERE name = ? AND user_id IS NULL";
 
     private static final Logger LOG = LoggerFactory.getLogger(FoodDaoJDBC.class.getName());
 
@@ -70,6 +72,11 @@ public class FoodDaoJDBC implements FoodDao {
     private void setPreparedStatementParams(Food food, PreparedStatement statement) throws SQLException {
         statement.setString(1, food.getName());
         statement.setBigDecimal(2, food.getCalories());
+        if (food.getOwner() == null) {
+            LOG.debug("setPreparedStatementParams() :: adding common food -> setting owner to null");
+            statement.setNull(3, Types.BIGINT);
+            return;
+        }
         statement.setLong(3, food.getOwner().getId());
     }
 
@@ -117,6 +124,29 @@ public class FoodDaoJDBC implements FoodDao {
         return findFoodsByUserIdUsingQuery(userId, FIND_ALL_BY_OWNER_ORDERED_BY_ID_DESC);
     }
 
+    @Override public List<Food> findAllCommon() throws DaoException {
+        LOG.debug("findAllCommon()");
+        List<Food> foods = new ArrayList<>();
+        try (Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMMON)) {
+
+            extractFoods(foods, statement);
+
+        } catch (SQLException e) {
+            LOG.error("findAllCommon() :: FAILED");
+            throw new DaoException("findAllCommon() :: FAILED", e);
+        }
+        return foods;
+    }
+
+    private void extractFoods(List<Food> foods, PreparedStatement statement) throws SQLException {
+        try (ResultSet resultSet = statement.executeQuery()){
+            while (resultSet.next()) {
+                foods.add(extractFood(resultSet));
+            }
+        }
+    }
+
     @Override public Food findById(Long id) throws DaoException {
         return null;
     }
@@ -160,6 +190,7 @@ public class FoodDaoJDBC implements FoodDao {
 
             statement.setString(1, foodName);
             statement.setLong(2, user.getId());
+
             affectedRows = statement.executeUpdate();
         } catch (SQLException e) {
             LOG.error("Deletion has failed", e);
@@ -167,7 +198,30 @@ public class FoodDaoJDBC implements FoodDao {
         }
 
         if (affectedRows == 0) {
-            LOG.debug("No food with name: {} and user id: {} in database", foodName, user.getId());
+            LOG.debug("No food with name: {} and user id: {} in database", foodName, user == null ? null : user.getId());
+        } else {
+            LOG.debug("Food was successfully deleted");
+        }
+    }
+
+    public void deleteCommonFoodByName(String foodName) throws DaoException {
+        LOG.debug("deleteCommonFoodByName()");
+        LOG.debug("deleteCommonFoodByName() :: establishing connection");
+
+        int affectedRows;
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(DELETE_BY_NAME_WHERE_USER_ID_IS_NULL)) {
+
+            statement.setString(1, foodName);
+
+            affectedRows = statement.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("Deletion has failed", e);
+            throw new DaoException("Deletion has failed", e);
+        }
+
+        if (affectedRows == 0) {
+            LOG.debug("No common food with name: {} in database", foodName);
         } else {
             LOG.debug("Food was successfully deleted");
         }

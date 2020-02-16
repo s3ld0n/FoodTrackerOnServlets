@@ -31,13 +31,7 @@ public class FoodServiceDefault implements FoodService {
         this.consumedFoodService = new ConsumedFoodServiceDefault();
     }
 
-    public void addForOwner(FoodDTO foodDTO, User owner) throws DaoException {
-        LOG.debug("adding foodDTO: {}", foodDTO);
-        Food food = FoodBuilder.instance()
-                        .name(foodDTO.getName())
-                        .calories(foodDTO.getTotalCalories())
-                        .owner(owner)
-                        .build();
+    public void create(Food food) throws DaoException {
         foodDao.create(food);
     }
 
@@ -55,11 +49,19 @@ public class FoodServiceDefault implements FoodService {
         return foodDao.findAllCommonExcludingPersonalByUserId(userId);
     }
 
+    public List<Food> findAllCommon() throws DaoException {
+        return foodDao.findAllCommon();
+    }
+
     public List<Food> findAllByOwner(User user) throws DaoException {
         return foodDao.findAllByUserIdOrderByIdDesc(user.getId());
     }
 
     public void deleteByNameAndUserId(String foodName, User user) throws DaoException {
         foodDao.deleteByNameAndOwner(foodName, user);
+    }
+
+    public void deleteCommonFoodByName(String foodName) throws DaoException {
+        foodDao.deleteCommonFoodByName(foodName);
     }
 }
