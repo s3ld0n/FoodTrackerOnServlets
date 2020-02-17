@@ -115,7 +115,6 @@ public class UserProfileServlet extends HttpServlet {
                                     .email(request.getParameter("email"))
                                     .password(request.getParameter("password"))
                                     .role(Role.valueOf(request.getParameter("role")))
-                                    .active(true)
                                     .build();
     }
 }

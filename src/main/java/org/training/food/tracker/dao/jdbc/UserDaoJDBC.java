@@ -18,7 +18,7 @@ import java.util.List;
 public class UserDaoJDBC implements UserDao {
 
     private static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
-                                                      + "last_name, email, active, role, daily_norm_calories) VALUES(?,?,?,?,?,?,?,?)";
+                                                      + "last_name, email, role, daily_norm_calories) VALUES(?,?,?,?,?,?,?)";
 
     private static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                     + "role, biometrics.id, user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
@@ -92,14 +92,11 @@ public class UserDaoJDBC implements UserDao {
         LOG.trace("setPreparedStatementParams() :: setting user's email: {}", user.getEmail());
         statement.setString(5, user.getEmail());
 
-        LOG.trace("setPreparedStatementParams() :: setting user to be active : {}", user.isActive());
-        statement.setBoolean(6, user.isActive());
-
         LOG.trace("setPreparedStatementParams() :: setting user's role: ");
-        statement.setString(7, Role.USER.toString());
+        statement.setString(6, Role.USER.toString());
 
         LOG.trace("setPreparedStatementParams() :: setting user's daily norm calories: {}", user.getDailyNormCalories());
-        statement.setBigDecimal(8, user.getDailyNormCalories());
+        statement.setBigDecimal(7, user.getDailyNormCalories());
     }
 
     @Override

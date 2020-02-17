@@ -57,11 +57,6 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder active(boolean active) {
-        user.setActive(active);
-        return this;
-    }
-
     public UserBuilder role(Role role) {
         user.setRole(role);
         return this;

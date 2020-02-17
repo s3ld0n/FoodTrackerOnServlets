@@ -11,7 +11,6 @@ public class User  {
     private String lastName;
     private Biometrics biometrics;
     private BigDecimal dailyNormCalories;
-    private boolean active;
     private Role role;
 
     public Long getId() {
@@ -78,14 +77,6 @@ public class User  {
         this.dailyNormCalories = dailyNormCalories;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -97,6 +88,6 @@ public class User  {
     @Override public String toString() {
         return "User{" + "id=" + id + ", username='" + username + '\'' + ", email='" + email + '\'' + ", firstName='"
                        + firstName + '\'' + ", lastName='" + lastName + '\'' + ", dailyNormCalories="
-                       + dailyNormCalories + ", active=" + active + ", role=" + role + '}';
+                       + dailyNormCalories + ", role=" + role + '}';
     }
 }
