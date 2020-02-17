@@ -47,6 +47,10 @@ public class DayServiceDefault implements DayService {
         return day;
     }
 
+    public List<Day> findAllByUser(User user) throws DaoException {
+        return dayDao.findAllByUserOrderByDateDesc(user);
+    }
+
     public void updateDay(Day day, ConsumedFood consumedFood) throws DaoException {
         LOG.debug("updateDay() :: adding calories ");
         addConsumedCalories(day, consumedFood.getTotalCalories());

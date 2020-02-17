@@ -18,9 +18,7 @@
                     </li>
 
                     <li class="nav-item" >
-                        <form method="get">
-                            <button class="nav-link btn btn-link"  type="submit">History</button>
-                        </form>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/user/history">History</a>
                     </li>
 
                     <li class="nav-item dropdown">

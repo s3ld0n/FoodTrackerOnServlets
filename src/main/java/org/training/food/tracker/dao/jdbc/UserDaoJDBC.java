@@ -95,8 +95,8 @@ public class UserDaoJDBC implements UserDao {
         LOG.trace("setPreparedStatementParams() :: setting user to be active : {}", user.isActive());
         statement.setBoolean(6, user.isActive());
 
-        LOG.trace("setPreparedStatementParams() :: setting user's role: {}", user.getRole());
-        statement.setString(7, user.getRole().toString());
+        LOG.trace("setPreparedStatementParams() :: setting user's role: ");
+        statement.setString(7, Role.USER.toString());
 
         LOG.trace("setPreparedStatementParams() :: setting user's daily norm calories: {}", user.getDailyNormCalories());
         statement.setBigDecimal(8, user.getDailyNormCalories());
