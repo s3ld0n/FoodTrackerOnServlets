@@ -6,6 +6,10 @@ import org.training.food.tracker.dao.BiometricsDao;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.Biometrics;
+import org.training.food.tracker.model.Lifestyle;
+import org.training.food.tracker.model.Sex;
+import org.training.food.tracker.model.User;
+import org.training.food.tracker.model.builder.BiometricsBuilder;
 
 import java.sql.*;
 import java.util.List;
@@ -14,6 +18,17 @@ public class BiometricsDaoJDBC implements BiometricsDao {
 
     private static final String CREATE_QUERY = "INSERT INTO biometrics (user_id, age, height, weight, lifestyle, sex) "
                                                  + "VALUES (?,?,?,?,?,?)";
+
+    private static final String FIND_BY_USER_ID = "SELECT id, age, height, weight, lifestyle, sex, user_id "
+                                                          + "FROM biometrics WHERE user_id = ?";
+
+    private static final String UPDATE_QUERY = "UPDATE biometrics"
+                                                       + " SET age = ?, "
+                                                       + "height = ?, "
+                                                       + "weight = ?, "
+                                                       + "lifestyle = ?, "
+                                                       + "sex = ? "
+                                               + "WHERE user_id = ?";
 
     private static final Logger LOG = LoggerFactory.getLogger(BiometricsDaoJDBC.class.getName());
 
@@ -59,8 +74,65 @@ public class BiometricsDaoJDBC implements BiometricsDao {
         return null;
     }
 
-    @Override public Biometrics update(Biometrics biometrics) {
-        return null;
+    public Biometrics findByOwner(User user) throws DaoException {
+        Biometrics biometrics;
+        LOG.debug("findByOwner() :: finding biometrics by owner");
+        LOG.debug("findByOwner() :: establishing connection");
+        try (Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)) {
+
+            LOG.debug("findByOwner() :: setting user id to prepared statement");
+            statement.setLong(1, user.getId());
+
+            LOG.debug("findByOwner() :: executing query");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                LOG.debug("findByOwner() :: extracting biometrics from result set");
+                biometrics = extractBiometrics(resultSet, user);
+            }
+        } catch (SQLException e) {
+            LOG.error("findByOwner() :: error occurred while finding biometrics");
+            throw new DaoException("error occurred while finding biometrics", e);
+        }
+        LOG.debug("findByOwner() :: biometrics was successfully found");
+        return biometrics;
+    }
+
+    private Biometrics extractBiometrics(ResultSet resultSet, User user) throws SQLException {
+        return BiometricsBuilder.instance()
+                                 .id(resultSet.getLong("id"))
+                                 .age(resultSet.getBigDecimal("age"))
+                                 .height(resultSet.getBigDecimal("height"))
+                                 .weight(resultSet.getBigDecimal("weight"))
+                                 .sex(Sex.valueOf(resultSet.getString("sex")))
+                                 .lifestyle(Lifestyle.valueOf(resultSet.getString("lifestyle")))
+                                 .owner(user)
+                                 .build();
+            }
+
+    @Override public Biometrics update(Biometrics biometrics) throws DaoException{
+        LOG.debug("update() :: updating biometrics");
+
+        try(Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+
+            setPreparedStatementParams(biometrics, statement);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("update() :: error occurred during biometrics update", e);
+            throw new DaoException("error occurred during biometrics update", e);
+        }
+        return biometrics;
+    }
+
+    private void setPreparedStatementParams(Biometrics biometrics, PreparedStatement statement) throws SQLException {
+        statement.setBigDecimal(1, biometrics.getAge());
+        statement.setBigDecimal(2, biometrics.getHeight());
+        statement.setBigDecimal(3, biometrics.getWeight());
+        statement.setString(4, biometrics.getLifestyle().toString());
+        statement.setString(5, biometrics.getSex().toString());
+        statement.setLong(6, biometrics.getOwner().getId());
     }
 
     @Override public List<Biometrics> findAll() throws DaoException {

@@ -59,6 +59,9 @@ public class ConsumedFoodDaoJDBC implements ConsumedFoodDao {
     }
 
     public ConsumedFood extractConsumedFood(ResultSet resultSet) throws SQLException {
+        LOG.debug("extractConsumedFood :: consumedFood time : {}",
+                resultSet.getTime("consumed_foods_time").toLocalTime());
+
         return ConsumedFoodBuilder.instance()
                             .id(resultSet.getLong("consumed_foods_id"))
                             .amount(resultSet.getBigDecimal("consumed_foods_amount"))

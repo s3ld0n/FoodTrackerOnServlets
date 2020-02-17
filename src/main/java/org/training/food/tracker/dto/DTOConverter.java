@@ -32,8 +32,8 @@ public class DTOConverter {
                        .age(biometrics.getAge())
                        .height(biometrics.getHeight())
                        .weight(biometrics.getWeight())
-                       .lifestyle(biometrics.getLifestyle())
-                       .sex(biometrics.getSex()).build();
+                       .lifestyle(biometrics.getLifestyle().toString())
+                       .sex(biometrics.getSex().toString()).build();
     }
 
     public static FoodDTO foodToFoodDTO(Food food) {
@@ -55,9 +55,13 @@ public class DTOConverter {
                     .date(day.getDate())
                     .caloriesConsumed(day.getCaloriesConsumed())
                     .exceededCalories(day.getExceededCalories())
-                    .consumedFoods(day.getConsumedFoods())
+                    .consumedFoodDTOs(DTOConverter.consumedFoodsToConsumedFoodDTOs(day.getConsumedFoods()))
                     .isDailyNormExceeded(day.isDailyNormExceeded())
                     .build();
+    }
+
+    public static List<DayDTO> daysToDaysDTOs(List<Day> days) {
+        return days.stream().map(DTOConverter::dayToDayDTO).collect(Collectors.toList());
     }
 
     public static ConsumedFoodDTO consumedFoodToConsumedFoodDTO(ConsumedFood consumedFood) {

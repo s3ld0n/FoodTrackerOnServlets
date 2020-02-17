@@ -45,7 +45,9 @@ public class DayDaoJDBC implements DayDao {
     public static final String FIND_DAYS_WITH_CONSUMED_FOODS_BY_USER_ID_ORDERED_BY_DATE_DESC =
                                                   "SELECT days.id AS days_id, "
                                                         + "days.date AS days_date, "
-                                                        + "days.calories_consumed AS days_total_calories, "
+                                                        + "days.calories_consumed AS days_calories_consumed, "
+                                                        + "days.exceeded_calories AS days_exceeded_calories, "
+                                                        + "days.is_daily_norm_exceeded AS days_is_daily_norm_exceeded,"
                                                         + "days.user_id AS days_user_id, "
                                                         + "consumed_foods.id AS consumed_foods_id, "
                                                         + "consumed_foods.amount AS consumed_foods_amount, "
@@ -187,6 +189,7 @@ public class DayDaoJDBC implements DayDao {
                       .caloriesConsumed(resultSet.getBigDecimal("days_calories_consumed"))
                       .isDailyNormExceeded(resultSet.getBoolean("days_is_daily_norm_exceeded"))
                       .exceededCalories(resultSet.getBigDecimal("days_exceeded_calories"))
+                      .consumedFoods(new ArrayList<>())
                       .user(user)
                       .build();
         return day;
@@ -235,24 +238,44 @@ public class DayDaoJDBC implements DayDao {
         LOG.debug("extractDaysWithConsumedFoods()");
         resultSet.next();
 
+        LOG.debug("extractDaysWithConsumedFoods() :: extracting day from resultSet");
         Day day = extractDay(user, resultSet);
 
         days.add(day);
         long previousDayId = day.getId();
 
-        LOG.debug("extractDaysWithConsumedFoods() :: looping throw result set");
+        LOG.debug("extractDaysWithConsumedFoods() :: looping through result set");
         while (resultSet.next()) {
             long currentDayId = resultSet.getLong("days_id");
 
-            if (previousDayId != currentDayId) {
+            if (isNextDay(previousDayId, currentDayId)) {
                 day = extractDay(user, resultSet);
                 days.add(day);
             }
 
-            ConsumedFood consumedFood = consumedFoodDao.extractConsumedFood(resultSet);
+            if (noColumnsInRow(resultSet)) {
+                previousDayId = currentDayId;
+                continue;
+            }
 
-            day.getConsumedFoods().add(consumedFood);
+            ConsumedFood consumedFood = consumedFoodDao.extractConsumedFood(resultSet);
+            List<ConsumedFood> consumedFoods = day.getConsumedFoods();
+            consumedFoods.add(consumedFood);
+            sortConsumedFoodByTimeDesc(consumedFoods);
+
             previousDayId = currentDayId;
         }
+    }
+
+    private boolean isNextDay(long previousDayId, long currentDayId) {
+        return previousDayId != currentDayId;
+    }
+
+    private boolean noColumnsInRow(ResultSet resultSet) throws SQLException {
+        return resultSet.getTime("consumed_foods_time") == null;
+    }
+
+    private void sortConsumedFoodByTimeDesc(List<ConsumedFood> foods) {
+        foods.sort((food1, food2) -> (food2.getTime().toSecondOfDay() - food1.getTime().toSecondOfDay()));
     }
 }
