@@ -61,7 +61,7 @@ public class DTOConverter {
     }
 
     public static List<DayDTO> daysToDaysDTOs(List<Day> days) {
-
+        return days.stream().map(DTOConverter::dayToDayDTO).collect(Collectors.toList());
     }
 
     public static ConsumedFoodDTO consumedFoodToConsumedFoodDTO(ConsumedFood consumedFood) {
