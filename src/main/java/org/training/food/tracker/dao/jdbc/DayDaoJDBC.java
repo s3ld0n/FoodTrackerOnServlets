@@ -204,7 +204,7 @@ public class DayDaoJDBC implements DayDao {
         try (ResultSet resultSet = consumedFoodStatement.executeQuery()) {
             LOG.debug("getConsumedFoods() :: looping result set extracting foods");
             while (resultSet.next()) {
-                consumedFoods.add(consumedFoodDao.extractConsumedFood(resultSet));
+                consumedFoods.add(consumedFoodDao.buildConsumedFood(resultSet));
             }
 
         }
@@ -258,7 +258,7 @@ public class DayDaoJDBC implements DayDao {
                 continue;
             }
 
-            ConsumedFood consumedFood = consumedFoodDao.extractConsumedFood(resultSet);
+            ConsumedFood consumedFood = consumedFoodDao.buildConsumedFood(resultSet);
             List<ConsumedFood> consumedFoods = day.getConsumedFoods();
             consumedFoods.add(consumedFood);
             sortConsumedFoodByTimeDesc(consumedFoods);

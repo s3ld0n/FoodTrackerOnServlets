@@ -17,8 +17,8 @@ public class ConsumedFoodServiceDefault implements ConsumedFoodService {
         this.consumedFoodDao = new ConsumedFoodDaoJDBC();
     }
 
-    public void registerConsumption(ConsumedFood food) throws DaoException {
-        consumedFoodDao.create(food);
+    public void registerConsumption(ConsumedFood consumedFood) throws DaoException {
+        consumedFoodDao.create(consumedFood);
     }
 
     public void calculateCaloriesByAmount(ConsumedFood consumedFood) {
@@ -28,7 +28,23 @@ public class ConsumedFoodServiceDefault implements ConsumedFoodService {
         );
     }
 
+    public ConsumedFood findById(Long id) throws DaoException {
+        return consumedFoodDao.findById(id);
+    }
+
     public List<ConsumedFood> findAllByDay(Day day) throws DaoException {
         return consumedFoodDao.findAllByDayId(day.getId());
+    }
+
+    public List<ConsumedFood> findAll() throws DaoException {
+        return consumedFoodDao.findAll();
+    }
+
+    public ConsumedFood update(ConsumedFood consumedFood) throws DaoException {
+        return consumedFoodDao.update(consumedFood);
+    }
+
+    public void deleteById(Long id) throws DaoException {
+        consumedFoodDao.deleteById(id);
     }
 }

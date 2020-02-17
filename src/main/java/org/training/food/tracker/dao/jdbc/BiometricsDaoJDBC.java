@@ -226,7 +226,7 @@ public class BiometricsDaoJDBC implements BiometricsDao {
     }
 
     @Override public void deleteById(Long id) throws DaoException {
-        LOG.debug("deleteById() :: finding all biometrics");
+        LOG.debug("deleteById()");
         int affectedRows = 0;
         try (Connection connection = ConnectionFactory.getConnection();
         PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY)){
@@ -239,6 +239,11 @@ public class BiometricsDaoJDBC implements BiometricsDao {
             LOG.error("deleteById() :: error occurred", e);
             throw new DaoException("deleteById() :: error occurred", e);
         }
-        LOG.debug("deleteById() :: {} rows were successfully deleted", affectedRows);
+
+        if (affectedRows != 0) {
+            LOG.debug("deleteById() :: {} rows were successfully deleted", affectedRows);
+        } else {
+            LOG.debug("deleteById() :: 0 rows were deleted. Must be no such id: {}", id);
+        }
     }
 }

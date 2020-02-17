@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ConsumedFoodDao extends CrudDao<ConsumedFood> {
     List<ConsumedFood> findAllByDayId(Long dayId) throws DaoException;
-    ConsumedFood extractConsumedFood(ResultSet resultSet) throws SQLException;
+    ConsumedFood buildConsumedFood(ResultSet resultSet) throws SQLException;
 }
