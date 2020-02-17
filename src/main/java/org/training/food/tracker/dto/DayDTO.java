@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DayDTO {
 
-    private List<ConsumedFood> consumedFoods;
+    private List<ConsumedFoodDTO> consumedFoodDTOs;
     private BigDecimal caloriesConsumed;
     private BigDecimal exceededCalories;
     private boolean isDailyNormExceeded;
@@ -25,8 +25,8 @@ public class DayDTO {
             this.dayDTO = new DayDTO();
         }
 
-        public Builder consumedFoods(List<ConsumedFood> consumedFoods) {
-            dayDTO.setConsumedFoods(consumedFoods);
+        public Builder consumedFoodDTOs(List<ConsumedFoodDTO> consumedFoodDTOs) {
+            dayDTO.setConsumedFoodDTOs(consumedFoodDTOs);
             return this;
         }
 
@@ -55,12 +55,12 @@ public class DayDTO {
         }
     }
 
-    public List<ConsumedFood> getConsumedFoods() {
-        return consumedFoods;
+    public List<ConsumedFoodDTO> getConsumedFoodDTOs() {
+        return consumedFoodDTOs;
     }
 
-    public void setConsumedFoods(List<ConsumedFood> consumedFoods) {
-        this.consumedFoods = consumedFoods;
+    public void setConsumedFoodDTOs(List<ConsumedFoodDTO> consumedFoodDTOs) {
+        this.consumedFoodDTOs = consumedFoodDTOs;
     }
 
     public BigDecimal getCaloriesConsumed() {
