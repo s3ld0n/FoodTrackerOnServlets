@@ -55,9 +55,13 @@ public class DTOConverter {
                     .date(day.getDate())
                     .caloriesConsumed(day.getCaloriesConsumed())
                     .exceededCalories(day.getExceededCalories())
-                    .consumedFoods(day.getConsumedFoods())
+                    .consumedFoodDTOs(DTOConverter.consumedFoodsToConsumedFoodDTOs(day.getConsumedFoods()))
                     .isDailyNormExceeded(day.isDailyNormExceeded())
                     .build();
+    }
+
+    public static List<DayDTO> daysToDaysDTOs(List<Day> days) {
+        return days.stream().map(DTOConverter::dayToDayDTO).collect(Collectors.toList());
     }
 
     public static ConsumedFoodDTO consumedFoodToConsumedFoodDTO(ConsumedFood consumedFood) {

@@ -16,5 +16,7 @@ public interface UserService {
 
     List<User> findAll() throws DaoException;
 
+    User update(User user) throws DaoException;
+
     BigDecimal calculateDailyNormCalories(Biometrics biometrics);
 }

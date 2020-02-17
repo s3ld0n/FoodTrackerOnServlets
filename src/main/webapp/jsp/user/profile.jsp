@@ -34,13 +34,13 @@
             </header>
             <article class="card-body">
 
-                <form action="/user/profile/" method="post">
+                <form action="${pageContext.request.contextPath}/user/profile" method="post">
                     <input type="hidden" name="id">
                     <div class="form-row">
                         <div class="col form-group">
                             <label>Username</label>
                             <div>
-                                <input type="text" class="form-control" value="${userDTO.username}" maxlength="32" id="username" placeholder="username" readonly="readonly"/>
+                                <input type="text" class="form-control" value="${userDTO.username}" maxlength="32" name="username" id="username" placeholder="username" readonly="readonly"/>
                             </div>
                         </div>
 
@@ -152,6 +152,7 @@
                     <div class="form-group">
                         <div class="form-group col-md-6">
                             <label>Role: ${userDTO.role}</label>
+                            <input type="hidden" name="role" value="${userDTO.role}">
                         </div>
                     </div>
 

@@ -17,20 +17,30 @@ import java.util.List;
 
 public class UserDaoJDBC implements UserDao {
 
-    public static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
-                                                      + "last_name, email, active, role, daily_norm_calories) VALUES(?,?,?,?,?,?,?,?)";
+    private static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
+                                                      + "last_name, email, role, daily_norm_calories) VALUES(?,?,?,?,?,?,?)";
 
-    public static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
+    private static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                     + "role, biometrics.id, user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                     + "biometrics ON user_id = users.id WHERE users.id = ?";
 
-    public static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
+    private static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                             + "role, biometrics.id AS bio_id, biometrics.user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                             + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
 
-    public static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
+    private static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
                                                   + "role, biometrics.id AS bio_id, biometrics.user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                   + "biometrics ON users.id = biometrics.user_id";
+
+    private static final String UPDATE_QUERY = "UPDATE users SET username = ?, "
+                                                       + "password = ?, "
+                                                       + "first_name = ?, "
+                                                       + "last_name = ?, "
+                                                       + "email = ?, "
+                                                       + "active = ?, "
+                                                       + "role = ?, "
+                                                       + "daily_norm_calories = ? "
+                                             + "WHERE id = ?";
 
     private static final Logger LOG = LoggerFactory.getLogger(UserDaoJDBC.class.getName());
 
@@ -82,14 +92,11 @@ public class UserDaoJDBC implements UserDao {
         LOG.trace("setPreparedStatementParams() :: setting user's email: {}", user.getEmail());
         statement.setString(5, user.getEmail());
 
-        LOG.trace("setPreparedStatementParams() :: setting user to be active : {}", user.isActive());
-        statement.setBoolean(6, user.isActive());
+        LOG.trace("setPreparedStatementParams() :: setting user's role: ");
+        statement.setString(6, Role.USER.toString());
 
-        LOG.trace("setPreparedStatementParams() :: setting user's role: {}", user.getRole());
-        statement.setString(7, "USER");
-
-        LOG.trace("setPreparedStatementParams() :: setting user's daily norm calories: {}", user.getRole());
-        statement.setBigDecimal(8, user.getDailyNormCalories());
+        LOG.trace("setPreparedStatementParams() :: setting user's daily norm calories: {}", user.getDailyNormCalories());
+        statement.setBigDecimal(7, user.getDailyNormCalories());
     }
 
     @Override
@@ -213,8 +220,26 @@ public class UserDaoJDBC implements UserDao {
         }
     }
 
-    @Override public User update(User user) {
-        return null;
+    @Override public User update(User user) throws DaoException {
+        LOG.debug("update() :: updating user: {}", user.getUsername());
+
+        LOG.debug("findById() :: establishing connection, preparing statement");
+        try (Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+
+            LOG.debug("findById() :: setting parameters of statement");
+            setPreparedStatementParams(user, statement);
+            statement.setLong(9, user.getId());
+
+            LOG.debug("findById() :: executing update");
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            LOG.error("update() :: update of user failed!", e);
+            throw new DaoException("update of user failed!", e);
+        }
+        LOG.debug("findById() :: user {} was successfully updated", user.getUsername());
+        return user;
     }
 
     @Override public void deleteById(Long id) {
