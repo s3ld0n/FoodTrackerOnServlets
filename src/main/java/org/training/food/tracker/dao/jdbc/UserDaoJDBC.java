@@ -20,15 +20,15 @@ public class UserDaoJDBC implements UserDao {
     private static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
                                                       + "last_name, email, role, daily_norm_calories) VALUES(?,?,?,?,?,?,?)";
 
-    private static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
+    private static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, "
                                                     + "role, biometrics.id, user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                     + "biometrics ON user_id = users.id WHERE users.id = ?";
 
-    private static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
+    private static final String FIND_BY_USERNAME_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, "
                                                             + "role, biometrics.id AS bio_id, biometrics.user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                             + "biometrics ON users.id = biometrics.user_id WHERE username = ?";
 
-    private static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, active, "
+    private static final String FIND_ALL_QUERY = "SELECT users.id AS u_id, username, password, first_name, last_name, email, "
                                                   + "role, biometrics.id AS bio_id, biometrics.user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
                                                   + "biometrics ON users.id = biometrics.user_id";
 
@@ -37,7 +37,6 @@ public class UserDaoJDBC implements UserDao {
                                                        + "first_name = ?, "
                                                        + "last_name = ?, "
                                                        + "email = ?, "
-                                                       + "active = ?, "
                                                        + "role = ?, "
                                                        + "daily_norm_calories = ? "
                                              + "WHERE id = ?";
