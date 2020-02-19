@@ -2,6 +2,7 @@ package org.training.food.tracker.controller.servlet.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.training.food.tracker.controller.UserCredentials;
 import org.training.food.tracker.controller.servlet.LogoutServlet;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.User;
@@ -28,6 +29,8 @@ public class UsersServlet extends HttpServlet {
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        UserCredentials userCredentials = (UserCredentials) request.getSession().getAttribute("userCredentials");
+
         LOG.debug("doGet()");
         List<User> users;
         LOG.debug("doGet() :: Selecting all users");
@@ -39,6 +42,7 @@ public class UsersServlet extends HttpServlet {
             return;
         }
 
+        request.setAttribute("loggedUsername", userCredentials.getUsername());
         request.setAttribute("users", users);
         request.getRequestDispatcher("/jsp/admin/users.jsp").forward(request, response);
     }
