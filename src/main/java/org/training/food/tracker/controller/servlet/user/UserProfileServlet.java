@@ -61,6 +61,7 @@ public class UserProfileServlet extends HttpServlet {
         BiometricsDTO biometricsDTO = DTOConverter.biometricsToBiometricsDTO(biometrics);
         request.setAttribute("biometricsDTO", biometricsDTO);
 
+        request.setAttribute("loggedUsername", userCredentials.getUsername());
         request.getRequestDispatcher("/jsp/user/profile.jsp").forward(request, response);
     }
 

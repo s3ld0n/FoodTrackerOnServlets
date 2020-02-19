@@ -98,6 +98,7 @@ public class UserMainServlet extends HttpServlet {
         request.setAttribute("dayDTO", dayDTO);
 
         request.setAttribute("food", new FoodDTO());
+        request.setAttribute("loggedUsername", userCredentials.getUsername());
         LOG.debug("doGet() :: forwarding page");
         request.getRequestDispatcher("/jsp/user/main.jsp").forward(request, response);
     }

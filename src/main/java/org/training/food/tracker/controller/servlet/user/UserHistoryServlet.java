@@ -61,6 +61,7 @@ public class UserHistoryServlet extends HttpServlet {
 
         LOG.debug("doGet() :: setting userDTO");
         request.setAttribute("userDTO", userDTO);
+        request.setAttribute("loggedUsername", userCredentials.getUsername());
         request.getRequestDispatcher("/jsp/user/history.jsp").forward(request, response);
     }
 }
