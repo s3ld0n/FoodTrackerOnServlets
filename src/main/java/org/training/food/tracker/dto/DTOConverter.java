@@ -14,14 +14,12 @@ public class DTOConverter {
     private static final Logger LOG = LoggerFactory.getLogger(DTOConverter.class.getName());
 
     public static UserDTO userToUserDTO(User user) {
-        Biometrics biometrics = user.getBiometrics();
         return UserDTO.builder()
                        .username(user.getUsername())
                        .email(user.getEmail())
                        .password(user.getPassword())
                        .firstName(user.getFirstName())
                        .lastName(user.getLastName())
-                       .biometricsDTO(biometricsToBiometricsDTO(biometrics))
                        .dailyNorm(user.getDailyNormCalories())
                        .role(user.getRole())
                        .build();
