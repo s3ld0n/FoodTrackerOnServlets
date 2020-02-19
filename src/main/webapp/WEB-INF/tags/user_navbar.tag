@@ -29,9 +29,15 @@
                             <a class="dropdown-item" href="?lang=uk">Ua</a>
                         </div>
                     </li>
-
-                    <li class="nav-item" >
-                        <a class="nav-link" href="${pageContext.request.contextPath}/logout">Log out</a>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <ul class="navbar-nav ml-auto navbar-right">
+                    <li class="nav-item">
+                        <a class="nav-link">Logged as: ${userCredentials.username}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/logout">Logout</a>
                     </li>
                 </ul>
             </div>

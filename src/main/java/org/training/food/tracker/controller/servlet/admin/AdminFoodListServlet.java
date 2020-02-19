@@ -2,6 +2,7 @@ package org.training.food.tracker.controller.servlet.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.training.food.tracker.controller.UserCredentials;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.FoodDTO;
@@ -32,6 +33,8 @@ public class AdminFoodListServlet extends HttpServlet {
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        UserCredentials userCredentials = (UserCredentials) request.getSession().getAttribute("userCredentials");
+
         LOG.debug("doGet()");
         List<Food> allCommonFoods;
 
@@ -46,6 +49,8 @@ public class AdminFoodListServlet extends HttpServlet {
 
         List<FoodDTO> allCommonFoodDTOs = DTOConverter.foodsToFoodDTOs(allCommonFoods);
 
+
+        request.setAttribute("loggedUsername", userCredentials.getUsername());
         request.setAttribute("allCommonFoodDTOs", allCommonFoodDTOs);
 
         LOG.debug("doGet() :: forwarding page");
