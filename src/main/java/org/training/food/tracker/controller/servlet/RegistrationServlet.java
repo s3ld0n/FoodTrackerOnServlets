@@ -2,7 +2,11 @@ package org.training.food.tracker.controller.servlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.training.food.tracker.controller.validator.BiometricsValidator;
+import org.training.food.tracker.controller.validator.UserValidator;
 import org.training.food.tracker.dao.DaoException;
+import org.training.food.tracker.dto.DTOConverter;
+import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Biometrics;
 import org.training.food.tracker.model.Lifestyle;
 import org.training.food.tracker.model.Sex;
@@ -43,11 +47,14 @@ public class RegistrationServlet extends HttpServlet {
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        LOG.debug("doPost() :: building biometrics from request");
-        Biometrics biometrics = buildBiometrics(request);
-
         LOG.debug("doPost() :: building user from request");
         User user = builderUser(request);
+
+        if (!isValidUserInput(request, user)) {
+            request.getRequestDispatcher("jsp/registration.jsp").forward(request, response);
+        }
+
+        Biometrics biometrics = buildBiometrics(request);
 
         LOG.debug("doPost() :: calculating and setting daily norm for user");
         user.setDailyNormCalories(userService.calculateDailyNormCalories(biometrics));
@@ -59,6 +66,42 @@ public class RegistrationServlet extends HttpServlet {
         biometrics = insertBiometricsIntoDB(biometrics);
 
         user.setBiometrics(biometrics);
+    }
+
+    private boolean isValidUserInput(HttpServletRequest request, User user) {
+        LOG.debug("isValidUserInput() :: validating user fields");
+        UserValidator userValidator = new UserValidator();
+        boolean invalidUserFields = userValidator.isNotValid(user);
+
+        LOG.debug("isValidUserInput() :: validating biometrics fields");
+        BiometricsValidator biometricsValidator = new BiometricsValidator();
+        boolean invalidBiometricFields = biometricsValidator.containsErrors(request);
+
+        LOG.debug("isValidUserInput() :: comparing passwords");
+        boolean passwordsDontMatch = userValidator.passwordsDontMatch(
+                request.getParameter("password"),
+                request.getParameter("passwordConfirm")
+        );
+
+        if (passwordsDontMatch) {
+            request.setAttribute("passwordsDontMatch", "passwordsDontMatch");
+        }
+
+        if (invalidUserFields || invalidBiometricFields) {
+            UserDTO userDTO = DTOConverter.userToUserDTO(user);
+            request.setAttribute("userDTO", userDTO);
+            request.setAttribute("userErrors", userValidator.getErrors());
+
+            request.setAttribute("biometricsErrors", biometricsValidator.getErrors());
+            request.setAttribute("biometricsDTO", biometricsValidator.getBiometricsDTO());
+        }
+
+        LOG.debug("doPost() :: building biometrics from request");
+
+        if (invalidUserFields || invalidBiometricFields || passwordsDontMatch) {
+            return false;
+        }
+        return true;
     }
 
     private Biometrics insertBiometricsIntoDB(Biometrics biometrics) {
