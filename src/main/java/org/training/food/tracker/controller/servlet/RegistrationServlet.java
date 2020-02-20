@@ -41,7 +41,7 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("jsp/registration.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/registration.jsp").forward(request, response);
     }
 
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -51,7 +51,7 @@ public class RegistrationServlet extends HttpServlet {
         User user = builderUser(request);
 
         if (!isValidUserInput(request, user)) {
-            request.getRequestDispatcher("jsp/registration.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/registration.jsp").forward(request, response);
         }
 
         Biometrics biometrics = buildBiometrics(request);

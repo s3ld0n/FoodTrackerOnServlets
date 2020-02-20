@@ -51,7 +51,7 @@ public class UserHistoryServlet extends HttpServlet {
             daysDTOs = DTOConverter.daysToDaysDTOs(dayService.getAllDaysByUser(user));
         } catch (DaoException e) {
             LOG.debug("doGet() :: error occurred", e);
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 
@@ -62,6 +62,6 @@ public class UserHistoryServlet extends HttpServlet {
         LOG.debug("doGet() :: setting userDTO");
         request.setAttribute("userDTO", userDTO);
         request.setAttribute("loggedUsername", userCredentials.getUsername());
-        request.getRequestDispatcher("/jsp/user/history.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/user/history.jsp").forward(request, response);
     }
 }

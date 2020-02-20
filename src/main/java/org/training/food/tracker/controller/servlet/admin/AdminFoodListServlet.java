@@ -43,7 +43,7 @@ public class AdminFoodListServlet extends HttpServlet {
             allCommonFoods = foodService.findAllCommon();
         } catch (DaoException e) {
             LOG.error("Error occurred during all food selection", e);
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 
@@ -54,7 +54,7 @@ public class AdminFoodListServlet extends HttpServlet {
         request.setAttribute("allCommonFoodDTOs", allCommonFoodDTOs);
 
         LOG.debug("doGet() :: forwarding page");
-        request.getRequestDispatcher("/jsp/admin/food_list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/admin/food_list.jsp").forward(request, response);
     }
 
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -68,7 +68,7 @@ public class AdminFoodListServlet extends HttpServlet {
             foodService.create(food);
         } catch (DaoException e) {
             LOG.error("Error occurred during all food selection", e);
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
         response.sendRedirect("/admin/food-list");

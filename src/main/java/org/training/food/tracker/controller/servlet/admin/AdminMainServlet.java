@@ -20,6 +20,6 @@ public class AdminMainServlet extends HttpServlet {
         UserCredentials userCredentials = (UserCredentials) request.getSession().getAttribute("userCredentials");
         request.setAttribute("loggedUsername", userCredentials.getUsername());
 
-        request.getRequestDispatcher("/jsp/admin/main.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/admin/main.jsp").forward(request, response);
     }
 }

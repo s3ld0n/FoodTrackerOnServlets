@@ -72,7 +72,7 @@ public class UserMainServlet extends HttpServlet {
             consumedFoodDTOs = DTOConverter.consumedFoodsToConsumedFoodDTOs(consumedFoodService.findAllByDay(currentDay));
         } catch (DaoException e) {
             LOG.error("doGet() :: error occurred", e);
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 
@@ -100,7 +100,7 @@ public class UserMainServlet extends HttpServlet {
         request.setAttribute("food", new FoodDTO());
         request.setAttribute("loggedUsername", userCredentials.getUsername());
         LOG.debug("doGet() :: forwarding page");
-        request.getRequestDispatcher("/jsp/user/main.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/user/main.jsp").forward(request, response);
     }
 
     private User findUser(UserCredentials userCredentials) {
