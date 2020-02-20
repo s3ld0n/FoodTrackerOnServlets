@@ -50,7 +50,7 @@ public class UserAddFoodServlet extends HttpServlet {
             foodService.create(food);
         } catch (DaoException e) {
             LOG.error("doPost() :: error occurred", e);
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
         }
         response.sendRedirect("/user/main");
     }

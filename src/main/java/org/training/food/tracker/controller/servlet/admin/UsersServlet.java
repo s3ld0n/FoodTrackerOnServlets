@@ -38,12 +38,12 @@ public class UsersServlet extends HttpServlet {
             users = userService.findAll();
         } catch (DaoException e) {
             LOG.error("doGet() :: Error occurred during selecting all users");
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 
         request.setAttribute("loggedUsername", userCredentials.getUsername());
         request.setAttribute("users", users);
-        request.getRequestDispatcher("/jsp/admin/users.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/admin/users.jsp").forward(request, response);
     }
 }

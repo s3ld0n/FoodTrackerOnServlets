@@ -48,7 +48,7 @@ public class UserDeleteFoodServlet extends HttpServlet {
             foodService.deleteByNameAndUserId(foodName, user);
         } catch (DaoException e) {
             LOG.error("doPost() :: food deletion failed");
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 

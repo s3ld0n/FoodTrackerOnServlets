@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
     }
 
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
             user = userService.findByUsername(username);
         } catch (DaoException e) {
             LOG.error("error occurred during selection of user");
-            request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
             return;
         }
 
