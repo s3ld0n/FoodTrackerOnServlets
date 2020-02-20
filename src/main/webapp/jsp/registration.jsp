@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page isELIgnored="false" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -33,35 +34,51 @@
         <div class="form-group row field">
             <label class="col-sm-2 col-form-label">Username</label>
             <div class="col-sm-6 field">
-                <input type="text" name="username" class="form-control" maxlength="32" placeholder="username"/>
+                <input type="text" name="username" class="form-control" maxlength="32" value="${userDTO.username}" placeholder="username"/>
+                <c:if test="${not empty userErrors['username']}">
+                    <span class="text-danger"><fmt:message key="error.registration.username"/></span>
+                </c:if>
             </div>
         </div>
 
         <div class="form-group row field">
             <label class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-6 field">
-                <input type="email" name="email" value="" class="form-control" placeholder="email"/>
+                <input type="email" name="email" value="${userDTO.email}" class="form-control" placeholder="email"/>
+                <c:if test="${not empty userErrors['email']}">
+                    <span class="text-danger"><fmt:message key="error.email"/></span>
+                </c:if>
+
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">First name</label>
             <div class="col-sm-6 field" >
-                <input type="text" name="firstName" value="" class="form-control" placeholder="first name" />
+                <input type="text" name="firstName" value="${userDTO.firstName}" class="form-control" placeholder="first name" />
+                <c:if test="${not empty userErrors['firstName']}">
+                    <span class="text-danger"><fmt:message key="error.firstName"/></span>
+                </c:if>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Last name</label>
             <div class="col-sm-6 field">
-                <input type="text" name="lastName" value="" class="form-control" placeholder="last name" />
+                <input type="text" name="lastName" value="${userDTO.lastName}" class="form-control" placeholder="last name" />
+                <c:if test="${not empty userErrors['lastName']}">
+                    <span class="text-danger"><fmt:message key="error.lastName"/></span>
+                </c:if>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Age</label>
             <div class="col-sm-6 field">
-                <input type="number" name="age" value="" class="form-control" placeholder="age" />
+                <input type="number" name="age" value="${biometricsDTO.age}" class="form-control" placeholder="age" />
+                <c:if test="${not empty biometricsErrors['age']}">
+                    <span class="text-danger"><fmt:message key="error.age"/></span>
+                </c:if>
             </div>
         </div>
 
@@ -78,14 +95,20 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Weight</label>
             <div class="col-sm-6 field">
-                <input type="number" name="weight" min="1" value="" class="form-control" placeholder="weight" />
+                <input type="number" name="weight" min="1" value="${biometricsDTO.weight}" class="form-control" placeholder="weight" />
+                <c:if test="${not empty biometricsErrors['weight']}">
+                    <span class="text-danger"><fmt:message key="error.weight"/></span>
+                </c:if>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Height</label>
             <div class="col-sm-6 field">
-                <input type="number" name="height" min="1" value="" class="form-control" placeholder="height" />
+                <input type="number" name="height" min="1" value="${biometricsDTO.height}" class="form-control" placeholder="height" />
+                <c:if test="${not empty biometricsErrors['height']}">
+                    <span class="text-danger"><fmt:message key="error.height"/></span>
+                </c:if>
             </div>
         </div>
 
@@ -104,13 +127,20 @@
             <label class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-6 field">
                 <input type="password" name="password" class="form-control" placeholder="password"/>
+                <c:if test="${not empty userErrors['password']}">
+                    <span class="text-danger"><fmt:message key="error.password"/></span>
+                </c:if>
             </div>
         </div>
 
         <div class="form-group row field">
             <label class="col-sm-2 col-form-label">Confirm Password</label>
             <div class="col-sm-6 field">
-                <input type="password" name="passwordConfirm" class="form-control" placeholder="сonfirm_password}" required/>
+                <input type="password" name="passwordConfirm" class="form-control" placeholder="сonfirm password" required/>
+                <c:if test="${not empty passwordsDontMatch}">
+                    <span class="text-danger"><fmt:message key="error.password.dont-match"/></span>
+                </c:if>
+
             </div>
         </div>
 

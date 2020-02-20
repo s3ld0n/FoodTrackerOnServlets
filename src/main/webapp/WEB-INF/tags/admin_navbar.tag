@@ -19,7 +19,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/food-list">Add Food</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/food-list">Food</a>
                     </li>
 
                     <li class="nav-item">
@@ -28,7 +28,7 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Language
+                            <fmt:message key="label.lang"/>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="?lang=en">En</a>
