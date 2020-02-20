@@ -26,6 +26,7 @@ public class BiometricsDaoJDBC implements BiometricsDao {
                                                           + "biometrics.lifestyle AS biometrics_lifestyle, "
                                                           + "biometrics.sex AS biometrics_sex, "
                                                           + "biometrics.user_id AS biometrics_user_id "
+                                                + "FROM biometrics "
                                                 + "WHERE biometrics.user_id = ?";
 
     private static final String FIND_ALL_QUERY = "SELECT biometrics.id AS biometrics_id, "
@@ -163,7 +164,7 @@ public class BiometricsDaoJDBC implements BiometricsDao {
                 biometrics.setOwner(user);
             }
         } catch (SQLException e) {
-            LOG.error("findByOwner() :: error occurred while finding biometrics");
+            LOG.error("findByOwner() :: error occurred while finding biometrics", e);
             throw new DaoException("error occurred while finding biometrics", e);
         }
         LOG.debug("findByOwner() :: biometrics was successfully found");
