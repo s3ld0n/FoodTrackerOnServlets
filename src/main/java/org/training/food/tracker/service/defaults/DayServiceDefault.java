@@ -79,12 +79,4 @@ public class DayServiceDefault implements DayService {
     public List<Day> getAllDaysByUser(User user) throws DaoException {
         return dayDao.findAllByUserOrderByDateDesc(user);
     }
-
-    public BigDecimal getTotalCaloriesOfDay(Day day) {
-        BigDecimal totalCalories = new BigDecimal(0);
-        for (ConsumedFood food : day.getConsumedFoods()) {
-            totalCalories = totalCalories.add(food.getTotalCalories());
-        }
-        return totalCalories;
-    }
 }
