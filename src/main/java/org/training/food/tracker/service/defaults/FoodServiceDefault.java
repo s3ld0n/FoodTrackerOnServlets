@@ -39,12 +39,6 @@ public class FoodServiceDefault implements FoodService {
         consumedFoodService.registerConsumption(food);
     }
 
-    public List<FoodDTO> findAllCommonExcludingPersonalByUserIdInDTO(Long userId) throws DaoException {
-        return findAllCommonExcludingPersonalByUserId(userId).stream()
-                       .map(DTOConverter::foodToFoodDTO)
-                       .collect(Collectors.toList());
-    }
-
     public List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException {
         return foodDao.findAllCommonExcludingPersonalByUserId(userId);
     }

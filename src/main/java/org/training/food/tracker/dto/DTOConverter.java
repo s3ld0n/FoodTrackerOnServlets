@@ -76,21 +76,4 @@ public class DTOConverter {
                        .map(DTOConverter::consumedFoodToConsumedFoodDTO)
                        .collect(Collectors.toList());
     }
-
-    private static boolean checkIfDailyNormExceeded(BigDecimal exceededCalories) {
-        return exceededCalories.compareTo(new BigDecimal(0)) > 0;
-    }
-
-    private static BigDecimal findExceededCalories(BigDecimal totalCalories, BigDecimal dailyNorm) {
-        return dailyNorm.compareTo(totalCalories) > 0 ? new BigDecimal(0) : totalCalories.subtract(dailyNorm);
-    }
-
-    private static BigDecimal sumTotalCalories(List<ConsumedFood> foodDTOs) {
-        BigDecimal sum = new BigDecimal(0);
-
-        for (ConsumedFood food : foodDTOs) {
-            sum = sum.add(food.getTotalCalories());
-        }
-        return sum;
-    }
 }
