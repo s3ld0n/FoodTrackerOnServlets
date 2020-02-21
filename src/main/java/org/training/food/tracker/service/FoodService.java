@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface FoodService {
 
-    void registerConsumption(ConsumedFood food) throws DaoException;
-
     void create(Food food) throws DaoException;
 
     List<Food> findAllCommon() throws DaoException;
@@ -22,5 +20,5 @@ public interface FoodService {
 
     void deleteByNameAndUserId(String foodName, User user) throws DaoException;
 
-    public void deleteCommonFoodByName(String foodName) throws DaoException;
+    void deleteCommonFoodByName(String foodName) throws DaoException;
 }

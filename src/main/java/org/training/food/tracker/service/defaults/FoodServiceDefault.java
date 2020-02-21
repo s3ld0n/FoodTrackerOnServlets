@@ -1,7 +1,5 @@
 package org.training.food.tracker.service.defaults;
 
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
@@ -22,27 +20,15 @@ import java.util.stream.Collectors;
 public class FoodServiceDefault implements FoodService {
 
     private FoodDao foodDao;
-    private ConsumedFoodService consumedFoodService;
 
     private static final Logger LOG = LoggerFactory.getLogger(FoodServiceDefault.class.getName());
 
     public FoodServiceDefault() {
         this.foodDao = new FoodDaoJDBC();
-        this.consumedFoodService = new ConsumedFoodServiceDefault();
     }
 
     public void create(Food food) throws DaoException {
         foodDao.create(food);
-    }
-
-    public void registerConsumption(ConsumedFood food) throws DaoException {
-        consumedFoodService.registerConsumption(food);
-    }
-
-    public List<FoodDTO> findAllCommonExcludingPersonalByUserIdInDTO(Long userId) throws DaoException {
-        return findAllCommonExcludingPersonalByUserId(userId).stream()
-                       .map(DTOConverter::foodToFoodDTO)
-                       .collect(Collectors.toList());
     }
 
     public List<Food> findAllCommonExcludingPersonalByUserId(Long userId) throws DaoException {
