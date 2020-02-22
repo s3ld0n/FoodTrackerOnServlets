@@ -44,7 +44,9 @@ public class LoginServlet extends HttpServlet {
 
         LOG.debug("doPost() :: validating username and password");
         if (isNotValidCredentials(username, password)) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            request.setAttribute("invalidCredentials", "Invalid Credentials");
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+            return;
         }
 
         User user;

@@ -42,6 +42,7 @@
 
         <div class="container mt-4">
             <form action="${pageContext.request.contextPath}/login" method="post">
+                <div class="text-danger">${invalidCredentials}</div>
                 <div><label>Username<input type="text" name="username"/> </label></div>
                 <div><label>Password<input type="password" name="password"/></label></div>
                 <input type="submit" value="Log In">
