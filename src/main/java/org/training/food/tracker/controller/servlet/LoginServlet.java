@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 
         LOG.debug("doPost() :: validating username and password");
         if (isNotValidCredentials(username, password)) {
-            request.setAttribute("invalidCredentials", "Invalid Credentials");
+            request.setAttribute("invalidCredentials", "Invalid Credentials!");
             request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
             return;
         }
@@ -56,6 +56,7 @@ public class LoginServlet extends HttpServlet {
             user = userService.findByUsername(username);
         } catch (DaoException e) {
             LOG.error("error occurred during selection of user");
+            request.setAttribute("invalidCredentials", "Invalid Credentials!");
             request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
             return;
         }
