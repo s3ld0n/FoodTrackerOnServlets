@@ -3,7 +3,6 @@ package org.training.food.tracker.controller.servlet.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.controller.UserCredentials;
-import org.training.food.tracker.controller.servlet.LogoutServlet;
 import org.training.food.tracker.dao.DaoException;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.service.UserService;
@@ -18,10 +17,10 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/admin/users")
-public class UsersServlet extends HttpServlet {
+public class AdminUsersServlet extends HttpServlet {
 
     private UserService userService;
-    private static final Logger LOG = LoggerFactory.getLogger(UsersServlet.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(AdminUsersServlet.class.getName());
 
     @Override public void init() throws ServletException {
         userService = new UserServiceDefault();
