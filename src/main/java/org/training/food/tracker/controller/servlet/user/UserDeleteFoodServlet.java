@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.controller.UserCredentials;
 import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
-import org.training.food.tracker.model.builder.FoodBuilder;
 import org.training.food.tracker.service.FoodService;
 import org.training.food.tracker.service.UserService;
 import org.training.food.tracker.service.defaults.FoodServiceDefault;
@@ -25,9 +23,9 @@ public class UserDeleteFoodServlet extends HttpServlet {
     private FoodService foodService;
     private UserService userService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserMainServlet.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(UserFoodsServlet.class.getName());
 
-    @Override public void init() throws ServletException {
+    @Override public void init() {
         foodService = new FoodServiceDefault();
         userService = new UserServiceDefault();
     }
@@ -53,6 +51,6 @@ public class UserDeleteFoodServlet extends HttpServlet {
         }
 
         LOG.debug("doPost() :: food {} was successfully deleted", foodName);
-        response.sendRedirect("/user/main");
+        response.sendRedirect("/user/food");
     }
 }

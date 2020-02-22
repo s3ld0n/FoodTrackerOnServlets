@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -21,24 +20,27 @@
 </head>
 
 <body>
-<t:admin_navbar />
+<c:import url="../components/admin-navbar.jsp"/>
 
     <div class="container" id="first">
         <div class="row">
             <div class="col col-6 col-centered">
                 <div class="card card-body">
+                    <h2>Users</h2>
                     <table class="table table-bordered table-striped">
                         <thead class="thead-dark">
                         <tr>
                             <th>Username</th>
-                            <th>National Name</th>
+                            <th>Full Name</th>
+                            <th>Role</th>
                         </tr>
                         </thead>
 
                         <c:forEach var="user" items="${users}">
                             <tr>
                                 <td>${user.username}</td>
-                                <td>${user.nationalName}</td>
+                                <td>${user.firstName} ${user.lastName}</td>
+                                <td>${user.role}</td>
                             </tr>
                         </c:forEach>
                     </table>

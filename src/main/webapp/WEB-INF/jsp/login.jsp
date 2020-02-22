@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -19,37 +18,36 @@
 
     <style>
         <%@ include file="/static/css/style.css" %>
+        <%@ include file="/static/css/login.css" %>
     </style>
 
     <title>Login page</title>
 </head>
 <body>
 
-<t:guest_navbar/>
+<c:import url="components/guest-navbar.jsp"/>
 
-    <div class="container container mt-5" id="first">
-
-        <div>
-            <a href="?lang=en">En</a>
-            <a href="?lang=uk">Ua</a>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h1><fmt:message key="label.welcome" /></h1>
-            </div>
-        </div>
-
-        <div class="container mt-4">
+<div class="container login-container" id="first">
+    <div class="row">
+        <div class="col-md-6 login-form-1 col-centered">
             <form action="${pageContext.request.contextPath}/login" method="post">
-                <div><label>Username<input type="text" name="username"/> </label></div>
-                <div><label>Password<input type="password" name="password"/></label></div>
-                <input type="submit" value="Log In">
+                <div class="text-danger">${invalidCredentials}</div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="<fmt:message key="guest.username"/>" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="<fmt:message key="guest.password"/>" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="<fmt:message key="guest.login"/>" />
+                </div>
+                <div class="form-group">
+                    <a href="${pageContext.request.contextPath}/registration"><fmt:message key="guest.registration"/></a>
+                </div>
             </form>
-            <a href="${pageContext.request.contextPath}/registration">Registration</a>
-            <a href="${pageContext.request.contextPath}/">To Index</a>
         </div>
     </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

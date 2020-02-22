@@ -68,7 +68,7 @@ public class UserConsumeFoodServlet extends HttpServlet {
             return;
 
         }
-        response.sendRedirect("/user/main");
+        response.sendRedirect("/user/food");
     }
 
     private ConsumedFood buildConsumedFood(HttpServletRequest request) {

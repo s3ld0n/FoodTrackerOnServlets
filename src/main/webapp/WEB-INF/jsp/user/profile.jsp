@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -19,17 +19,17 @@
         <%@ include file="/static/css/style.css" %>
     </style>
 
-    <title>Update user</title>
+    <title><fmt:message key="user.profile"/> ${userDTO.username}</title>
 </head>
 <body>
 
-<t:user_navbar/>
+<c:import url="../components/user-navbar.jsp"/>
 <div class="empty">.</div>
 <div class="row justify-content-center">
     <div class="col-md-6 bottom-tables">
         <div class="card col-md-8 col-centered">
             <header class="card-header">
-                <h4 class="card-title mt-2">Update </h4>
+                <h4 class="card-title mt-2"><fmt:message key="user.profile"/></h4>
             </header>
             <article class="card-body">
 
@@ -37,61 +37,70 @@
                     <input type="hidden" name="id">
                     <div class="form-row">
                         <div class="col form-group">
-                            <label>Username</label>
+                            <label><fmt:message key="guest.username"/></label>
                             <div>
-                                <input type="text" class="form-control" value="${userDTO.username}" maxlength="32" name="username" id="username" placeholder="username" readonly="readonly"/>
+                                <input type="text" class="form-control" value="${userDTO.username}" maxlength="32"
+                                       name="username" id="username" placeholder="<fmt:message key='guest.username'/>"
+                                       readonly="readonly"/>
                             </div>
                         </div>
 
                         <div class="col form-group">
-                            <label>Email</label>
+                            <label><fmt:message key="guest.email"/></label>
                             <div>
-                                <input type="email" name="email" value="${userDTO.email}" class="form-control" placeholder="Email" readonly/>
+                                <input type="email" name="email" value="${userDTO.email}" class="form-control"
+                                       placeholder="<fmt:message key='guest.email'/>" readonly/>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="col form-group">
-                            <label>First Name</label>
+                            <label><fmt:message key="guest.first-name"/></label>
                             <div>
-                                <input type="text" name="firstName" value="${userDTO.firstName}" class="form-control" placeholder="first name" />
+                                <input type="text" name="firstName" value="${userDTO.firstName}" class="form-control"
+                                       placeholder="<fmt:message key='guest.first-name'/>" />
                             </div>
                         </div>
 
                         <div class="col form-group">
-                            <label>Last name</label>
+                            <label><fmt:message key="guest.last-name"/></label>
                             <div>
-                                <input type="text" name="lastName" value="${userDTO.lastName}" class="form-control" placeholder="last name" />
+                                <input type="text" name="lastName" value="${userDTO.lastName}" class="form-control"
+                                       placeholder="<fmt:message key='guest.last-name'/>" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <p>Sex</p>
+                            <p><fmt:message key="guest.sex"/></p>
                             <div>
                                 <c:if test="${biometricsDTO.sex.equals('FEMALE')}">
-                                    <input type="radio" name="sex" value="FEMALE" checked>Female
+                                    <input type="radio" name="sex" value="FEMALE" checked>
+                                    <fmt:message key="guest.sex.female"/>
                                 </c:if>
                                 <c:if test="${!biometricsDTO.sex.equals('FEMALE')}">
-                                    <input type="radio" name="sex" value="FEMALE">Female
+                                    <input type="radio" name="sex" value="FEMALE">
+                                    <fmt:message key="guest.sex.female"/>
                                 </c:if>
 
                                 <c:if test="${biometricsDTO.sex.equals('MALE')}">
-                                    <input type="radio" name="sex" value="MALE" checked>Male
+                                    <input type="radio" name="sex" value="MALE" checked>
+                                    <fmt:message key="guest.sex.male"/>
                                 </c:if>
                                 <c:if test="${!biometricsDTO.sex.equals('MALE')}">
-                                    <input type="radio" name="sex" value="MALE" >Male
+                                    <input type="radio" name="sex" value="MALE" >
+                                    <fmt:message key="guest.sex.male"/>
                                 </c:if>
                             </div>
                         </div>
 
                         <div class="form-group col-md-6">
-                            <label>Age</label>
+                            <label><fmt:message key="guest.age"/></label>
                             <div>
-
-                                <input type="number" name="age" value="${biometricsDTO.age}" class="form-control" placeholder="age"/>
+                                <input type="number" name="age" value="${biometricsDTO.age}" class="form-control"
+                                       placeholder="<fmt:message key='guest.age'/>"/>
                             </div>
                         </div>
                     </div>
@@ -99,49 +108,57 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Weight</label>
+                            <label><fmt:message key="guest.weight"/></label>
                             <div>
-                                <input type="number" name="weight" min="1" value="${biometricsDTO.weight}" class="form-control" placeholder="weight" />
+                                <input type="number" name="weight" min="1" value="${biometricsDTO.weight}"
+                                       class="form-control" placeholder="<fmt:message key='guest.weight'/>" />
                             </div>
                         </div>
 
                         <div class="form-group col-md-6">
-                            <label>Height</label>
+                            <label><fmt:message key="guest.height"/></label>
                             <div>
-                                <input type="number" name="height" min="1" value="${biometricsDTO.height}" class="form-control" placeholder="height"/>
+                                <input type="number" name="height" min="1" value="${biometricsDTO.height}"
+                                       class="form-control" placeholder="<fmt:message key='guest.height'/>"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <p>Lifestyle</p>
+                        <p><fmt:message key="guest.lifestyle"/></p>
                         <div>
                             <c:if test="${biometricsDTO.lifestyle.equals('SEDENTARY')}">
-                                <input type="radio" name="lifestyle" value="SEDENTARY" checked>Sedentary
+                                <input type="radio" name="lifestyle" value="SEDENTARY" checked>
+                                <fmt:message key="guest.lifestyle.sedentary"/>
                             </c:if>
                             <c:if test="${!biometricsDTO.lifestyle.equals('SEDENTARY')}">
-                                <input type="radio" name="lifestyle" value="SEDENTARY" >Sedentary
+                                <input type="radio" name="lifestyle" value="SEDENTARY" >
+                                <fmt:message key="guest.lifestyle.sedentary"/>
                             </c:if>
 
                             <c:if test="${biometricsDTO.lifestyle.equals('MODERATE')}">
-                                <input type="radio" name="lifestyle" value="MODERATE" checked>Moderate
+                                <input type="radio" name="lifestyle" value="MODERATE" checked>
+                                <fmt:message key="guest.lifestyle.moderate"/>
                             </c:if>
                             <c:if test="${!biometricsDTO.lifestyle.equals('MODERATE')}">
-                                <input type="radio" name="lifestyle" value="MODERATE" >Moderate
+                                <input type="radio" name="lifestyle" value="MODERATE" >
+                                <fmt:message key="guest.lifestyle.moderate"/>
                             </c:if>
 
                             <c:if test="${biometricsDTO.lifestyle.equals('VIGOROUS')}">
-                                <input type="radio" name="lifestyle" value="VIGOROUS" checked>Vigorous
+                                <input type="radio" name="lifestyle" value="VIGOROUS" checked>
+                                <fmt:message key="guest.lifestyle.vigorous"/>
                             </c:if>
                             <c:if test="${!biometricsDTO.lifestyle.equals('VIGOROUS')}">
-                                <input type="radio" name="lifestyle" value="VIGOROUS" >Vigorous
+                                <input type="radio" name="lifestyle" value="VIGOROUS" >
+                                <fmt:message key="guest.lifestyle.vigorous"/>
                             </c:if>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="form-group col-md-6">
-                            <label>Daily Norm</label>
+                            <label><fmt:message key="user.food.daily-norm"/></label>
                             <div>
                                 <input type="text" class="form-control" value="${userDTO.dailyNorm}" readonly/>
                             </div>
@@ -150,7 +167,7 @@
 
                     <div class="form-group">
                         <div class="form-group col-md-6">
-                            <label>Role: ${userDTO.role}</label>
+                            <label><fmt:message key="user.role"/>: ${userDTO.role}</label>
                             <input type="hidden" name="role" value="${userDTO.role}">
                         </div>
                     </div>
@@ -158,7 +175,9 @@
                     <input type="hidden" name="password" value="${userDTO.password}">
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <fmt:message key="user.save"/>
+                        </button>
                     </div>
                 </form>
             </article>

@@ -10,8 +10,8 @@ public enum ResourceManager {
     private ResourceBundle localeBundle;
 
     private ResourceManager() {
-        configBundle = ResourceBundle.getBundle("config", new Locale("en"));
-        localeBundle = ResourceBundle.getBundle("locale", new Locale("en"));
+        configBundle = ResourceBundle.getBundle("config");
+        localeBundle = ResourceBundle.getBundle("locale");
     }
 
     public String getConfigParameter(String key) {

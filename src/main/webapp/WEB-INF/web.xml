@@ -11,16 +11,6 @@
     </jsp-property-group>
   </jsp-config>
 
-  <servlet>
-    <servlet-name>WebjarsServlet</servlet-name>
-    <servlet-class>org.webjars.servlet.WebjarsServlet</servlet-class>
-    <load-on-startup>2</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>WebjarsServlet</servlet-name>
-    <url-pattern>/webjars/*</url-pattern>
-  </servlet-mapping>
-
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>org.training.food.tracker.controller.filter.EncodingFilter</filter-class>
@@ -49,15 +39,6 @@
     <filter-name>AuthFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
-<!--  <filter>-->
-<!--    <filter-name>RegistrationValidation</filter-name>-->
-<!--    <filter-class>org.training.food.tracker.controller.filter.RegistrationValidationFilter</filter-class>-->
-<!--  </filter>-->
-<!--  <filter-mapping>-->
-<!--    <filter-name>RegistrationValidation</filter-name>-->
-<!--    <url-pattern>/registration</url-pattern>-->
-<!--  </filter-mapping>-->
 
   <listener>
     <listener-class>
