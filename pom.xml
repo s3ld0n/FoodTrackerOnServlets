@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>FoodTracker</groupId>
+  <groupId>org.training</groupId>
   <artifactId>FoodTracker</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
@@ -13,8 +13,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -92,9 +92,9 @@
 
   <build>
     <finalName>FoodTracker</finalName>
+    <defaultGoal>install</defaultGoal>
     <pluginManagement>
       <plugins>
-
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
@@ -137,16 +137,7 @@
 
           <configuration>
             <port>8080</port>
-            <path>/app</path>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <path>/</path>
           </configuration>
         </plugin>
 
