@@ -61,7 +61,9 @@ public class AuthFilter implements Filter {
             LOG.trace("doFilter() :: user requested admins page but is not an admin. Giving him 403.");
             sendErrorPage(request, response);
             return;
-        } else if (!userCredentials.getRole().equalsIgnoreCase("user") && uri.contains("user")) {
+        } else if (!userCredentials.getRole().equalsIgnoreCase("user")
+                         && uri.contains("user")
+                         && !uri.contains("users")) {
             LOG.trace("doFilter() :: user requested user's page but is an admin. Giving him 403.");
             sendErrorPage(request, response);
             return;
