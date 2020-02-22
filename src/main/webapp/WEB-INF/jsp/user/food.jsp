@@ -32,7 +32,7 @@
             <div class="card card-body mb-2 bottom-tables">
                 <h2><fmt:message key="user.food.food-personal"/></h2>
 
-                <form action="/user/food/add" method="post" class="needs-validation" role="form" novalidate>
+                <form action="${pageContext.request.contextPath}/user/food" method="post" class="needs-validation" role="form" novalidate>
                     <div class="form-row">
                         <div class="col-6">
                             <input type="text" id="name" name="name" placeholder="<fmt:message key='user.food.food-name'/>" required="true" class="form-control" required/>
@@ -150,10 +150,12 @@
                             <td><span>${nextFood.name}</span></td>
                             <td>${nextFood.totalCalories}</td>
                             <td>
-                                <form action="${pageContext.request.contextPath}/user/food/add" method="post" object="${nextFood}" novalidate>
+                                <form action="${pageContext.request.contextPath}/user/food" method="post" object="${nextFood}" novalidate>
                                     <input type="hidden" name="name" value="${nextFood.name}">
                                     <input type="hidden" name="calories" value="${nextFood.totalCalories}">
-                                    <button type="submit" class="btn btn-primary mb-2">Add</button>
+                                    <button type="submit" class="btn btn-primary mb-2">
+                                        <fmt:message key="user.food.add"/>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -175,7 +177,7 @@
                 <a><fmt:message key="user.food.daily-norm"/>: ${userDTO.dailyNorm}</a>
             </li>
             <li class="nav-item">
-                <a><fmt:message key="user.food.daily-norm"/>: ${dayDTO.caloriesConsumed}</a>
+                <a><fmt:message key="user.food.consumed-today"/>: ${dayDTO.caloriesConsumed}</a>
             </li>
             <li class="nav-item">
                 <c:if test="${dayDTO.isDailyNormExceeded()}">
@@ -189,6 +191,5 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script src="${pageContext.request.contextPath}/static/js/form_validator.js"></script>
 </body>
 </html>

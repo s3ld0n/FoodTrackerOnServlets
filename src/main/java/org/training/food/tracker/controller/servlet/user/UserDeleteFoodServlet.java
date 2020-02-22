@@ -25,7 +25,7 @@ public class UserDeleteFoodServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserFoodsServlet.class.getName());
 
-    @Override public void init() throws ServletException {
+    @Override public void init() {
         foodService = new FoodServiceDefault();
         userService = new UserServiceDefault();
     }
@@ -51,6 +51,6 @@ public class UserDeleteFoodServlet extends HttpServlet {
         }
 
         LOG.debug("doPost() :: food {} was successfully deleted", foodName);
-        response.sendRedirect("/user/main");
+        response.sendRedirect("/user/food");
     }
 }
