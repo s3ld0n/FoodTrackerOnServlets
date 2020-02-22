@@ -10,7 +10,9 @@
 
 <div class="fixed-top">
     <div class="jumbotron clearfix text-center" style="margin-bottom:0">
-        <h1>Food Tracker</h1>
+        <a id="jubmolink" href="/admin/main">
+            <h1>Food Tracker</h1>
+        </a>
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="upper-navbar">
@@ -25,7 +27,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/admin/food-list">
-                            <fmt:message key="admin.food"/>
+                            <fmt:message key="label.food"/>
                         </a>
                     </li>
 

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.controller.UserCredentials;
 import org.training.food.tracker.dao.DaoException;
-import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.model.Food;
 import org.training.food.tracker.model.User;
 import org.training.food.tracker.model.builder.FoodBuilder;
@@ -27,7 +26,7 @@ public class UserAddFoodServlet extends HttpServlet {
     private FoodService foodService;
     private UserService userService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserMainServlet.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(UserFoodsServlet.class.getName());
 
     @Override public void init() throws ServletException {
         foodService = new FoodServiceDefault();
