@@ -43,7 +43,11 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         LOG.debug("doPost() :: validating username and password");
-        validateUserAndSendBackIfNot(request, response, username, password);
+        if (isNotValidCredentials(username, password)) {
+            request.setAttribute("invalidCredentials", "Invalid Credentials!");
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+            return;
+        }
 
         User user;
 
@@ -52,6 +56,7 @@ public class LoginServlet extends HttpServlet {
             user = userService.findByUsername(username);
         } catch (DaoException e) {
             LOG.error("error occurred during selection of user");
+            request.setAttribute("invalidCredentials", "Invalid Credentials!");
             request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
             return;
         }
@@ -75,11 +80,8 @@ public class LoginServlet extends HttpServlet {
         return (role == Role.USER) ? "user/main" : "admin/main";
     }
 
-    private void validateUserAndSendBackIfNot(HttpServletRequest request, HttpServletResponse response,
-            String username, String password) throws IOException {
-        if(username == null || username.equals("") || password == null || password.equals("")){
-            response.sendRedirect(request.getContextPath() + "/login");
-        }
+    private boolean isNotValidCredentials(String username, String password) {
+        return username == null || username.equals("") || password == null || password.equals("");
     }
 
     private void placeUserCredentialsIntoSession(HttpServletRequest request, UserCredentials userCredentials) {
