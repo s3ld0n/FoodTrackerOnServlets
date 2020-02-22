@@ -17,10 +17,10 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/admin/users")
-public class AdminUsersServlet extends HttpServlet {
+public class AdminAllUsersServlet extends HttpServlet {
 
     private UserService userService;
-    private static final Logger LOG = LoggerFactory.getLogger(AdminUsersServlet.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(AdminAllUsersServlet.class.getName());
 
     @Override public void init() throws ServletException {
         userService = new UserServiceDefault();

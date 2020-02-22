@@ -32,6 +32,7 @@
                         <tr>
                             <th>Username</th>
                             <th>Full Name</th>
+                            <th>Role</th>
                         </tr>
                         </thead>
 
@@ -39,6 +40,7 @@
                             <tr>
                                 <td>${user.username}</td>
                                 <td>${user.firstName} ${user.lastName}</td>
+                                <td>${user.role}</td>
                             </tr>
                         </c:forEach>
                     </table>
