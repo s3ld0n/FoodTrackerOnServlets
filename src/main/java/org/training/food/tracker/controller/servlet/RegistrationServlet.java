@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.training.food.tracker.controller.validator.BiometricsValidator;
 import org.training.food.tracker.controller.validator.UserValidator;
 import org.training.food.tracker.dao.DaoException;
+import org.training.food.tracker.dao.UserAlreadyExistsException;
 import org.training.food.tracker.dto.DTOConverter;
 import org.training.food.tracker.dto.UserDTO;
 import org.training.food.tracker.model.Biometrics;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
@@ -52,6 +54,7 @@ public class RegistrationServlet extends HttpServlet {
 
         if (!isValidUserInput(request, user)) {
             request.getRequestDispatcher("/WEB-INF/jsp/registration.jsp").forward(request, response);
+            return;
         }
 
         Biometrics biometrics = buildBiometrics(request);
@@ -60,7 +63,13 @@ public class RegistrationServlet extends HttpServlet {
         user.setDailyNormCalories(userService.calculateDailyNormCalories(biometrics));
 
         LOG.debug("doPost() :: inserting user into DB");
-        user = insertUserIntoDB(user);
+
+        Optional<User> optionalUser = insertUserIntoDB(user);
+        if (!optionalUser.isPresent()) {
+            request.setAttribute("userExists", true);
+            request.getRequestDispatcher("/WEB-INF/jsp/registration.jsp").forward(request, response);
+            return;
+        }
 
         biometrics.setOwner(user);
         biometrics = insertBiometricsIntoDB(biometrics);
@@ -113,13 +122,16 @@ public class RegistrationServlet extends HttpServlet {
         return biometrics;
     }
 
-    private User insertUserIntoDB(User user) {
+    private Optional<User> insertUserIntoDB(User user) {
         try {
             user = userService.create(user);
+        } catch (UserAlreadyExistsException e) {
+            LOG.debug("user exists, returning Optional empty");
+            return Optional.empty();
         } catch (DaoException e) {
             LOG.error("doPost() :: user creation failed", e);
         }
-        return user;
+        return Optional.of(user);
     }
 
     private Biometrics buildBiometrics(HttpServletRequest request) {
