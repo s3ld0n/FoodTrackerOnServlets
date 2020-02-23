@@ -64,7 +64,7 @@ public class UserConsumeFoodServlet extends HttpServlet {
             dayService.updateDay(currentDay, consumedFood);
         } catch (DaoException e) {
             LOG.error("Error occurred");
-            request.getRequestDispatcher("/WEB-INF/jsp/errors/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/errors/500.jsp").forward(request, response);
             return;
 
         }

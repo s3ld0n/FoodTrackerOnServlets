@@ -53,22 +53,22 @@ public class AuthFilter implements Filter {
             return;
         } else if (!userCredentials.getRole().equalsIgnoreCase("admin") && uri.contains("admin")) {
             LOG.trace("doFilter() :: user requested admins page but is not an admin. Giving him 403.");
-            sendErrorPage(request, response);
+            send403ErrorPage(request, response);
             return;
         } else if (!userCredentials.getRole().equalsIgnoreCase("user")
                          && uri.contains("user")
                          && !uri.contains("users")) {
             LOG.trace("doFilter() :: user requested user's page but is an admin. Giving him 403.");
-            sendErrorPage(request, response);
+            send403ErrorPage(request, response);
             return;
         }
 
         chain.doFilter(servletRequest,servletResponse);
     }
 
-    private void sendErrorPage(HttpServletRequest request, HttpServletResponse response)
+    private void send403ErrorPage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/errors/error.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/errors/403.jsp").forward(request, response);
     }
 
     private boolean authIsNotRequired(String url) {
