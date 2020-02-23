@@ -37,7 +37,7 @@ public class AdminAllUsersServlet extends HttpServlet {
             users = userService.findAll();
         } catch (DaoException e) {
             LOG.error("doGet() :: Error occurred during selecting all users");
-            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/errors/500.jsp").forward(request, response);
             return;
         }
 
