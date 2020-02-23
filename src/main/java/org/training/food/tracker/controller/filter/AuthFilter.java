@@ -38,12 +38,6 @@ public class AuthFilter implements Filter {
         LOG.trace("doFilter() :: getting userCredentials from session");
         UserCredentials userCredentials = (UserCredentials) session.getAttribute("userCredentials");
 
-        LOG.trace("doFilter() :: check if it's a webjar resource");
-        if (uri.contains("webjars")) {
-            chain.doFilter(servletRequest,servletResponse);
-            return;
-        }
-
         if (userCredentials == null && authIsNotRequired(uri)) {
             LOG.trace("doFilter() :: user is not logged and requested page that doesn't need an auth.\nAllowing");
             chain.doFilter(servletRequest,servletResponse);
