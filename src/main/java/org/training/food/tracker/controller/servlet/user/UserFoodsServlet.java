@@ -70,7 +70,6 @@ public class UserFoodsServlet extends HttpServlet {
             consumedFoodDTOs = DTOConverter.consumedFoodsToConsumedFoodDTOs(consumedFoodService.findAllByDay(currentDay));
         } catch (DaoException e) {
             LOG.error("doGet() :: error occurred", e);
-            request.getRequestDispatcher("/errors/500.jsp").forward(request, response);
             return;
         }
 
@@ -131,7 +130,6 @@ public class UserFoodsServlet extends HttpServlet {
             foodService.create(food);
         } catch (DaoException e) {
             LOG.error("doPost() :: error occurred", e);
-            request.getRequestDispatcher("/errors/500.jsp").forward(request, response);
         }
         response.sendRedirect("/user/food");
     }
