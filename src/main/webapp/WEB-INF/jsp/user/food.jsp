@@ -33,11 +33,13 @@
                 <h2><fmt:message key="user.food.food-personal"/></h2>
 
                 <form action="${pageContext.request.contextPath}/user/food" method="post" class="needs-validation" role="form" novalidate>
+                    <c:if test="${invalidInput}" >
+                        <span class="text-danger"><fmt:message key="error.food"/></span>
+                    </c:if>
                     <div class="form-row">
                         <div class="col-6">
                             <input type="text" id="name" name="name" placeholder="<fmt:message key='user.food.food-name'/>" required="true" class="form-control" required/>
                         </div>
-
                         <div class="col">
                             <input type="number" step="1" min="1" required="true" name="calories" id="calories"
                                    class="form-control" placeholder="<fmt:message key='user.food.calories'/>" pattern="\d+" required/>

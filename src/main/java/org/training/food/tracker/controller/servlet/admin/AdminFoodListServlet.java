@@ -16,9 +16,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+
+import static org.training.food.tracker.controller.validator.FoodValidator.isValidInput;
 
 @WebServlet("/admin/food-list")
 public class AdminFoodListServlet extends HttpServlet {
@@ -54,13 +57,25 @@ public class AdminFoodListServlet extends HttpServlet {
         request.setAttribute("allCommonFoodDTOs", allCommonFoodDTOs);
 
         LOG.debug("doGet() :: forwarding page");
-        request.getRequestDispatcher("/WEB-INF/jsp/admin/food_list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/admin/food-list.jsp").forward(request, response);
     }
 
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        LOG.debug("doGet() :: adding food to common");
-        LOG.debug("doGet() :: getting food from request");
+
+        LOG.debug("doPost() :: validating food from request");
+        String name = request.getParameter("name");
+        String calories = request.getParameter("calories");
+
+        HttpSession session = request.getSession();
+
+        if (!isValidInput(name, calories)) {
+            session.setAttribute("invalidInput",true);
+            response.sendRedirect("/admin/food-list");
+            return;
+        } else {
+            session.setAttribute("invalidInput",false);
+        }
 
         Food food = buildFood(request);
 

@@ -228,7 +228,7 @@ public class UserDaoJDBC implements UserDao {
 
             LOG.debug("findById() :: setting parameters of statement");
             setPreparedStatementParams(user, statement);
-            statement.setLong(9, user.getId());
+            statement.setLong(8, user.getId());
 
             LOG.debug("findById() :: executing update");
             statement.executeUpdate();

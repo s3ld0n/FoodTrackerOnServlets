@@ -23,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -104,6 +105,20 @@ public class UserFoodsServlet extends HttpServlet {
             throws ServletException, IOException {
         UserCredentials userCredentials = (UserCredentials) request.getSession().getAttribute("userCredentials");
 
+        LOG.debug("doPost() :: validating food from request");
+        String name = request.getParameter("name");
+        String calories = request.getParameter("calories");
+
+        HttpSession session = request.getSession();
+
+        if (!isValidInput(name, calories)) {
+            session.setAttribute("invalidInput",true);
+            response.sendRedirect("/user/food");
+            return;
+        } else {
+            session.setAttribute("invalidInput",false);
+        }
+
         LOG.debug("doPost() :: building food from request");
         Food food = buildFood(request);
 
@@ -119,6 +134,46 @@ public class UserFoodsServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
         }
         response.sendRedirect("/user/food");
+    }
+
+    private boolean setErrorsToSessionOnInvalid(HttpServletRequest request, String name, String calories) {
+        boolean invalidCalories = false;
+        boolean invalidName = false;
+
+        if (isNotValidCalories(calories)) {
+            request.getSession().setAttribute("invalidCalories",true);
+            invalidCalories = true;
+        }
+
+        if (isNotValidName(name)) {
+            request.getSession().setAttribute("invalidName",true);
+            invalidName = true;
+        }
+        return invalidCalories || invalidName;
+    }
+
+    private void setCaloriesErrorIfInvalid(HttpServletRequest request, String calories) {
+        if (isNotValidCalories(calories)) {
+            request.getSession().setAttribute("invalidCalories",true);
+        }
+    }
+
+    private void setNameErrorIfInvalid(HttpServletRequest request, String name) {
+        if (isNotValidName(name)) {
+            request.getSession().setAttribute("invalidName",true);
+        }
+    }
+
+    private boolean isValidInput(String name, String calories) {
+        return calories.matches("\\d{1,3}") && name.length() <= 30;
+    }
+
+    private boolean isNotValidName(String name ) {
+        return name.length() > 30;
+    }
+
+    private boolean isNotValidCalories(String calories) {
+        return !calories.matches("\\d{1,3}");
     }
 
     private Food buildFood(HttpServletRequest request) {
