@@ -99,7 +99,7 @@
                         <div class="form-group col-md-6">
                             <label><fmt:message key="guest.age"/></label>
                             <div>
-                                <input type="number" name="age" value="${biometricsDTO.age}" class="form-control"
+                                <input type="number" min="18" name="age" value="${biometricsDTO.age}" class="form-control"
                                        placeholder="<fmt:message key='guest.age'/>"/>
                             </div>
                         </div>
