@@ -33,7 +33,12 @@
             <h1>Oops!</h1>
             <h2>404 - The Page can't be found</h2>
         </div>
-        <a href="/">Go TO Homepage</a>
+        <c:if test="${userCredentials.role.equals('ADMIN')}">
+            <a href="${pageContext.request.contextPath}/admin/main">Go TO Homepage</a>
+        </c:if>
+        <c:if test="${userCredentials.role.equals('USER')}">
+            <a href="${pageContext.request.contextPath}/user/main">Go TO Homepage</a>
+        </c:if>
     </div>
 </div>
 
