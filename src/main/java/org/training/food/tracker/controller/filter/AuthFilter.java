@@ -74,7 +74,7 @@ public class AuthFilter implements Filter {
 
     private void sendErrorPage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/errors/error.jsp").forward(request, response);
     }
 
     private boolean authIsNotRequired(String url) {
