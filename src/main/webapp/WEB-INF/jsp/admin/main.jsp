@@ -1,9 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<fmt:requestEncoding value="UTF-8"/>
+<fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="locale" />
+
 
 <html>
 <head>
@@ -25,7 +28,7 @@
 
     <div class="container container mt-5" >
         <div class="row">
-            <div class="col-md-12 col-centered" id="first">
+            <div class="col-centered" id="first">
                 <h1><fmt:message key="label.welcome"/>, ${loggedUsername}</h1>
             </div>
         </div>
