@@ -75,6 +75,7 @@ public class RegistrationServlet extends HttpServlet {
         biometrics = insertBiometricsIntoDB(biometrics);
 
         user.setBiometrics(biometrics);
+        response.sendRedirect("/login");
     }
 
     private boolean isValidUserInput(HttpServletRequest request, User user) {
