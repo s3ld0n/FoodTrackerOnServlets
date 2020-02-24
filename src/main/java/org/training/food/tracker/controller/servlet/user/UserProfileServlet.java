@@ -51,7 +51,6 @@ public class UserProfileServlet extends HttpServlet {
             biometrics = biometricsService.findByOwner(commonUser);
         } catch (DaoException e) {
             LOG.debug("doGet() :: during user find error occurred");
-            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 
@@ -91,7 +90,6 @@ public class UserProfileServlet extends HttpServlet {
 
         } catch (DaoException e) {
             LOG.debug("doGet() :: during user update error occurred");
-            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 

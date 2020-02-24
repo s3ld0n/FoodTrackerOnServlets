@@ -70,7 +70,6 @@ public class UserFoodsServlet extends HttpServlet {
             consumedFoodDTOs = DTOConverter.consumedFoodsToConsumedFoodDTOs(consumedFoodService.findAllByDay(currentDay));
         } catch (DaoException e) {
             LOG.error("doGet() :: error occurred", e);
-            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 
@@ -105,20 +104,6 @@ public class UserFoodsServlet extends HttpServlet {
             throws ServletException, IOException {
         UserCredentials userCredentials = (UserCredentials) request.getSession().getAttribute("userCredentials");
 
-        LOG.debug("doPost() :: validating food from request");
-        String name = request.getParameter("name");
-        String calories = request.getParameter("calories");
-
-        HttpSession session = request.getSession();
-
-        if (!isValidInput(name, calories)) {
-            session.setAttribute("invalidInput",true);
-            response.sendRedirect("/user/food");
-            return;
-        } else {
-            session.setAttribute("invalidInput",false);
-        }
-
         LOG.debug("doPost() :: building food from request");
         Food food = buildFood(request);
 
@@ -131,49 +116,8 @@ public class UserFoodsServlet extends HttpServlet {
             foodService.create(food);
         } catch (DaoException e) {
             LOG.error("doPost() :: error occurred", e);
-            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
         }
         response.sendRedirect("/user/food");
-    }
-
-    private boolean setErrorsToSessionOnInvalid(HttpServletRequest request, String name, String calories) {
-        boolean invalidCalories = false;
-        boolean invalidName = false;
-
-        if (isNotValidCalories(calories)) {
-            request.getSession().setAttribute("invalidCalories",true);
-            invalidCalories = true;
-        }
-
-        if (isNotValidName(name)) {
-            request.getSession().setAttribute("invalidName",true);
-            invalidName = true;
-        }
-        return invalidCalories || invalidName;
-    }
-
-    private void setCaloriesErrorIfInvalid(HttpServletRequest request, String calories) {
-        if (isNotValidCalories(calories)) {
-            request.getSession().setAttribute("invalidCalories",true);
-        }
-    }
-
-    private void setNameErrorIfInvalid(HttpServletRequest request, String name) {
-        if (isNotValidName(name)) {
-            request.getSession().setAttribute("invalidName",true);
-        }
-    }
-
-    private boolean isValidInput(String name, String calories) {
-        return calories.matches("\\d{1,3}") && name.length() <= 30;
-    }
-
-    private boolean isNotValidName(String name ) {
-        return name.length() > 30;
-    }
-
-    private boolean isNotValidCalories(String calories) {
-        return !calories.matches("\\d{1,3}");
     }
 
     private Food buildFood(HttpServletRequest request) {
@@ -181,16 +125,5 @@ public class UserFoodsServlet extends HttpServlet {
                        .name(request.getParameter("name"))
                        .calories(new BigDecimal(Double.parseDouble(request.getParameter("calories"))))
                        .build();
-    }
-
-
-    private User findUser(UserCredentials userCredentials) {
-        User currentUser = null;
-        try {
-            currentUser = userService.findByUsername(userCredentials.getUsername());
-        } catch (DaoException e) {
-            LOG.error("doGet() :: finding user by username has failed");
-        }
-        return currentUser;
     }
 }

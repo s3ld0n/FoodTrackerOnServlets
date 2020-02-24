@@ -31,7 +31,6 @@ public class AdminFoodListDeleteFoodServlet extends HttpServlet {
             foodService.deleteCommonFoodByName(request.getParameter("name"));
         } catch (DaoException e) {
             LOG.error("Deletion failed - error occurred.");
-            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
             return;
         }
 

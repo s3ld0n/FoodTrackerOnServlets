@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<t:user_navbar/>
+<c:import url="../components/user-navbar.jsp"/>
 <div class="empty">.</div>
 
 <div class="container">

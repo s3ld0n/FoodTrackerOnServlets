@@ -5,6 +5,7 @@ package org.training.food.tracker.dao.jdbc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.training.food.tracker.dao.DaoException;
+import org.training.food.tracker.dao.UserAlreadyExistsException;
 import org.training.food.tracker.dao.UserDao;
 import org.training.food.tracker.dao.util.ConnectionFactory;
 import org.training.food.tracker.model.*;
@@ -18,7 +19,8 @@ import java.util.List;
 public class UserDaoJDBC implements UserDao {
 
     private static final String CREATE_QUERY = "INSERT INTO users (username, password, first_name, "
-                                                      + "last_name, email, role, daily_norm_calories) VALUES(?,?,?,?,?,?,?)";
+                                                      + "last_name, email, role, daily_norm_calories) "
+                                                       + "VALUES(?,?,?,?,?,?,?) ON CONFLICT (username) DO NOTHING";
 
     private static final String FIND_BY_ID = "SELECT users.id AS u_id, username, password, first_name, last_name, email, "
                                                     + "role, biometrics.id, user_id, age, daily_norm_calories, height, lifestyle, sex, weight FROM users JOIN "
@@ -66,12 +68,15 @@ public class UserDaoJDBC implements UserDao {
         return user;
     }
 
-    private void setGeneratedId(User user, PreparedStatement statement) throws SQLException {
+    private void setGeneratedId(User user, PreparedStatement statement) throws SQLException, UserAlreadyExistsException {
         LOG.debug("setGeneratedId() :: creating result set");
         try (ResultSet resultSet = statement.getGeneratedKeys()) {
 
             LOG.debug("setGeneratedId() :: result set was created. Setting id from DB to user object to return");
-            resultSet.next();
+            if (!resultSet.next()) {
+                LOG.warn("User already exists!");
+                throw new UserAlreadyExistsException("User already exists!");
+            };
             user.setId(resultSet.getLong(1));
         }
     }

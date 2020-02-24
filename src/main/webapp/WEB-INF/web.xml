@@ -46,14 +46,30 @@
     </listener-class>
   </listener>
 
+  <error-page>
+    <!-- Forbidden directory listing -->
+    <error-code>403</error-code>
+    <location>/WEB-INF/jsp/errors/403.jsp</location>
+  </error-page>
+  <error-page>
+    <!-- Missing resource -->
+    <error-code>404</error-code>
+    <location>/WEB-INF/jsp/errors/404.jsp</location>
+  </error-page>
+  <error-page>
+    <!-- Uncaught exception -->
+    <error-code>500</error-code>
+    <location>/WEB-INF/jsp/errors/500.jsp</location>
+  </error-page>
+  <error-page>
+    <!-- Unsupported servlet method -->
+    <error-code>503</error-code>
+    <location>/WEB-INF/jsp/errors/500.jsp</location>
+  </error-page>
+
   <welcome-file-list>
     <welcome-file>jsp/index.jsp</welcome-file>
   </welcome-file-list>
 
-<!--  <error-page>-->
-<!--    <exception-type>java.lang.Exception</exception-type>-->
-<!--    <location>/jsp/error.jsp</location>-->
-<!--  </error-page>-->
-  
   <display-name>Archetype Created Web Application</display-name>
 </web-app>

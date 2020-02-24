@@ -33,6 +33,9 @@
         <div class="form-group row field">
             <label class="col-sm-2 col-form-label"><fmt:message key="guest.username"/></label>
             <div class="col-sm-6 field">
+                <c:if test="${userExists}">
+                    <span class="text-danger"><fmt:message key="error.registration.user-exists"/></span>
+                </c:if>
                 <input type="text" name="username" class="form-control" maxlength="32" value="${userDTO.username}" placeholder="<fmt:message key='guest.username'/>"/>
                 <c:if test="${not empty userErrors['username']}">
                     <span class="text-danger"><fmt:message key="error.registration.username"/></span>
